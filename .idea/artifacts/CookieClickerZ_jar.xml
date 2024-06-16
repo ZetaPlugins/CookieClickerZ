@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CookieClickerZ:jar">
+    <output-path>$PROJECT_DIR$/../../Minecraft/Servers/CookieClicker/plugins</output-path>
+    <root id="archive" name="CookieClickerZ.jar">
+      <element id="module-output" name="CookieClickerZ" />
+    </root>
+  </artifact>
+</component>

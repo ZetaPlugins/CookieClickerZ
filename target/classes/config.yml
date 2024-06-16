@@ -1,0 +1,19 @@
+# If set to true, LifeStealZ will check for updates and let you know if there's a newer version
+checkForUpdates: true
+
+# Set the language to any code found in the "lang" folder (don't add the .yml extension)
+# You can add your own language files. Use https://github.com/KartoffelChipss/LifeStealZ/tree/main/src/main/resources/lang/en-US.yml as a template
+# If you want to help translating the plugin, please refer to this article: https://lsz.strassburger.dev/contributing/localization
+lang: "en-US"
+
+storage:
+  # The type of storage to use. You have the following options:
+  # "SQLite", "MySQL"
+  type: "SQLite"
+
+  # This section is only relevant if you use a MySQL database
+  host: "localhost"
+  port: 3306
+  database: "cookieclicker"
+  username: "root"
+  password: "password"

@@ -1,0 +1,14 @@
+# LifeStealZ language file
+# en-US - by Kartoffelchipss
+
+prefix: "&8[<#D2691E>CookieClickerZ&8]"
+newVersionAvailable: "&7A new version of CookieClickerZ is available!\n&c<click:OPEN_URL:https://modrinth.com/plugin/lifestealz/versions>https://modrinth.com/plugin/lifestealz/versions</click>"
+usageError: "&cUsage: %usage%"
+noPermsError: "<#D2691E>You do not have permission to execute this command!"
+playerNotFound: "&cPlayer not found!"
+noPermissionError: "&cYou don't have permission to use this!"
+noPlayerData: "&cThis player has not played on this server yet!"
+reloadMsg: "&7Successfully reloaded the plugin!"
+versionMsg: "&7You are using version <#D2691E>%version%"
+exportData: "&7Successfully exported player data to <#D2691E>%file%.csv"
+importData: "&7Successfully imported <#D2691E>%file%.csv&7!\n&cPlease restart the server, to ensure flawless migration!"
