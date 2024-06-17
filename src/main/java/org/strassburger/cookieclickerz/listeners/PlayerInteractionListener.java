@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.Replaceable;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
@@ -53,8 +54,7 @@ public class PlayerInteractionListener implements Listener {
                                 "%ac%+%num% %cookieName%&7 &8| %ac%%total% %cookieName%&7",
                                 new Replaceable("%num%", cookiesPerClick + ""),
                                 new Replaceable("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
-                                new Replaceable("%total%", playerData.getTotalCookies().toString())
-                        )
+                                new Replaceable("%total%", NumFormatter.formatBigInt(playerData.getTotalCookies()))                        )
                 );
             }
 

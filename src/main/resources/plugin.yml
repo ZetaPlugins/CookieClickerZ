@@ -24,3 +24,6 @@ permissions:
   cookieclickerz.manageclickers:
     default: op
     description: Permission to add a clicker blocks
+  cookieclickerz.managecookies:
+    default: op
+    description: Permission to manage cookies

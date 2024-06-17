@@ -15,11 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.ClickerManager;
-import org.strassburger.cookieclickerz.util.ConfigManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.Replaceable;
+import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,68 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             CookieClickerZ.getInstance().getConfigManager().reloadCustomConfig("clicker.yml");
             sender.sendMessage(MessageUtils.getAndFormatMsg(true, "reloadMsg", "&7Successfully reloaded the plugin!"));
             return true;
+        }
+
+        if (optionOne.equals("cookies")) {
+            if (!sender.hasPermission("cookieclickerz.managecookies")) {
+                throwPermissionError(sender);
+                return false;
+            }
+
+            if (args.length < 4) {
+                throwUsageError(sender, "/cc cookies [player] <add, remove, set> [amount]");
+                return false;
+            }
+
+            optionTwo = args[1]; // player
+            optionThree = args[2]; // add, remove, set
+            String amount = args[3]; // amount
+
+            BigInteger amountNum = NumFormatter.stringToBigInteger(amount);
+
+            if (amountNum == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "invalidAmount", "&cInvalid amount!"));
+                return false;
+            }
+
+            if (amountNum.compareTo(BigInteger.ZERO) < 0) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "negativeAmount", "&cAmount cannot be negative!"));
+                return false;
+            }
+
+            Player target = CookieClickerZ.getInstance().getServer().getPlayer(optionTwo);
+
+            if (target == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "playerNotFound", "&cPlayer not found!"));
+                return false;
+            }
+
+            PlayerData targetPlayerData = playerDataStorage.load(target.getUniqueId());
+            if (targetPlayerData == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "playerDataStorageNull", "&cPlayerDataStorage is null!"));
+                return false;
+            }
+
+            if (optionThree.equals("add")) {
+                targetPlayerData.setTotalCookies(targetPlayerData.getTotalCookies().add(amountNum));
+                playerDataStorage.save(targetPlayerData);
+                sender.sendMessage(MessageUtils.getAndFormatMsg(true, "addCookies", "&7Successfully added %ac%%amount% &7cookies to %ac%%player%", new Replaceable("%amount%", NumFormatter.formatBigInt(amountNum)), new Replaceable("%player%", target.getName())));
+                return false;
+            }
+
+            if (optionThree.equals("remove")) {
+                targetPlayerData.setTotalCookies(targetPlayerData.getTotalCookies().subtract(amountNum));
+                playerDataStorage.save(targetPlayerData);
+                sender.sendMessage(MessageUtils.getAndFormatMsg(true, "removeCookies", "&7Successfully removed %ac%%amount% &7cookies from %ac%%player%", new Replaceable("%amount%", NumFormatter.formatBigInt(amountNum)), new Replaceable("%player%", target.getName())));
+                return false;
+            }
+
+            if (optionThree.equals("set")) {
+                targetPlayerData.setTotalCookies(amountNum);
+                playerDataStorage.save(targetPlayerData);
+                sender.sendMessage(MessageUtils.getAndFormatMsg(true, "setCookies", "&7Successfully set %ac%%player%&7's cookies to %ac%%amount%", new Replaceable("%amount%", NumFormatter.formatBigInt(amountNum)), new Replaceable("%player%", target.getName())));
+                return false;
+            }
         }
 
         if (optionOne.equals("clicker")) {
@@ -202,16 +266,23 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             returnlist.add("help");
             returnlist.add("reload");
             if (sender.hasPermission("cookieclickerz.manageclickers")) returnlist.add("clicker");
+            if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("cookies");
             return returnlist;
         }
 
         if (args.length == 2) {
             if (args[0].equals("clicker")) return List.of("add", "remove", "list");
+            if (args[0].equals("cookies")) return null;
         }
 
         if (args.length == 3) {
             if (args[0].equals("clicker") && args[1].equals("add")) return List.of("name");
             if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickers();
+            if (args[0].equals("cookies")) return List.of("add", "remove", "set");
+        }
+
+        if (args.length == 4) {
+            if (args[0].equals("cookies")) return List.of("100", "1K", "1M", "1B", "1T", "1Q", "1QQ", "1S", "1SS", "10", "1N", "1D");
         }
 
         return List.of();
