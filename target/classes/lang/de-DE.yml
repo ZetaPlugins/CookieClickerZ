@@ -2,7 +2,7 @@
 # de-DE - by Kartoffelchipss
 
 accentColor: "<#D2691E>" # This is the accent color code. It will replace %ac% in the messages.
-prefix: "&8[%ac%CookieZ&8]"
+prefix: "&8[%ac%CookieClickerZ&8]"
 newVersionAvailable: "&7Eine neue Version von CookieClickerZ ist verfügbar!\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/lifestealz/versions>https://modrinth.com/plugin/lifestealz/versions</click>"
 usageError: "&cVerwendung: %usage%"
 noPermsError: "&cDu hast keine Berechtigung, diesen Befehl auszuführen!"

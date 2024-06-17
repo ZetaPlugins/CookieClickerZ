@@ -40,7 +40,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         String optionThree = null;
 
         if (optionOne.equals("reload")) {
-            if (!sender.hasPermission("lifestealz.admin.reload")) {
+            if (!sender.hasPermission("cookieclickerz.admin.reload")) {
                 throwPermissionError(sender);
                 return false;
             }
@@ -48,12 +48,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             CookieClickerZ.getInstance().reloadConfig();
             config = CookieClickerZ.getInstance().getConfig();
             CookieClickerZ.getInstance().getLanguageManager().reload();
-            sender.sendMessage(MessageUtils.getAndFormatMsg(true, "messages.reloadMsg", "&7Successfully reloaded the plugin!"));
+            CookieClickerZ.getInstance().getConfigManager().reloadCustomConfig("clicker.yml");
+            sender.sendMessage(MessageUtils.getAndFormatMsg(true, "reloadMsg", "&7Successfully reloaded the plugin!"));
             return true;
         }
 
         if (optionOne.equals("clicker")) {
-            if (!sender.hasPermission("cookieclicker.manageclickers")) {
+            if (!sender.hasPermission("cookieclickerz.manageclickers")) {
                 throwPermissionError(sender);
                 return false;
             }
@@ -162,12 +163,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     }
 
     private void throwUsageError(CommandSender sender, String usage) {
-        Component msg = MessageUtils.getAndFormatMsg(false, "messages.usageError", "&cUsage: %usage%", new Replaceable("%usage%", usage));
+        Component msg = MessageUtils.getAndFormatMsg(false, "usageError", "&cUsage: %usage%", new Replaceable("%usage%", usage));
         sender.sendMessage(msg);
     }
 
     private void throwPermissionError(CommandSender sender) {
-        Component msg = MessageUtils.getAndFormatMsg(false, "messages.noPermissionError", "&cYou don't have permission to use this!");
+        Component msg = MessageUtils.getAndFormatMsg(false, "noPermissionError", "&cYou don't have permission to use this!");
         sender.sendMessage(msg);
     }
 
@@ -200,7 +201,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             ArrayList<String> returnlist = new ArrayList<>();
             returnlist.add("help");
             returnlist.add("reload");
-            if (sender.hasPermission("cookieclicker.manageclickers")) returnlist.add("clicker");
+            if (sender.hasPermission("cookieclickerz.manageclickers")) returnlist.add("clicker");
             return returnlist;
         }
 

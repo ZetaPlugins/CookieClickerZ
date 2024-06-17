@@ -15,6 +15,12 @@ commands:
     description: Main command
 
 permissions:
-  cookieclicker.manageclickers:
+  cookieclickerz.useclicker:
+    default: true
+    description: Permission to use a clicker
+  cookieclickerz.openshop:
+    default: true
+    description: Permission to open the shop
+  cookieclickerz.manageclickers:
     default: op
     description: Permission to add a clicker blocks
