@@ -14,10 +14,13 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
+import org.strassburger.cookieclickerz.util.ClickerManager;
+import org.strassburger.cookieclickerz.util.ConfigManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.Replaceable;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
@@ -56,26 +59,102 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             }
 
             if (args.length < 2) {
-                throwUsageError(sender, "/cc clicker <add, remove> [block]");
+                throwUsageError(sender, "/cc clicker <add, remove>");
                 return false;
             }
 
             optionTwo = args[1]; // add or remove
 
-            if (optionTwo == null || (!optionTwo.equals("add") && !optionTwo.equals("remove"))) {
-                throwUsageError(sender, "/cc clicker <add, remove> [block]");
+            if (optionTwo == null || (!optionTwo.equals("add") && !optionTwo.equals("remove")) && !optionTwo.equals("list")) {
+                throwUsageError(sender, "/cc clicker <add, remove>");
                 return false;
             }
-
-            Location targetBlock = null;
 
             if (optionTwo.equals("add")) {
                 if (!(sender instanceof Player)) return false;
                 Player player = (Player) sender;
 
-                targetBlock = getTargetBlockLocation(player, 5);
+                if (args.length < 3) {
+                    throwUsageError(sender, "/cc clicker add <name>");
+                    return false;
+                }
 
-                sender.sendMessage("Added targetblock: " + CookieClickerZ.locationToString(targetBlock));
+                optionThree = args[2]; // clicker name
+
+                Location targetBlock = getTargetBlockLocation(player, 5);
+
+                if (targetBlock == null) {
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "notLookingAtBlock", "&cYou need to be looking at a block!"));
+                    return false;
+                }
+
+                if (ClickerManager.isClicker(targetBlock)) {
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "alreadyClicker", "&cThis block is already a clicker!"));
+                    return false;
+                }
+
+                if (ClickerManager.isClicker(optionThree)) {
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "alreadyClickerName", "&cThis clicker name is already in use!"));
+                    return false;
+                }
+
+                ClickerManager.addClicker(targetBlock, optionThree);
+
+                sender.sendMessage(
+                        MessageUtils.getAndFormatMsg(
+                                true,
+                                "clickerAddConfirm",
+                                "&7Successfully added a clicker with the name %ac%%name% &7at the location %ac%%location%",
+                                new Replaceable("%name%", optionThree),
+                                new Replaceable("%location%", CookieClickerZ.locationToString(targetBlock))
+                        )
+                );
+                return false;
+            }
+
+            if (optionTwo.equals("remove")) {
+                if (args.length < 3) {
+                    throwUsageError(sender, "/cc clicker remove <block>");
+                    return false;
+                }
+
+                optionThree = args[2]; // clicker name
+
+                if (!ClickerManager.isClicker(optionThree)) {
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "notClicker", "&cThis block is not a clicker!"));
+                    return false;
+                }
+
+                ClickerManager.removeClicker(optionThree);
+
+                sender.sendMessage(
+                        MessageUtils.getAndFormatMsg(
+                                true,
+                                "clickerRemoveConfirm",
+                                "&7Successfully removed the clicker with the name %ac%%name%",
+                                new Replaceable("%name%", optionThree)
+                        )
+                );
+                return false;
+            }
+
+            if (optionTwo.equals("list")) {
+                List<String> clickers = ClickerManager.getClickers();
+
+                if (clickers == null || clickers.isEmpty()) {
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "noClickers", "&cThere are no clickers!"));
+                    return false;
+                }
+
+                sender.sendMessage(
+                        MessageUtils.getAndFormatMsg(
+                                true,
+                                "clickerList",
+                                "&7Clickers: %ac%%clickers%",
+                                new Replaceable("%clickers%", formatList(clickers))
+                        )
+                );
+                return false;
             }
         }
 
@@ -104,8 +183,36 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return lastBlock.getType() != Material.AIR ? lastBlock.getLocation() : null;
     }
 
+    private static String formatList(List<String> items) {
+        StringBuilder formattedString = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            formattedString.append(items.get(i));
+            if (i < items.size() - 1) {
+                formattedString.append("&7, ").append(MessageUtils.getAccentColor());
+            }
+        }
+        return formattedString.toString();
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        return null;
+        if (args.length == 1) {
+            ArrayList<String> returnlist = new ArrayList<>();
+            returnlist.add("help");
+            returnlist.add("reload");
+            if (sender.hasPermission("cookieclicker.manageclickers")) returnlist.add("clicker");
+            return returnlist;
+        }
+
+        if (args.length == 2) {
+            if (args[0].equals("clicker")) return List.of("add", "remove", "list");
+        }
+
+        if (args.length == 3) {
+            if (args[0].equals("clicker") && args[1].equals("add")) return List.of("name");
+            if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickers();
+        }
+
+        return List.of();
     }
 }

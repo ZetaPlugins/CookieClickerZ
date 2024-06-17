@@ -28,6 +28,11 @@ public class VersionChecker {
         }
     }
 
+    /**
+     * Gets the latest version of the plugin from Modrinth
+     *
+     * @return The latest version of the plugin
+     */
     public String getLatestVersionFromModrinth() {
         try {
             URL projectUrl = new URL(MODRINTH_PROJECT_URL);

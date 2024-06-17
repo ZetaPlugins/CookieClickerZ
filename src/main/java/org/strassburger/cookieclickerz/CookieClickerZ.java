@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.strassburger.cookieclickerz.util.CommandManager;
-import org.strassburger.cookieclickerz.util.EventManager;
-import org.strassburger.cookieclickerz.util.LanguageManager;
-import org.strassburger.cookieclickerz.util.VersionChecker;
+import org.strassburger.cookieclickerz.util.*;
 import org.strassburger.cookieclickerz.util.storage.MySQLPlayerDataStorage;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 import org.strassburger.cookieclickerz.util.storage.SQLitePlayerDataStorage;
@@ -17,6 +14,7 @@ public final class CookieClickerZ extends JavaPlugin {
     private VersionChecker versionChecker;
     private PlayerDataStorage playerDataStorage;
     private LanguageManager languageManager;
+    private ConfigManager configManager;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
@@ -24,8 +22,7 @@ public final class CookieClickerZ extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
+        initConfig();
 
         languageManager = new LanguageManager();
 
@@ -66,6 +63,10 @@ public final class CookieClickerZ extends JavaPlugin {
         return languageManager;
     }
 
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
     private PlayerDataStorage createPlayerDataStorage() {
         String option = getConfig().getString("storage.type");
 
@@ -78,15 +79,22 @@ public final class CookieClickerZ extends JavaPlugin {
         return new SQLitePlayerDataStorage();
     }
 
+    private void initConfig() {
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+
+        configManager = new ConfigManager(this);
+
+        configManager.createCustomConfig("clicker.yml");
+    }
+
     public static String locationToString(Location location) {
         return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
     }
 
-    public static Location stringToLocation(String string, World world) throws IllegalArgumentException {
+    public static Location stringToLocation(String string, World world) {
         String[] parts = string.split(",");
-        if (parts.length != 4) {
-            throw new IllegalArgumentException("Invalid location string: " + string);
-        }
+        if (parts.length != 4) return null;
 
         try {
             double x = Double.parseDouble(parts[1]);
@@ -95,7 +103,7 @@ public final class CookieClickerZ extends JavaPlugin {
 
             return new Location(world, x, y, z);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid number format in location string: " + string, e);
+            return null;
         }
     }
 

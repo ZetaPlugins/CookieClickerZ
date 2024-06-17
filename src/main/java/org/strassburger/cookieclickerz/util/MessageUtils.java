@@ -2,6 +2,7 @@ package org.strassburger.cookieclickerz.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 
 import java.util.HashMap;
@@ -46,13 +47,7 @@ public class MessageUtils {
      * @return The formatted message
      */
     public static Component formatMsg(String msg, Replaceable... replaceables) {
-        for (Replaceable replaceable : replaceables) {
-            msg = msg.replace(replaceable.getPlaceholder(), replaceable.getValue());
-        }
-
-        for (Map.Entry<String, String> entry : colorMap.entrySet()) {
-            msg = msg.replace(entry.getKey(), entry.getValue());
-        }
+        msg = replacePlaceholders(msg, replaceables);
 
         MiniMessage mm = MiniMessage.miniMessage();
         return mm.deserialize("<!i>" + msg);
@@ -72,11 +67,27 @@ public class MessageUtils {
 
         MiniMessage mm = MiniMessage.miniMessage();
         String msg = "<!i>" + CookieClickerZ.getInstance().getLanguageManager().getString(path, fallback);
-        String prefix = CookieClickerZ.getInstance().getLanguageManager().getString("prefix", "&8[&cLifeStealZ&8]");
+        String prefix = CookieClickerZ.getInstance().getLanguageManager().getString("prefix", "&8[%ac%CookieZ&8]");
         if (addPrefix) {
             msg = prefix + " " + msg;
         }
 
+        msg = replacePlaceholders(msg, replaceables);
+
+        return mm.deserialize(msg);
+    }
+
+    /**
+     * Gets the accent color
+     *
+     * @return The accent color
+     */
+    public static String getAccentColor() {
+        return CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>");
+    }
+
+    @NotNull
+    private static String replacePlaceholders(String msg, Replaceable[] replaceables) {
         for (Replaceable replaceable : replaceables) {
             msg = msg.replace(replaceable.getPlaceholder(), replaceable.getValue());
         }
@@ -85,6 +96,7 @@ public class MessageUtils {
             msg = msg.replace(entry.getKey(), entry.getValue());
         }
 
-        return mm.deserialize(msg);
+        msg = msg.replace("%ac%", CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>"));
+        return msg;
     }
 }
