@@ -52,7 +52,7 @@ public class PlayerInteractionListener implements Listener {
                                 false,
                                 "getCookieActionbar",
                                 "%ac%+%num% %cookieName%&7 &8| %ac%%total% %cookieName%&7",
-                                new Replaceable("%num%", cookiesPerClick + ""),
+                                new Replaceable("%num%", NumFormatter.formatBigInt(cookiesPerClick)),
                                 new Replaceable("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
                                 new Replaceable("%total%", NumFormatter.formatBigInt(playerData.getTotalCookies()))                        )
                 );

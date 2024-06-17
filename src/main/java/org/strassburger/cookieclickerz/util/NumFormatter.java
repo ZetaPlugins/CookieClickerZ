@@ -1,12 +1,8 @@
 package org.strassburger.cookieclickerz.util;
 
-import org.strassburger.cookieclickerz.CookieClickerZ;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NumFormatter {
     private static final String[] suffixes = { "", "K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D" };
