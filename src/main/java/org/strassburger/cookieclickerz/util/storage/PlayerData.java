@@ -12,6 +12,7 @@ public class PlayerData {
     private int totalClicks = 0;
     private long lastLogoutTime = System.currentTimeMillis();
     private Map<String, Integer> upgrades = new HashMap<>(); // Map to store upgrades and their levels
+    private BigInteger cookiesPerClick = BigInteger.ONE; // Default cookies per click
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;
@@ -66,5 +67,15 @@ public class PlayerData {
 
     public int getUpgradeLevel(String upgradeName) {
         return upgrades.getOrDefault(upgradeName, 0);
+    }
+
+    public BigInteger getCookiesPerClick() {
+        return cookiesPerClick;
+    }
+
+    public void setCookiesPerClick(BigInteger cookiesPerClick) {
+        if (cookiesPerClick.compareTo(BigInteger.ZERO) < 0)
+            throw new IllegalArgumentException("cookiesPerClick cannot be negative");
+        this.cookiesPerClick = cookiesPerClick;
     }
 }

@@ -19,6 +19,9 @@ checkForUpdates: true
 # If you want to help translating the plugin, please refer to this article: https://lsz.strassburger.dev/contributing/localization
 lang: "en-US"
 
+# The the cookie name
+cookieName: "&7Cookies"
+
 # The sound that will be played when a player clicks a block
 # You can find a list of sounds here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 clickSound: "BLOCK_WOODEN_BUTTON_CLICK_ON"

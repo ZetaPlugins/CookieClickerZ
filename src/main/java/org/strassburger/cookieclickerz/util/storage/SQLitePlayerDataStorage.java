@@ -26,7 +26,8 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                         "name TEXT, " +
                         "totalCookies TEXT, " +
                         "totalClicks INTEGER, " +
-                        "lastLogoutTime INTEGER)");
+                        "lastLogoutTime INTEGER, " +
+                        "cookiesPerClick TEXT)");
             } catch (SQLException e) {
                 CookieClickerZ.getInstance().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
             }
@@ -63,13 +64,14 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
         try (Connection connection = createConnection()) {
             if (connection == null) return;
             try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime) " +
-                            "VALUES (?, ?, ?, ?, ?)")) {
+                    "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)")) {
                 statement.setString(1, playerData.getUuid());
                 statement.setString(2, playerData.getName());
                 statement.setString(3, playerData.getTotalCookies().toString());
                 statement.setInt(4, playerData.getTotalClicks());
                 statement.setLong(5, playerData.getLastLogoutTime());
+                statement.setString(6, playerData.getCookiesPerClick().toString());
                 statement.executeUpdate();
             } catch (SQLException e) {
                 CookieClickerZ.getInstance().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
@@ -137,6 +139,7 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                 playerData.setTotalCookies(new BigInteger(resultSet.getString("totalCookies")));
                 playerData.setTotalClicks(resultSet.getInt("totalClicks"));
                 playerData.setLastLogoutTime(resultSet.getLong("lastLogoutTime"));
+                playerData.setCookiesPerClick(new BigInteger(resultSet.getString("cookiesPerClick")));
 
                 return playerData;
             } catch (SQLException e) {
@@ -173,30 +176,6 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
     @Override
     public PlayerData load(String uuid) {
         return load(UUID.fromString(uuid));
-    }
-
-    @Override
-    public List<UUID> getEliminatedPlayers() {
-        List<UUID> eliminatedPlayers = new ArrayList<>();
-
-        try (Connection connection = createConnection()) {
-            if (connection == null) return eliminatedPlayers;
-
-            try (Statement statement = connection.createStatement()) {
-                statement.setQueryTimeout(30);
-                ResultSet resultSet = statement.executeQuery("SELECT uuid FROM player_data WHERE totalCookies <= '0'");
-
-                while (resultSet.next()) {
-                    eliminatedPlayers.add(UUID.fromString(resultSet.getString("uuid")));
-                }
-            } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
-        }
-
-        return eliminatedPlayers;
     }
 
     @Override

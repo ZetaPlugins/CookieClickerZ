@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.Replaceable;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 
@@ -38,9 +39,23 @@ public class PlayerInteractionListener implements Listener {
                 player.playSound(player.getLocation(), Sound.valueOf(CookieClickerZ.getInstance().getConfig().getString("clickSound", "BLOCK_WOODEN_BUTTON_CLICK_ON")), 1, 1);
 
                 PlayerData playerData = playerDataStorage.load(player.getUniqueId());
-                playerData.setTotalCookies(playerData.getTotalCookies().add(new BigInteger("1")));
+
+                BigInteger cookiesPerClick = playerData.getCookiesPerClick();
+
+                playerData.setTotalCookies(playerData.getTotalCookies().add(cookiesPerClick));
+                playerData.setTotalClicks(playerData.getTotalClicks() + 1);
                 playerDataStorage.save(playerData);
-                player.sendMessage(MessageUtils.formatMsg("&7You got a cookie! You now have " + MessageUtils.getAccentColor() + playerData.getTotalCookies() + " &7cookies!"));
+
+                player.sendActionBar(
+                        MessageUtils.getAndFormatMsg(
+                                false,
+                                "getCookieActionbar",
+                                "%ac%+%num% %cookieName%&7 &8| %ac%%total% %cookieName%&7",
+                                new Replaceable("%num%", cookiesPerClick + ""),
+                                new Replaceable("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
+                                new Replaceable("%total%", playerData.getTotalCookies().toString())
+                        )
+                );
             }
 
             if (event.getAction().isRightClick() && event.getAction() == Action.RIGHT_CLICK_BLOCK) {

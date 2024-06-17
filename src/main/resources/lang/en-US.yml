@@ -22,3 +22,4 @@ clickerAddConfirm: "&7Successfully added a clicker with the name %ac%%name% &7at
 clickerRemoveConfirm: "&7Successfully removed the clicker with the name %ac%%name%"
 clickerList: "&7Clickers: %ac%%clickers%"
 noClickers: "&cThere are no clickers!"
+getCookieActionbar: "%ac%+%num% %cookieName%&7 &8| %ac%%total% %cookieName%&7"

@@ -12,8 +12,6 @@ public interface PlayerDataStorage {
 
     PlayerData load(UUID uuid);
 
-    List<UUID> getEliminatedPlayers();
-
     String export(String fileName);
 
     void importData(String fileName);
