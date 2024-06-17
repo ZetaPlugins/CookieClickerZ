@@ -11,8 +11,8 @@ public class PlayerData {
     private BigInteger totalCookies = BigInteger.ZERO;
     private int totalClicks = 0;
     private long lastLogoutTime = System.currentTimeMillis();
-    private Map<String, Integer> upgrades = new HashMap<>(); // Map to store upgrades and their levels
-    private BigInteger cookiesPerClick = BigInteger.ONE; // Default cookies per click
+    private Map<String, Integer> upgrades = new HashMap<>();
+    private BigInteger cookiesPerClick = BigInteger.ONE;
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;

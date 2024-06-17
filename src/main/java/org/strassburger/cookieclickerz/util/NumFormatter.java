@@ -19,12 +19,9 @@ public class NumFormatter {
     private NumFormatter() {}
 
     public static BigInteger stringToBigInteger(String str) {
-        // System.out.println("Trying to convert " + str + " to BigInteger");
-        for (int i = suffixes.length - 1; i >= 1; i--) { // Start from the end of the array
+        for (int i = suffixes.length - 1; i >= 1; i--) {
             if (str.endsWith(suffixes[i])) {
-                // System.out.println("Suffix: " + suffixes[i]);
                 String numberPart = str.substring(0, str.length() - suffixes[i].length());
-                // System.out.println("Number part: " + numberPart);
                 try {
                     BigDecimal number = new BigDecimal(numberPart);
                     return number.multiply(new BigDecimal(multipliers[i])).toBigInteger();
