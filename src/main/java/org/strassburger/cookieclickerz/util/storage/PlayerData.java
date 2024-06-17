@@ -1,17 +1,17 @@
 package org.strassburger.cookieclickerz.util.storage;
 
-import org.strassburger.cookieclickerz.CookieClickerZ;
-
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerData {
     private final String name;
     private final String uuid;
-    private double maxhp = (CookieClickerZ.getInstance().getConfig().getInt("startHearts") * 2);
-    private int craftedHearts = 0;
-    private int craftedRevives = 0;
-    private int hasbeenRevived = 0;
-    private int killedOtherPlayers = 0;
+    private BigInteger totalCookies = BigInteger.ZERO;
+    private int totalClicks = 0;
+    private long lastLogoutTime = System.currentTimeMillis();
+    private Map<String, Integer> upgrades = new HashMap<>(); // Map to store upgrades and their levels
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;
@@ -26,44 +26,45 @@ public class PlayerData {
         return uuid;
     }
 
-    public double getMaxhp() {
-        return maxhp;
+    public BigInteger getTotalCookies() {
+        return totalCookies;
     }
 
-    public void setMaxhp(double maxhp) throws IllegalArgumentException {
-        if (maxhp < 0.0) throw new IllegalArgumentException("maxhp cannot be negative");
-        this.maxhp = maxhp;
+    public void setTotalCookies(BigInteger totalCookies) throws IllegalArgumentException {
+        if (totalCookies.compareTo(BigInteger.ZERO) < 0)
+            throw new IllegalArgumentException("totalCookies cannot be negative");
+        this.totalCookies = totalCookies;
     }
 
-    public int getCraftedHearts() {
-        return craftedHearts;
+    public int getTotalClicks() {
+        return totalClicks;
     }
 
-    public void setCraftedHearts(int craftedHearts) {
-        this.craftedHearts = craftedHearts;
+    public void setTotalClicks(int totalClicks) {
+        this.totalClicks = totalClicks;
     }
 
-    public int getCraftedRevives() {
-        return craftedRevives;
+    public long getLastLogoutTime() {
+        return lastLogoutTime;
     }
 
-    public void setCraftedRevives(int craftedRevives) {
-        this.craftedRevives = craftedRevives;
+    public void setLastLogoutTime(long lastLogoutTime) {
+        this.lastLogoutTime = lastLogoutTime;
     }
 
-    public int getHasbeenRevived() {
-        return hasbeenRevived;
+    public Map<String, Integer> getUpgrades() {
+        return upgrades;
     }
 
-    public void setHasbeenRevived(int hasbeenRevived) {
-        this.hasbeenRevived = hasbeenRevived;
+    public void setUpgrades(Map<String, Integer> upgrades) {
+        this.upgrades = upgrades;
     }
 
-    public int getKilledOtherPlayers() {
-        return killedOtherPlayers;
+    public void addUpgrade(String upgradeName, int level) {
+        upgrades.put(upgradeName, level);
     }
 
-    public void setKilledOtherPlayers(int killedOtherPlayers) {
-        this.killedOtherPlayers = killedOtherPlayers;
+    public int getUpgradeLevel(String upgradeName) {
+        return upgrades.getOrDefault(upgradeName, 0);
     }
 }

@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.strassburger.cookieclickerz.util.*;
-import org.strassburger.cookieclickerz.util.storage.MySQLPlayerDataStorage;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 import org.strassburger.cookieclickerz.util.storage.SQLitePlayerDataStorage;
 
@@ -72,7 +71,8 @@ public final class CookieClickerZ extends JavaPlugin {
 
         if (option.equalsIgnoreCase("mysql")) {
             getLogger().info("Using MySQL storage");
-            return new MySQLPlayerDataStorage();
+            // TODO: Implement MySQLPlayerDataStorage
+            return null;
         }
 
         getLogger().info("Using SQLite storage");

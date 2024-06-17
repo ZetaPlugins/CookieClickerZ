@@ -1,3 +1,16 @@
+#       _____           _    _         _____ _ _      _               ______
+#     / ____|          | |  (_)       / ____| (_)    | |             |___  /
+#    | |     ___   ___ | | ___  ___  | |    | |_  ___| | _____ _ __     / /
+#    | |    / _ \ / _ \| |/ / |/ _ \ | |    | | |/ __| |/ / _ \ '__|   / /
+#    | |___| (_) | (_) |   <| |  __/ | |____| | | (__|   <  __/ |     / /__
+#    \_____\___/ \___/|_|\_\_|\___|  \_____|_|_|\___|_|\_\___|_|    /_____|
+
+# !!! COLOR CODES !!!
+# This plugin supports old color codes like: &c, &l, &o, etc
+# It also supports minimessage, which is a more advanced way to format messages:
+# https://docs.advntr.dev/minimessage/format.html
+# With these, you can also add HEX colors, gradients, hover and click events, etc
+
 # If set to true, LifeStealZ will check for updates and let you know if there's a newer version
 checkForUpdates: true
 
@@ -5,6 +18,9 @@ checkForUpdates: true
 # You can add your own language files. Use https://github.com/KartoffelChipss/LifeStealZ/tree/main/src/main/resources/lang/en-US.yml as a template
 # If you want to help translating the plugin, please refer to this article: https://lsz.strassburger.dev/contributing/localization
 lang: "en-US"
+
+# The sound that will be played when a player clicks a block
+clickSound: "BLOCK_WOODEN_BUTTON_CLICK_ON"
 
 storage:
   # The type of storage to use. You have the following options:
