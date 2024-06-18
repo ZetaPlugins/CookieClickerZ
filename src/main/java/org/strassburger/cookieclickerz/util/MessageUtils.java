@@ -92,11 +92,13 @@ public class MessageUtils {
             msg = msg.replace(replaceable.getPlaceholder(), replaceable.getValue());
         }
 
+        msg = msg.replace("%ac%", CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>"));
+        msg = msg.replace("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "&7Cookies"));
+
         for (Map.Entry<String, String> entry : colorMap.entrySet()) {
             msg = msg.replace(entry.getKey(), entry.getValue());
         }
 
-        msg = msg.replace("%ac%", CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>"));
         return msg;
     }
 }

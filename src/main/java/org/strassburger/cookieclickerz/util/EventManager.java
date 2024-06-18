@@ -2,9 +2,7 @@ package org.strassburger.cookieclickerz.util;
 
 import org.bukkit.event.Listener;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.listeners.BlockBreakListener;
-import org.strassburger.cookieclickerz.listeners.PlayerInteractionListener;
-import org.strassburger.cookieclickerz.listeners.PlayerJoinListener;
+import org.strassburger.cookieclickerz.listeners.*;
 
 public class EventManager {
     private static final CookieClickerZ plugin = CookieClickerZ.getInstance();
@@ -18,6 +16,8 @@ public class EventManager {
         registerListener(new PlayerInteractionListener());
         registerListener(new PlayerJoinListener());
         registerListener(new BlockBreakListener());
+        registerListener(new InventoryCloseListener());
+        registerListener(new InventoryClickListener());
     }
 
     /**

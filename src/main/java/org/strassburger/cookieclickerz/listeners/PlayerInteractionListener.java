@@ -14,6 +14,7 @@ import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.Replaceable;
+import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 
@@ -64,7 +65,7 @@ public class PlayerInteractionListener implements Listener {
                     return;
                 }
 
-                player.sendMessage("You opened the clicker menu!");
+                if (!MainGUI.isOpen(player)) MainGUI.open(player);
             }
         }
     }
