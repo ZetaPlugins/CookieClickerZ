@@ -65,7 +65,10 @@ public class PlayerInteractionListener implements Listener {
                     return;
                 }
 
-                if (!MainGUI.isOpen(player)) MainGUI.open(player);
+                if (!MainGUI.isOpen(player)) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, .3f, 1f);
+                    MainGUI.open(player);
+                }
             }
         }
     }
