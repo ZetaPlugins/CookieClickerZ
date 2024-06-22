@@ -2,11 +2,14 @@ package org.strassburger.cookieclickerz.util;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.strassburger.cookieclickerz.CookieClickerZ;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,25 @@ public class CustomItem {
         itemStack.setItemMeta(itemMeta);
 
         return this;
+    }
+
+    public <P, C> CustomItem setCustomDataContainer(NamespacedKey key, PersistentDataType<P, C> persistentDataType, C value) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(key, persistentDataType, value);
+        itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public <P, C> CustomItem setCustomDataContainer(String key, PersistentDataType<P, C> persistentDataType, C value) {
+        return setCustomDataContainer(new NamespacedKey(CookieClickerZ.getInstance(), key), persistentDataType, value);
+    }
+
+    public <P, C> C getCustomDataContainer(NamespacedKey key, PersistentDataType<P, C> persistentDataType) {
+        return itemStack.getItemMeta().getPersistentDataContainer().get(key, persistentDataType);
+    }
+
+    public <P, C> C getCustomDataContainer(String key, PersistentDataType<P, C> persistentDataType) {
+        return getCustomDataContainer(new NamespacedKey(CookieClickerZ.getInstance(), key), persistentDataType);
     }
 
     public CustomItem addFlag(ItemFlag itemFlag) {

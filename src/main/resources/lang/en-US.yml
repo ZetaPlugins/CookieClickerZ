@@ -31,6 +31,8 @@ invalidAmount: "&cInvalid amount!"
 addCPC: "&7Successfully added %ac%%amount% &7cookies per click to %ac%%player%"
 removeCPC: "&7Successfully removed %ac%%amount% &7cookies per click from %ac%%player%"
 setCPC: "&7Successfully set %ac%%player%&7's cookies per click to %ac%%amount%"
+notEnoughCookies: "&cYou don't have enough cookies!"
+upgradeBought: "&7You bought the upgrade %ac%%upgrade%&7!"
 inventories:
   main:
     title: "&8CookieClickerZ"

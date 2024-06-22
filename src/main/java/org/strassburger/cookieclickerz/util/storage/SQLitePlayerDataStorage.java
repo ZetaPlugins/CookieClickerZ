@@ -7,9 +7,6 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import java.io.*;
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,7 +24,8 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                         "totalCookies TEXT, " +
                         "totalClicks INTEGER, " +
                         "lastLogoutTime INTEGER, " +
-                        "cookiesPerClick TEXT)");
+                        "cookiesPerClick TEXT, " +
+                        "offlineCookies TEXT)");
             } catch (SQLException e) {
                 CookieClickerZ.getInstance().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
             }
@@ -64,14 +62,15 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
         try (Connection connection = createConnection()) {
             if (connection == null) return;
             try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)")) {
+                    "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
                 statement.setString(1, playerData.getUuid());
                 statement.setString(2, playerData.getName());
                 statement.setString(3, playerData.getTotalCookies().toString());
                 statement.setInt(4, playerData.getTotalClicks());
                 statement.setLong(5, playerData.getLastLogoutTime());
                 statement.setString(6, playerData.getCookiesPerClick().toString());
+                statement.setString(7, playerData.getOfflineCookies().toString());
                 statement.executeUpdate();
             } catch (SQLException e) {
                 CookieClickerZ.getInstance().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
@@ -140,6 +139,7 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                 playerData.setTotalClicks(resultSet.getInt("totalClicks"));
                 playerData.setLastLogoutTime(resultSet.getLong("lastLogoutTime"));
                 playerData.setCookiesPerClick(new BigInteger(resultSet.getString("cookiesPerClick")));
+                playerData.setOfflineCookies(new BigInteger(resultSet.getString("offlineCookies")));
 
                 return playerData;
             } catch (SQLException e) {
@@ -194,7 +194,9 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                                 .append(resultSet.getString("name")).append(CSV_SEPARATOR)
                                 .append(resultSet.getString("totalCookies")).append(CSV_SEPARATOR)
                                 .append(resultSet.getInt("totalClicks")).append(CSV_SEPARATOR)
-                                .append(resultSet.getLong("lastLogoutTime"));
+                                .append(resultSet.getLong("lastLogoutTime")).append(CSV_SEPARATOR)
+                                .append(resultSet.getString("cookiesPerClick")).append(CSV_SEPARATOR)
+                                .append(resultSet.getString("offlineCookies"));
                         writer.write(line.toString());
                         writer.newLine();
                     }
@@ -219,7 +221,7 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(CSV_SEPARATOR);
 
-                if (data.length != 5) {
+                if (data.length != 7) {
                     CookieClickerZ.getInstance().getLogger().severe("Invalid CSV format.");
                     continue;
                 }
@@ -227,13 +229,15 @@ public class SQLitePlayerDataStorage implements PlayerDataStorage {
                 try (Connection connection = createConnection()) {
                     if (connection == null) return;
                     try (PreparedStatement statement = connection.prepareStatement(
-                            "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime) " +
-                                    "VALUES (?, ?, ?, ?, ?)")) {
+                            "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
                         statement.setString(1, data[0]);
                         statement.setString(2, data[1]);
                         statement.setString(3, data[2]);
                         statement.setInt(4, Integer.parseInt(data[3]));
                         statement.setLong(5, Long.parseLong(data[4]));
+                        statement.setString(6, data[5]);
+                        statement.setString(7, data[6]);
                         statement.executeUpdate();
                     } catch (SQLException e) {
                         CookieClickerZ.getInstance().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());

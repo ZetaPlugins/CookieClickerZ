@@ -13,6 +13,7 @@ public class PlayerData {
     private long lastLogoutTime = System.currentTimeMillis();
     private Map<String, Integer> upgrades = new HashMap<>();
     private BigInteger cookiesPerClick = BigInteger.ONE;
+    private BigInteger offlineCookies = BigInteger.ZERO;
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;
@@ -74,8 +75,16 @@ public class PlayerData {
     }
 
     public void setCookiesPerClick(BigInteger cookiesPerClick) {
-        if (cookiesPerClick.compareTo(BigInteger.ZERO) < 0)
-            throw new IllegalArgumentException("cookiesPerClick cannot be negative");
+        if (cookiesPerClick.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("cookiesPerClick cannot be negative");
         this.cookiesPerClick = cookiesPerClick;
+    }
+
+    public BigInteger getOfflineCookies() {
+        return offlineCookies;
+    }
+
+    public void setOfflineCookies(BigInteger offlineCookies) {
+        if (offlineCookies.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("offlineCookies cannot be negative");
+        this.offlineCookies = offlineCookies;
     }
 }

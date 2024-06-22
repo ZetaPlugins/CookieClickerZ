@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -19,23 +21,59 @@ public class UpgradeGUI {
     private static FileConfiguration config = CookieClickerZ.getInstance().getConfig();
     private static final int ITEMS_PER_PAGE = 28;
 
-    static class Upgrade {
+    public static class Upgrade {
+        private String id;
         private String name;
         private BigInteger baseprice;
         private double priceMultiplier;
         private String item;
         private BigInteger cpc;
         private BigInteger offlineCookies;
+        private BigInteger upgradePrice;
+        private boolean affordable;
 
         // Getters and setters
 
-        public Upgrade(String name, BigInteger baseprice, double priceMultiplier, String item, BigInteger cpc, BigInteger offlineCookies) {
+        public Upgrade(String id, String name, BigInteger baseprice, double priceMultiplier, String item, BigInteger cpc, BigInteger offlineCookies) {
+            this.id = id;
             this.name = name;
             this.baseprice = baseprice;
             this.priceMultiplier = priceMultiplier;
             this.item = item;
             this.cpc = cpc;
             this.offlineCookies = offlineCookies;
+        }
+
+        public Upgrade(String id) {
+            ConfigurationSection upgradesSection = config.getConfigurationSection("upgrades");
+            if (upgradesSection == null) return;
+            this.id = id;
+            this.name = config.getString("upgrades." + id + ".name");
+            this.baseprice = new BigInteger(config.getString("upgrades." + id + ".baseprice", "0"));
+            this.priceMultiplier = config.getDouble("upgrades." + id + ".priceMultiplier");
+            this.item = config.getString("upgrades." + id + ".item");
+            this.cpc = new BigInteger(config.getString("upgrades." + id + ".cpc", "0"));
+            this.offlineCookies = new BigInteger(config.getString("upgrades." + id + ".offlineCookies", "0"));
+        }
+
+        public boolean isAffordable() {
+            return affordable;
+        }
+
+        public void setAffordable(boolean affordable) {
+            this.affordable = affordable;
+        }
+
+        public BigInteger getUpgradePrice() {
+            return upgradePrice;
+        }
+
+        public void setUpgradePrice(BigInteger upgradePrice) {
+            this.upgradePrice = upgradePrice;
+        }
+
+        public String getId() {
+            return id;
         }
 
         public String getName() {
@@ -97,17 +135,19 @@ public class UpgradeGUI {
         inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
         GuiAssets.addBorder(inventory, 6 * 9);
 
+        PlayerDataStorage playerDataStorage = CookieClickerZ.getInstance().getPlayerDataStorage();
+        PlayerData playerData = playerDataStorage.load(player.getUniqueId());
+
         List<Upgrade> upgrades = new ArrayList<>();
         ConfigurationSection upgradesSection = config.getConfigurationSection("upgrades");
         if (upgradesSection == null) return;
         for (String key : upgradesSection.getKeys(false)) {
-            String name = config.getString("upgrades." + key + ".name");
-            BigInteger baseprice = new BigInteger(config.getString("upgrades." + key + ".baseprice", "0"));
-            double priceMultiplier = config.getDouble("upgrades." + key + ".priceMultiplier");
-            String item = config.getString("upgrades." + key + ".item");
-            BigInteger cpc = new BigInteger(config.getString("upgrades." + key + ".cpc", "0"));
-            BigInteger offlineCookies = new BigInteger(config.getString("upgrades." + key + ".offlineCookies", "0"));
-            upgrades.add(new Upgrade(name, baseprice, priceMultiplier, item, cpc, offlineCookies));
+            Upgrade upgrade = new Upgrade(key);
+            int upgradelevel = playerData.getUpgradeLevel("upgrade_" + upgrade.getId());
+            BigInteger upgradePrice = upgrade.getBaseprice().multiply(BigInteger.valueOf((long) Math.pow(upgrade.getPriceMultiplier(), upgradelevel)));
+            upgrade.setUpgradePrice(upgradePrice);
+            upgrade.setAffordable(playerData.getTotalCookies().compareTo(upgradePrice) >= 0);
+            upgrades.add(upgrade);
         }
         List<Upgrade> itemsForPage = getItemsForPage(upgrades, 1);
         for (Upgrade upgrade : itemsForPage) {
