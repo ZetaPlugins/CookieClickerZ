@@ -31,6 +31,7 @@ public class UpgradeGUI {
         private BigInteger offlineCookies;
         private BigInteger upgradePrice;
         private boolean affordable;
+        private int level;
 
         // Getters and setters
 
@@ -54,6 +55,14 @@ public class UpgradeGUI {
             this.item = config.getString("upgrades." + id + ".item");
             this.cpc = new BigInteger(config.getString("upgrades." + id + ".cpc", "0"));
             this.offlineCookies = new BigInteger(config.getString("upgrades." + id + ".offlineCookies", "0"));
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
         }
 
         public boolean isAffordable() {
@@ -132,6 +141,10 @@ public class UpgradeGUI {
     }
 
     public static void open(Player player) {
+        open(player, 1);
+    }
+
+    public static void open(Player player, int page) {
         inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
         GuiAssets.addBorder(inventory, 6 * 9);
 
@@ -147,12 +160,17 @@ public class UpgradeGUI {
             BigInteger upgradePrice = upgrade.getBaseprice().multiply(BigInteger.valueOf((long) Math.pow(upgrade.getPriceMultiplier(), upgradelevel)));
             upgrade.setUpgradePrice(upgradePrice);
             upgrade.setAffordable(playerData.getTotalCookies().compareTo(upgradePrice) >= 0);
+            upgrade.setLevel(upgradelevel);
             upgrades.add(upgrade);
         }
-        List<Upgrade> itemsForPage = getItemsForPage(upgrades, 1);
+
+        List<Upgrade> itemsForPage = getItemsForPage(upgrades, page);
         for (Upgrade upgrade : itemsForPage) {
             inventory.addItem(GuiAssets.createUpgradeItem(upgrade));
         }
+
+        GuiAssets.addPagination(inventory, 6 * 9, page, page > 1, page < (int) Math.ceil((double) upgrades.size() / ITEMS_PER_PAGE));
+
         player.openInventory(inventory);
         openInventories.add(player.getUniqueId());
     }

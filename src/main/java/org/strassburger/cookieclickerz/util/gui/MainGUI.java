@@ -51,7 +51,9 @@ public class MainGUI {
                 .setLore(List.of(
                         MessageUtils.formatMsg(" "),
                         MessageUtils.getAndFormatMsg(false, "inventories.main.clickerDescription1", "&8>> %ac%%cookies% &7%cookieName%", new Replaceable("%cookies%", NumFormatter.formatBigInt(playerData.getTotalCookies()))),
-                        MessageUtils.getAndFormatMsg(false, "inventories.main.clickerDescription2",  "&8>> %ac%%cpc% &7%cookieName% per click",  new Replaceable("%cpc%", NumFormatter.formatBigInt(playerData.getCookiesPerClick()))),
+                        MessageUtils.formatMsg(" "),
+                        MessageUtils.getAndFormatMsg(false, "inventories.main.clickerDescription2",  "&8>> %ac%+%cpc% &7%cookieName% per click",  new Replaceable("%cpc%", NumFormatter.formatBigInt(playerData.getCookiesPerClick()))),
+                        MessageUtils.getAndFormatMsg(false, "inventories.main.clickerDescription3",  "&8>> %ac%+%offlinecookies% &7%cookieName% offline",  new Replaceable("%offlinecookies%", NumFormatter.formatBigInt(playerData.getOfflineCookies()))),
                         MessageUtils.formatMsg(" ")
                 ))
                 .getItemStack());

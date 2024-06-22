@@ -45,3 +45,4 @@ inventories:
     clickerTitle: "%ac%&lYour Cookies"
     clickerDescription1: "&8>> %ac%%cookies% &7%cookieName%"
     clickerDescription2: "&8>> %ac%+%cpc% &7%cookieName% per click"
+    clickerDescription3: "&8>> %ac%+%offlinecookies% &7%cookieName% while offline"

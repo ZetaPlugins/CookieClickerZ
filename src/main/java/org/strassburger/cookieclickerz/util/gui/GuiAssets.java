@@ -26,19 +26,38 @@ public class GuiAssets {
         }
     }
 
+    public static void addPagination(Inventory inventory, int invSizem, int page, boolean prevArr, boolean nextArr) {
+        ItemStack prev = new CustomItem(Material.ARROW)
+                .setName("&7Previous Page")
+                .setCustomDataContainer("citype", PersistentDataType.STRING, "prev")
+                .setCustomDataContainer("openpage", PersistentDataType.INTEGER, page - 1)
+                .getItemStack();
+        ItemStack next = new CustomItem(Material.ARROW)
+                .setName("&7Next Page")
+                .setCustomDataContainer("citype", PersistentDataType.STRING, "next")
+                .setCustomDataContainer("openpage", PersistentDataType.INTEGER, page + 1)
+                .getItemStack();
+
+        if (prevArr) inventory.setItem(invSizem - 7, prev);
+        if (nextArr) inventory.setItem(invSizem - 3, next);
+    }
+
     public static void playClickSound(Player player) {
         player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
     }
 
     public static ItemStack createUpgradeItem(UpgradeGUI.Upgrade upgrade) {
         String affordable = upgrade.isAffordable() ? "&a" : "&c";
+        String levelColor = upgrade.getLevel() <= 0 ? "&8" : "&e";
         return new CustomItem(Material.valueOf(upgrade.getItem()))
                 .setName(upgrade.getName())
                 .setLore(List.of(
                         MessageUtils.formatMsg("&7Cookies per Click: %ac%" + NumFormatter.formatBigInt(upgrade.getCpc())),
                         MessageUtils.formatMsg("&7Offline Cookies: %ac%" + NumFormatter.formatBigInt(upgrade.getOfflineCookies())),
                         MessageUtils.formatMsg("&r "),
-                        MessageUtils.formatMsg("&7Price: " + affordable + NumFormatter.formatBigInt(upgrade.getUpgradePrice()))
+                        MessageUtils.formatMsg("&7Price: " + affordable + NumFormatter.formatBigInt(upgrade.getUpgradePrice())),
+                        MessageUtils.formatMsg(" "),
+                        MessageUtils.formatMsg("&7Level: " + levelColor + upgrade.getLevel())
                 ))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_ENCHANTS)

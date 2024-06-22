@@ -42,7 +42,18 @@ public class InventoryClickListener implements Listener {
             ItemStack item = event.getCurrentItem();
             if (item == null || item.getItemMeta() == null) return;
             String ciType = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(CookieClickerZ.getInstance(), "citype"), PersistentDataType.STRING);
-            if (ciType == null || !ciType.equals("upgrade")) return;
+            if (ciType == null) return;
+
+            if (ciType.equals("prev") || ciType.equals("next")) {
+                GuiAssets.playClickSound(player);
+                int targetPage = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(CookieClickerZ.getInstance(), "openpage"), PersistentDataType.INTEGER);
+                if (targetPage < 0) return;
+                UpgradeGUI.open(player, targetPage);
+                return;
+            }
+
+            if (!ciType.equals("upgrade")) return;
+
             String id = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(CookieClickerZ.getInstance(), "id"), PersistentDataType.STRING);
             if (id == null) return;
 
