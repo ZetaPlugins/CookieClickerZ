@@ -36,6 +36,38 @@ upgradeSound: "ENTITY_PLAYER_LEVELUP"
 errorSound: "ENTITY_VILLAGER_NO"
 
 
+# === ANTICHEAT ===
+
+anticheat:
+  cps:
+    # If set to true, the plugin will check for the amount of clicks per second
+    enabled: true
+
+    # The maximum amount of clicks per second a player is allowed to do
+    max: 15
+
+    # The message that will be sent to a player if they click too fast
+    message: "&cYou are clicking too fast!"
+
+    # The commands that will be executed if a player clicks too fast
+    commands:
+      - "kick %player% &cYou are clicking too fast!"
+
+  nomovement:
+    # If set to true, the plugin will check if a player is moving
+    enabled: true
+
+    # The maximum amount of time a player is allowed to not move (in seconds)
+    max: 15
+
+    # The message that will be sent to a player if they are not moving
+    message: "&cYou are not moving!"
+
+    # The commands that will be executed if a player is not moving
+    commands:
+      # - "kick %player% &cYou are not moving!"
+
+
 # === STORAGE ===
 
 storage:

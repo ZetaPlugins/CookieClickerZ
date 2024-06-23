@@ -14,6 +14,7 @@ public final class CookieClickerZ extends JavaPlugin {
     private PlayerDataStorage playerDataStorage;
     private LanguageManager languageManager;
     private ConfigManager configManager;
+    private AntiCheat antiCheat;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
@@ -31,6 +32,8 @@ public final class CookieClickerZ extends JavaPlugin {
 
         playerDataStorage = createPlayerDataStorage();
         playerDataStorage.init();
+
+        antiCheat = new AntiCheat(this);
 
         versionChecker = new VersionChecker();
 
@@ -64,6 +67,10 @@ public final class CookieClickerZ extends JavaPlugin {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public AntiCheat getAntiCheat() {
+        return antiCheat;
     }
 
     private PlayerDataStorage createPlayerDataStorage() {
