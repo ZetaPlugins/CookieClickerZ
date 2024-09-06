@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class AntiCheat implements Listener {
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
     private final HashMap<UUID, ClickData> playerClicks = new HashMap<>();
     private final HashMap<UUID, Long> lastMove = new HashMap<>();
 

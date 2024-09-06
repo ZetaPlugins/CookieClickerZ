@@ -25,15 +25,14 @@ import java.util.List;
 
 public class PlayerInteractionListener implements Listener {
     private final CookieClickerZ plugin;
-    private final FileConfiguration config;
 
     public PlayerInteractionListener(CookieClickerZ plugin) {
         this.plugin = plugin;
-        this.config = plugin.getConfig();
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        FileConfiguration config = plugin.getConfig();
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
         Storage storage = plugin.getStorage();
