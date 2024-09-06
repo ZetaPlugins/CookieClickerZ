@@ -1,7 +1,6 @@
 package org.strassburger.cookieclickerz.util;
 
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 
@@ -19,11 +18,11 @@ public class ClickerManager {
      */
     public static void addClicker(String clicker, String name) {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
-        clickerConfig.set("clicker." + name + ".name", name);
-        clickerConfig.set("clicker." + name + ".location", clicker);
-        configManager.saveCustomConfig("clicker.yml", clickerConfig);
+        clickerConfig.set(name + ".name", name);
+        clickerConfig.set(name + ".location", clicker);
+        configManager.saveCustomConfig("clicker", clickerConfig);
     }
 
     /**
@@ -43,11 +42,9 @@ public class ClickerManager {
      */
     public static boolean isClicker(String clicker) {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return false;
-        List<String> clickerNames = new ArrayList<>();
-        ConfigurationSection clickersSection = clickerConfig.getConfigurationSection("clicker");
-        if (clickersSection != null) clickerNames.addAll(clickersSection.getKeys(false));
+        List<String> clickerNames = new ArrayList<>(clickerConfig.getKeys(false));
         return clickerNames.contains(clicker);
     }
 
@@ -58,15 +55,12 @@ public class ClickerManager {
      */
     public static boolean isClicker(Location location) {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return false;
         String locationString = CookieClickerZ.locationToString(location);
-        ConfigurationSection clickersSection = clickerConfig.getConfigurationSection("clicker");
-        if (clickersSection != null) {
-            for (String key : clickersSection.getKeys(false)) {
-                String storedLocation = clickerConfig.getString("clicker." + key + ".location");
-                if (locationString.equals(storedLocation)) return true;
-            }
+        for (String key : clickerConfig.getKeys(false)) {
+            String storedLocation = clickerConfig.getString(key + ".location");
+            if (locationString.equals(storedLocation)) return true;
         }
         return false;
     }
@@ -78,10 +72,10 @@ public class ClickerManager {
      */
     public static void removeClicker(String name) {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
         clickerConfig.set("clicker." + name, null);
-        configManager.saveCustomConfig("clicker.yml", clickerConfig);
+        configManager.saveCustomConfig("clicker", clickerConfig);
     }
 
     /**
@@ -90,12 +84,9 @@ public class ClickerManager {
      */
     public static List<String> getClickers() {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return null;
-        List<String> clickerNames = new ArrayList<>();
-        ConfigurationSection clickersSection = clickerConfig.getConfigurationSection("clicker");
-        if (clickersSection != null) clickerNames.addAll(clickersSection.getKeys(false));
-        return clickerNames;
+        return new ArrayList<>(clickerConfig.getKeys(false));
     }
 
     /**
@@ -106,9 +97,9 @@ public class ClickerManager {
      */
     public static String getClickerLocationAsString(String name) {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
-        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker.yml");
+        FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return null;
-        return clickerConfig.getString("clicker." + name + ".location");
+        return clickerConfig.getString(name + ".location");
     }
 
     /**

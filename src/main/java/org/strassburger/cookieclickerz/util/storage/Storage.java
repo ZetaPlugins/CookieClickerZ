@@ -1,9 +1,8 @@
 package org.strassburger.cookieclickerz.util.storage;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface PlayerDataStorage {
+public interface Storage {
     void init();
 
     void save(PlayerData playerData);

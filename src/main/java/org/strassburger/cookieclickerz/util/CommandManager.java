@@ -7,15 +7,17 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.commands.MainCommand;
 
 public class CommandManager {
-    private static final CookieClickerZ plugin = CookieClickerZ.getInstance();
+    private final CookieClickerZ plugin;
 
-    private CommandManager() {}
+    public CommandManager(CookieClickerZ plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Registers all commands
      */
-    public static void registerCommands() {
-        registerCommand("cookieclicker", new MainCommand(), new MainCommand());
+    public void registerCommands() {
+        registerCommand("cookieclicker", new MainCommand(plugin), new MainCommand(plugin));
     }
 
     /**
@@ -25,7 +27,7 @@ public class CommandManager {
      * @param executor The executor of the command
      * @param tabCompleter The tab completer of the command
      */
-    private static void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter) {
+    private void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter) {
         PluginCommand command = plugin.getCommand(name);
 
         if (command != null) {

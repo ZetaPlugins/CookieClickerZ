@@ -1,14 +1,13 @@
 package org.strassburger.cookieclickerz.util.gui;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
+import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,13 +15,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class UpgradeGUI {
-    private static List<UUID> openInventories = new ArrayList<>();
-    private static Inventory inventory = null;
-    private static FileConfiguration config = CookieClickerZ.getInstance().getConfig();
+    private static final List<UUID> openInventories = new ArrayList<>();
+    private static final FileConfiguration config = CookieClickerZ.getInstance().getConfigManager().getUpgradesConfig();
     private static final int ITEMS_PER_PAGE = 28;
 
     public static class Upgrade {
-        private String id;
+        private final String id;
         private String name;
         private BigInteger baseprice;
         private double priceMultiplier;
@@ -46,15 +44,13 @@ public class UpgradeGUI {
         }
 
         public Upgrade(String id) {
-            ConfigurationSection upgradesSection = config.getConfigurationSection("upgrades");
-            if (upgradesSection == null) return;
             this.id = id;
-            this.name = config.getString("upgrades." + id + ".name");
-            this.baseprice = new BigInteger(config.getString("upgrades." + id + ".baseprice", "0"));
-            this.priceMultiplier = config.getDouble("upgrades." + id + ".priceMultiplier");
-            this.item = config.getString("upgrades." + id + ".item");
-            this.cpc = new BigInteger(config.getString("upgrades." + id + ".cpc", "0"));
-            this.offlineCookies = new BigInteger(config.getString("upgrades." + id + ".offlineCookies", "0"));
+            this.name = config.getString(id + ".name");
+            this.baseprice = new BigInteger(config.getString( id + ".baseprice", "0"));
+            this.priceMultiplier = config.getDouble( id + ".priceMultiplier");
+            this.item = config.getString(id + ".item");
+            this.cpc = new BigInteger(config.getString(id + ".cpc", "0"));
+            this.offlineCookies = new BigInteger(config.getString(id + ".offlineCookies", "0"));
         }
 
         public int getLevel() {
@@ -145,16 +141,14 @@ public class UpgradeGUI {
     }
 
     public static void open(Player player, int page) {
-        inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
+        Inventory inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
         GuiAssets.addBorder(inventory, 6 * 9);
 
-        PlayerDataStorage playerDataStorage = CookieClickerZ.getInstance().getPlayerDataStorage();
-        PlayerData playerData = playerDataStorage.load(player.getUniqueId());
+        Storage storage = CookieClickerZ.getInstance().getStorage();
+        PlayerData playerData = storage.load(player.getUniqueId());
 
         List<Upgrade> upgrades = new ArrayList<>();
-        ConfigurationSection upgradesSection = config.getConfigurationSection("upgrades");
-        if (upgradesSection == null) return;
-        for (String key : upgradesSection.getKeys(false)) {
+        for (String key : config.getKeys(false)) {
             Upgrade upgrade = new Upgrade(key);
             int upgradelevel = playerData.getUpgradeLevel("upgrade_" + upgrade.getId());
             BigInteger upgradePrice = upgrade.getBaseprice().multiply(BigInteger.valueOf((long) Math.pow(upgrade.getPriceMultiplier(), upgradelevel)));

@@ -5,7 +5,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MessageUtils {
@@ -77,6 +79,22 @@ public class MessageUtils {
         return mm.deserialize(msg);
     }
 
+    public static List<Component> getAndFormatMsgList(String path, Replaceable... replaceables) {
+        if (path.startsWith("messages.")) path = path.substring("messages.".length());
+
+        MiniMessage mm = MiniMessage.miniMessage();
+        List<String> msgList = CookieClickerZ.getInstance().getLanguageManager().getStringList(path);
+        List<Component> components = new ArrayList<>();
+
+        for (String string : msgList) {
+            String msg = "<!i>" + string;
+            msg = replacePlaceholders(msg, replaceables);
+            components.add(mm.deserialize(msg));
+        }
+
+        return components;
+    }
+
     /**
      * Gets the accent color
      *
@@ -87,18 +105,48 @@ public class MessageUtils {
     }
 
     @NotNull
-    private static String replacePlaceholders(String msg, Replaceable[] replaceables) {
-        for (Replaceable replaceable : replaceables) {
-            msg = msg.replace(replaceable.getPlaceholder(), replaceable.getValue());
+    private static String replacePlaceholders(String msg, Replaceable<?>[] replaceables) {
+        StringBuilder msgBuilder = new StringBuilder(msg);
+
+        for (Replaceable<?> replaceable : replaceables) {
+            String placeholder = replaceable.getPlaceholder();
+            String value = String.valueOf(replaceable.getValue());
+            replaceInBuilder(msgBuilder, placeholder, value);
         }
 
-        msg = msg.replace("%ac%", CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>"));
-        msg = msg.replace("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "&7Cookies"));
+        String accentColor = CookieClickerZ.getInstance().getLanguageManager().getString("accentColor", "<#D2691E>");
+        String cookieName = CookieClickerZ.getInstance().getConfig().getString("cookieName", "&7Cookies");
 
-        for (Map.Entry<String, String> entry : colorMap.entrySet()) {
-            msg = msg.replace(entry.getKey(), entry.getValue());
+        replaceInBuilder(msgBuilder, "%ac%", accentColor);
+        replaceInBuilder(msgBuilder, "%cookieName%", cookieName);
+
+        colorMap.forEach((key, value) -> replaceInBuilder(msgBuilder, key, value));
+
+        return msgBuilder.toString();
+    }
+
+    private static void replaceInBuilder(StringBuilder builder, String placeholder, String replacement) {
+        int index;
+        while ((index = builder.indexOf(placeholder)) != -1) {
+            builder.replace(index, index + placeholder.length(), replacement);
+        }
+    }
+
+    public static class Replaceable<T> {
+        private final String placeholder;
+        private final T value;
+
+        public Replaceable(String placeholder, T value) {
+            this.placeholder = placeholder;
+            this.value = value;
         }
 
-        return msg;
+        public String getPlaceholder() {
+            return placeholder;
+        }
+
+        public T getValue() {
+            return value;
+        }
     }
 }

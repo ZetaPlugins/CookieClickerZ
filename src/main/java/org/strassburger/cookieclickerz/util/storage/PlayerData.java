@@ -14,6 +14,7 @@ public class PlayerData {
     private Map<String, Integer> upgrades = new HashMap<>();
     private BigInteger cookiesPerClick = BigInteger.ONE;
     private BigInteger offlineCookies = BigInteger.ZERO;
+    private int prestige = 0;
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;
@@ -86,5 +87,13 @@ public class PlayerData {
     public void setOfflineCookies(BigInteger offlineCookies) {
         if (offlineCookies.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("offlineCookies cannot be negative");
         this.offlineCookies = offlineCookies;
+    }
+
+    public int getPrestige() {
+        return prestige;
+    }
+
+    public void setPrestige(int prestige) {
+        this.prestige = prestige;
     }
 }

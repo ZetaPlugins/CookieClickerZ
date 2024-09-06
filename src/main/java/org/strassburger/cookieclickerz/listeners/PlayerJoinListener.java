@@ -7,28 +7,34 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
+import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.util.List;
 
 public class PlayerJoinListener implements Listener {
+    private final CookieClickerZ plugin;
+
+    public PlayerJoinListener(CookieClickerZ plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerDataStorage playerDataStorage = CookieClickerZ.getInstance().getPlayerDataStorage();
+        Storage storage = plugin.getStorage();
 
-        List<String> worldWhitelisted = CookieClickerZ.getInstance().getConfig().getStringList("worlds");
+        List<String> worldWhitelisted = plugin.getConfig().getStringList("worlds");
         if (!worldWhitelisted.contains(player.getLocation().getWorld().getName())) return;
 
-        PlayerData playerData = playerDataStorage.load(player.getUniqueId());
+        PlayerData playerData = storage.load(player.getUniqueId());
 
         if (playerData == null) {
             PlayerData newPlayerData = new PlayerData(player.getName(), player.getUniqueId());
-            playerDataStorage.save(newPlayerData);
+            storage.save(newPlayerData);
             playerData = newPlayerData;
         }
 
-        if (player.isOp() && CookieClickerZ.getInstance().getConfig().getBoolean("checkForUpdates") && CookieClickerZ.getInstance().getVersionChecker().NEW_VERSION_AVAILABLE) {
+        if (player.isOp() && plugin.getConfig().getBoolean("checkForUpdates") && plugin.getVersionChecker().NEW_VERSION_AVAILABLE) {
             player.sendMessage(MessageUtils.getAndFormatMsg(true, "newVersionAvailable", "&7A new version of CookieClickerZ is available!\\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/lifestealz/versions>https://modrinth.com/plugin/lifestealz/versions</click>"));
         }
     }

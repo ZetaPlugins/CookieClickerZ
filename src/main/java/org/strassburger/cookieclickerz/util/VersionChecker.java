@@ -10,20 +10,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Logger;
 
 public class VersionChecker {
-    public String MODRINTH_PROJECT_URL = "https://api.modrinth.com/v2/project/l8Uv7FzS";
-    public boolean NEW_VERSION_AVAILABLE = false;
-    public Logger logger = CookieClickerZ.getInstance().getLogger();
+    public final String MODRINTH_SLUG = "cookieclickerz";
+    public final String MODRINTH_ID = "YE4jVOVg";
 
-    public VersionChecker() {
+    private final CookieClickerZ plugin;
+    public final String MODRINTH_PROJECT_URL = "https://api.modrinth.com/v2/project/" + MODRINTH_ID;
+    public boolean NEW_VERSION_AVAILABLE = false;
+
+    public VersionChecker(CookieClickerZ plugin) {
+        this.plugin = plugin;
         String latestVersion = getLatestVersionFromModrinth();
         if (latestVersion != null) {
-            String currentVersion = CookieClickerZ.getInstance().getDescription().getVersion();
+            String currentVersion = plugin.getDescription().getVersion();
             if (!latestVersion.trim().equals(currentVersion.trim())) {
                 NEW_VERSION_AVAILABLE = true;
-                logger.info("A new version of LifestealZ is available! Version: " + latestVersion + "\nDownload the latest version here: https://modrinth.com/plugin/lifestealz/versions");
+                plugin.getLogger().info("A new version of CookieCLickerZ is available! Version: " + latestVersion + "\nDownload the latest version here: https://modrinth.com/plugin/" + MODRINTH_SLUG + "/versions");
             }
         }
     }
@@ -69,13 +72,13 @@ public class VersionChecker {
                     JSONObject versionJson = (JSONObject) parser.parse(versionResponse.toString());
                     return (String) versionJson.get("version_number");
                 } else {
-                    logger.warning("Failed to retrieve version details from Modrinth. Response code: " + versionConnection.getResponseCode());
+                    plugin.getLogger().warning("Failed to retrieve version details from Modrinth. Response code: " + versionConnection.getResponseCode());
                 }
             } else {
-                logger.warning("Failed to retrieve project information from Modrinth. Response code: " + projectConnection.getResponseCode());
+                plugin.getLogger().warning("Failed to retrieve project information from Modrinth. Response code: " + projectConnection.getResponseCode());
             }
         } catch (IOException | org.json.simple.parser.ParseException e) {
-            logger.warning("Failed to check for updates: " + e.getMessage());
+            plugin.getLogger().warning("Failed to check for updates: " + e.getMessage());
         }
         return null;
     }

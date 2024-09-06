@@ -2,89 +2,46 @@ package org.strassburger.cookieclickerz.util;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.strassburger.cookieclickerz.CookieClickerZ;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.logging.Level;
 
 public class ConfigManager {
-    private final JavaPlugin plugin;
+    private final CookieClickerZ plugin;
 
-    public ConfigManager(JavaPlugin plugin) {
+    public ConfigManager(CookieClickerZ plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * Creates a custom config file
-     *
-     * @param configName The name of the config file (with extension)
-     */
-    public void createCustomConfig(String configName) {
-        File configDir = new File(plugin.getDataFolder(), "config");
-
-        if (!configDir.exists()) configDir.mkdir();
-
-        File configFile = new File(configDir, configName);
-        if (!configFile.exists()) {
-            try (InputStream in = plugin.getResource("config/" + configName)) {
-                if (in == null) {
-                    plugin.getLogger().log(Level.SEVERE, "Template not found in resources: " + configName);
-                    return;
-                }
-                Files.copy(in, configFile.toPath());
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "Could not create config file: " + configName, e);
-            }
-        }
+    public FileConfiguration getClickerConfig() {
+        return getCustomConfig("clicker");
     }
 
-    /**
-     * Gets a custom config file
-     *
-     * @param configName The name of the config file (with extension)
-     * @return The config file
-     */
-    public FileConfiguration getCustomConfig(String configName) {
-        File configDir = new File(plugin.getDataFolder(), "config");
-        File configFile = new File(configDir, configName);
+    public FileConfiguration getUpgradesConfig() {
+        return getCustomConfig("upgrades");
+    }
+
+    public FileConfiguration getPrestigeConfig() {
+        return getCustomConfig("prestige");
+    }
+
+    public FileConfiguration getCustomConfig(String fileName) {
+        File configFile = new File(plugin.getDataFolder(),  fileName.contains(".yml") ? fileName : fileName + ".yml");
         if (!configFile.exists()) {
-            plugin.getLogger().log(Level.SEVERE, "Config file not found: " + configName);
-            return null;
+            configFile.getParentFile().mkdirs();
+            plugin.saveResource(fileName + ".yml", false);
         }
+
         return YamlConfiguration.loadConfiguration(configFile);
     }
 
-    /**
-     * Saves a custom config file
-     *
-     * @param configName The name of the config file (with extension)
-     * @param config The config file
-     */
-    public void saveCustomConfig(String configName, FileConfiguration config) {
-        File configDir = new File(plugin.getDataFolder(), "config");
-        File configFile = new File(configDir, configName);
+    public void saveCustomConfig(String fileName, FileConfiguration config) {
+        String name = fileName.contains(".yml") ? fileName : fileName + ".yml";
+        File configFile = new File(plugin.getDataFolder(), name);
         try {
             config.save(configFile);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config file: " + configName, e);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Could not save " + name + ": " + e.getMessage());
         }
-    }
-
-    /**
-     * Reloads a custom config file
-     *
-     * @param configName The name of the config file (with extension)
-     */
-    public void reloadCustomConfig(String configName) {
-        File configDir = new File(plugin.getDataFolder(), "config");
-        File configFile = new File(configDir, configName);
-        if (!configFile.exists()) {
-            plugin.getLogger().log(Level.SEVERE, "Config file not found: " + configName);
-            return;
-        }
-        YamlConfiguration.loadConfiguration(configFile);
     }
 }

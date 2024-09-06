@@ -19,6 +19,7 @@ public class NumFormatter {
     private NumFormatter() {}
 
     public static BigInteger stringToBigInteger(String str) {
+        // From last to first because we want to match the longest suffix first (e.g. "SS" before "S")
         for (int i = suffixes.length - 1; i >= 1; i--) {
             if (str.endsWith(suffixes[i])) {
                 String numberPart = str.substring(0, str.length() - suffixes[i].length());

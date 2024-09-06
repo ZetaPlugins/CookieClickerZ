@@ -5,13 +5,15 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.strassburger.cookieclickerz.util.*;
-import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
-import org.strassburger.cookieclickerz.util.storage.SQLitePlayerDataStorage;
+import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.util.storage.SQLiteStorage;
+
+import java.util.List;
 
 public final class CookieClickerZ extends JavaPlugin {
     private static CookieClickerZ instance;
     private VersionChecker versionChecker;
-    private PlayerDataStorage playerDataStorage;
+    private Storage storage;
     private LanguageManager languageManager;
     private ConfigManager configManager;
     private AntiCheat antiCheat;
@@ -24,18 +26,18 @@ public final class CookieClickerZ extends JavaPlugin {
 
         initConfig();
 
-        languageManager = new LanguageManager();
+        languageManager = new LanguageManager(this);
 
-        CommandManager.registerCommands();
+        new CommandManager(this).registerCommands();
 
-        EventManager.registerListeners();
+        new EventManager(this).registerListeners();
 
-        playerDataStorage = createPlayerDataStorage();
-        playerDataStorage.init();
+        storage = createPlayerDataStorage();
+        storage.init();
 
         antiCheat = new AntiCheat(this);
 
-        versionChecker = new VersionChecker();
+        versionChecker = new VersionChecker(this);
 
         getLogger().info("LifeStealZ enabled!");
     }
@@ -53,8 +55,8 @@ public final class CookieClickerZ extends JavaPlugin {
         return versionChecker;
     }
 
-    public PlayerDataStorage getPlayerDataStorage() {
-        return playerDataStorage;
+    public Storage getStorage() {
+        return storage;
     }
 
     public boolean hasPlaceholderApi() {
@@ -73,7 +75,7 @@ public final class CookieClickerZ extends JavaPlugin {
         return antiCheat;
     }
 
-    private PlayerDataStorage createPlayerDataStorage() {
+    private Storage createPlayerDataStorage() {
         String option = getConfig().getString("storage.type");
 
         if (option.equalsIgnoreCase("mysql")) {
@@ -83,7 +85,7 @@ public final class CookieClickerZ extends JavaPlugin {
         }
 
         getLogger().info("Using SQLite storage");
-        return new SQLitePlayerDataStorage();
+        return new SQLiteStorage();
     }
 
     private void initConfig() {
@@ -92,7 +94,9 @@ public final class CookieClickerZ extends JavaPlugin {
 
         configManager = new ConfigManager(this);
 
-        configManager.createCustomConfig("clicker.yml");
+        for (String file : List.of("upgrades", "prestige", "clicker")) {
+            configManager.getCustomConfig(file);
+        }
     }
 
     public static String locationToString(Location location) {

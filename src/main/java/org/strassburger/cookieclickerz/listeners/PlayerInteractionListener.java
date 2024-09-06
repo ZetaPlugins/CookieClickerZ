@@ -15,23 +15,28 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
-import org.strassburger.cookieclickerz.util.Replaceable;
+import org.strassburger.cookieclickerz.util.PrestigeData;
 import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.PlayerDataStorage;
+import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.math.BigInteger;
 import java.util.List;
 
 public class PlayerInteractionListener implements Listener {
-    private final CookieClickerZ plugin = CookieClickerZ.getInstance();
-    private final FileConfiguration config = plugin.getConfig();
+    private final CookieClickerZ plugin;
+    private final FileConfiguration config;
+
+    public PlayerInteractionListener(CookieClickerZ plugin) {
+        this.plugin = plugin;
+        this.config = plugin.getConfig();
+    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
-        PlayerDataStorage playerDataStorage = plugin.getPlayerDataStorage();
+        Storage storage = plugin.getStorage();
 
         if (clickedBlock == null) return;
 
@@ -67,22 +72,25 @@ public class PlayerInteractionListener implements Listener {
 
                 player.playSound(player.getLocation(), Sound.valueOf(config.getString("clickSound", "BLOCK_WOODEN_BUTTON_CLICK_ON")), 1, 1);
 
-                PlayerData playerData = playerDataStorage.load(player.getUniqueId());
+                PlayerData playerData = storage.load(player.getUniqueId());
 
                 BigInteger cookiesPerClick = playerData.getCookiesPerClick();
 
+                int prestigeMultiplier = new PrestigeData(plugin, playerData.getPrestige()).getMultiplier();
+                cookiesPerClick = cookiesPerClick.multiply(BigInteger.valueOf(prestigeMultiplier));
+
                 playerData.setTotalCookies(playerData.getTotalCookies().add(cookiesPerClick));
                 playerData.setTotalClicks(playerData.getTotalClicks() + 1);
-                playerDataStorage.save(playerData);
+                storage.save(playerData);
 
                 player.sendActionBar(
                         MessageUtils.getAndFormatMsg(
                                 false,
                                 "getCookieActionbar",
-                                "%ac%+%num% %cookieName%&7 &8| %ac%%total% %cookieName%&7",
-                                new Replaceable("%num%", NumFormatter.formatBigInt(cookiesPerClick)),
-                                new Replaceable("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
-                                new Replaceable("%total%", NumFormatter.formatBigInt(playerData.getTotalCookies()))                        )
+                                "%ac%+%num% &7%cookieName%&7 &8| %ac%%total% &7%cookieName%&7",
+                                new MessageUtils.Replaceable<>("%num%", NumFormatter.formatBigInt(cookiesPerClick)),
+                                new MessageUtils.Replaceable<>("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
+                                new MessageUtils.Replaceable<>("%total%", NumFormatter.formatBigInt(playerData.getTotalCookies()))                        )
                 );
             }
 

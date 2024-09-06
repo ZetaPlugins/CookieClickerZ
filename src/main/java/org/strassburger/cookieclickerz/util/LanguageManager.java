@@ -10,13 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LanguageManager {
-    private final JavaPlugin plugin = CookieClickerZ.getInstance();
+    private final JavaPlugin plugin;
     public static final List<String> defaultLangs = List.of("en-US", "de-DE");
 
     private HashMap<String, String> translationMap;
     private FileConfiguration langConfig;
 
-    public LanguageManager() {
+    public LanguageManager(CookieClickerZ plugin) {
+        this.plugin = plugin;
         loadLanguageConfig();
     }
 
@@ -54,5 +55,9 @@ public class LanguageManager {
 
     public String getString(String key, String fallback) {
         return langConfig.getString(key) != null ? langConfig.getString(key) : fallback;
+    }
+
+    public List<String> getStringList(String key) {
+        return langConfig.getStringList(key);
     }
 }

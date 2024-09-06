@@ -18,9 +18,15 @@ permissions:
   cookieclickerz.useclicker:
     default: true
     description: Permission to use a clicker
-  cookieclickerz.openshop:
+  cookieclickerz.upgrades:
     default: true
-    description: Permission to open the shop
+    description: Permission to open the upgrade shop
+  cookieclickerz.prestige:
+    default: true
+    description: Permission to open the prestige menu
+  cookieclickerz.reload:
+    default: op
+    description: Permission to reload the plugin
   cookieclickerz.manageclickers:
     default: op
     description: Permission to add a clicker blocks
