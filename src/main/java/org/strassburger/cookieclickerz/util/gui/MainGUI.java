@@ -31,17 +31,11 @@ public class MainGUI {
 
         inventory.setItem(11, new CustomItem(Material.GOLD_INGOT)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.shopTitle", "&e&lShop"))
-                .setLore(List.of(
-                        MessageUtils.getAndFormatMsg(false, "inventories.main.shopDescription", "&7Buy upgrades to increase your cookie production!"),
-                        MessageUtils.formatMsg(" ")
-                ))
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.shopDescription"))
                 .getItemStack());
         inventory.setItem(15, new CustomItem(Material.EXPERIENCE_BOTTLE)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.boosterTitle", "<#9932cc>&lBoosters"))
-                .setLore(List.of(
-                        MessageUtils.getAndFormatMsg(false, "inventories.main.boosterDescription", "&7Use boosters to increase your cookie production!"),
-                        MessageUtils.formatMsg(" ")
-                ))
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.boosterDescription"))
                 .getItemStack());
         inventory.setItem(22, new CustomItem(Material.COOKIE)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.clickerTitle", "%ac%&lYour Cookies"))
@@ -50,18 +44,17 @@ public class MainGUI {
                         new MessageUtils.Replaceable<>("%cookies%", NumFormatter.formatBigInt(playerData.getTotalCookies())),
                         new MessageUtils.Replaceable<>("%cpc%", NumFormatter.formatBigInt(playerData.getCookiesPerClick())),
                         new MessageUtils.Replaceable<>("%offlinecookies%", NumFormatter.formatBigInt(playerData.getOfflineCookies())),
-                        new MessageUtils.Replaceable<>("%multiplier%", new PrestigeData(plugin, playerData.getPrestige()).getMultiplier())
+                        new MessageUtils.Replaceable<>("%multiplier%", new PrestigeData(plugin, playerData.getPrestige()).getMultiplier()),
+                        new MessageUtils.Replaceable<>("%score%", playerData.getFormattedScore())
                 ))
                 .getItemStack());
         inventory.setItem(29, new CustomItem(Material.FEATHER)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.prestigeTitle", "&6&lPrestige"))
-                .setLore(List.of(
-                        MessageUtils.getAndFormatMsg(false, "inventories.main.prestigeDescription", "&7Prestige massively increase your cookie production!"),
-                        MessageUtils.formatMsg(" ")
-                ))
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.prestigeDescription"))
                 .getItemStack());
-        inventory.setItem(33, new CustomItem(Material.BARRIER)
-                .setName("&c&o&lComing soon")
+        inventory.setItem(33, new CustomItem(CustomItem.getHead(player))
+                .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.topTitle", "<#FF5733>&lTop Players"))
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.topDescription"))
                 .getItemStack());
 
         player.openInventory(inventory);

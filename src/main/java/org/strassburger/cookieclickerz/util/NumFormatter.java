@@ -8,6 +8,21 @@ public class NumFormatter {
     private static final String[] suffixes = { "", "K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D" };
     private static final BigInteger[] multipliers;
 
+    /**
+     * 1 -> 1
+     * 1000 -> 1K
+     * 1000000 -> 1M
+     * 1000000000 -> 1B
+     * 1000000000000 -> 1T
+     * 1000000000000000 -> 1Q
+     * 1000000000000000000 -> 1QQ
+     * 1000000000000000000000 -> 1S
+     * 1000000000000000000000000 -> 1SS
+     * 1000000000000000000000000000 -> 1O
+     * 1000000000000000000000000000000 -> 1N
+     * 1000000000000000000000000000000000 -> 1D
+     */
+
     static {
         multipliers = new BigInteger[suffixes.length];
         multipliers[0] = BigInteger.ONE;
@@ -18,34 +33,47 @@ public class NumFormatter {
 
     private NumFormatter() {}
 
-    public static BigInteger stringToBigInteger(String str) {
-        // From last to first because we want to match the longest suffix first (e.g. "SS" before "S")
+    private static BigDecimal convertStringToBigDecimal(String str) {
         for (int i = suffixes.length - 1; i >= 1; i--) {
             if (str.endsWith(suffixes[i])) {
                 String numberPart = str.substring(0, str.length() - suffixes[i].length());
                 try {
-                    BigDecimal number = new BigDecimal(numberPart);
-                    return number.multiply(new BigDecimal(multipliers[i])).toBigInteger();
+                    return new BigDecimal(numberPart).multiply(new BigDecimal(multipliers[i]));
                 } catch (NumberFormatException e) {
                     return null;
                 }
             }
         }
-
         try {
-            return new BigInteger(str);
+            return new BigDecimal(str);
         } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public static String formatBigInt(BigInteger bigInt) {
+    public static BigInteger stringToBigInteger(String str) {
+        BigDecimal bigDecimal = convertStringToBigDecimal(str);
+        return bigDecimal != null ? bigDecimal.toBigInteger() : null;
+    }
+
+    public static BigDecimal stringToBigDecimal(String str) {
+        return convertStringToBigDecimal(str);
+    }
+
+    private static String formatNumber(BigDecimal number) {
         int index = 0;
-        BigDecimal number = new BigDecimal(bigInt);
         while (number.compareTo(BigDecimal.valueOf(1000)) >= 0 && index < suffixes.length - 1) {
-            number = number.divide(BigDecimal.valueOf(1000));
+            number = number.divide(BigDecimal.valueOf(1000), RoundingMode.HALF_UP);
             index++;
         }
         return number.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString() + suffixes[index];
+    }
+
+    public static String formatBigInt(BigInteger bigInt) {
+        return formatNumber(new BigDecimal(bigInt));
+    }
+
+    public static String formatBigDecimal(BigDecimal bigDecimal) {
+        return formatNumber(bigDecimal);
     }
 }

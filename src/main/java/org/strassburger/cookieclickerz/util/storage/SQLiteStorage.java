@@ -3,12 +3,13 @@ package org.strassburger.cookieclickerz.util.storage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.strassburger.cookieclickerz.CookieClickerZ;
+import org.strassburger.cookieclickerz.util.NumFormatter;
 
 import java.io.*;
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SQLiteStorage implements Storage {
     private static final String CSV_SEPARATOR = ",";
@@ -65,7 +66,7 @@ public class SQLiteStorage implements Storage {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
-                statement.setString(1, playerData.getUuid());
+                statement.setString(1, playerData.getUuid().toString());
                 statement.setString(2, playerData.getName());
                 statement.setString(3, playerData.getTotalCookies().toString());
                 statement.setInt(4, playerData.getTotalClicks());
@@ -89,7 +90,7 @@ public class SQLiteStorage implements Storage {
         // Clear existing upgrades for the player
         try (PreparedStatement deleteStatement = connection.prepareStatement(
                 "DELETE FROM upgrades WHERE uuid = ?")) {
-            deleteStatement.setString(1, playerData.getUuid());
+            deleteStatement.setString(1, playerData.getUuid().toString());
             deleteStatement.executeUpdate();
         } catch (SQLException e) {
             CookieClickerZ.getInstance().getLogger().severe("Failed to clear existing upgrades for player: " + e.getMessage());
@@ -100,7 +101,7 @@ public class SQLiteStorage implements Storage {
         try (PreparedStatement insertStatement = connection.prepareStatement(
                 "INSERT INTO upgrades (uuid, upgrade_name, level) VALUES (?, ?, ?)")) {
             for (Map.Entry<String, Integer> entry : playerData.getUpgrades().entrySet()) {
-                insertStatement.setString(1, playerData.getUuid());
+                insertStatement.setString(1, playerData.getUuid().toString());
                 insertStatement.setString(2, entry.getKey());
                 insertStatement.setInt(3, entry.getValue());
                 insertStatement.executeUpdate();
@@ -254,5 +255,31 @@ public class SQLiteStorage implements Storage {
         } catch (IOException e) {
             CookieClickerZ.getInstance().getLogger().severe("Failed to read CSV file: " + e.getMessage());
         }
+    }
+
+    public List<PlayerData> getAllPlayers() {
+        List<PlayerData> players = new ArrayList<>();
+
+        try (Connection connection = createConnection()) {
+            if (connection == null) return players;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM player_data");
+
+            // Process each result and create PlayerData objects
+            while (rs.next()) {
+                PlayerData player = new PlayerData(rs.getString("name"), UUID.fromString(rs.getString("uuid")));
+                player.setTotalCookies(new BigInteger(rs.getString("totalCookies")));
+                player.setTotalClicks(rs.getInt("totalClicks"));
+                player.setLastLogoutTime(rs.getLong("lastLogoutTime"));
+                player.setCookiesPerClick(new BigInteger(rs.getString("cookiesPerClick")));
+                player.setOfflineCookies(new BigInteger(rs.getString("offlineCookies")));
+                player.setPrestige(rs.getInt("prestige"));
+                players.add(player);
+            }
+        } catch (SQLException e) {
+            CookieClickerZ.getInstance().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
+        }
+
+        return players;
     }
 }

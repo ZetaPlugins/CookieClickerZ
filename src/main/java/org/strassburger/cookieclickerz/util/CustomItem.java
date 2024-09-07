@@ -3,10 +3,12 @@ package org.strassburger.cookieclickerz.util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
@@ -14,6 +16,7 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CustomItem {
     private final ItemStack itemStack;
@@ -151,5 +154,23 @@ public class CustomItem {
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    public static ItemStack getHead(OfflinePlayer player) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
+        if (skullMeta != null && player != null && player.getName() != null) {
+            skullMeta.setOwningPlayer(player);
+            skullMeta.displayName(MessageUtils.formatMsg("&e" + player.getName()));
+            head.setItemMeta(skullMeta);
+        }
+
+        return head;
+    }
+
+    public static ItemStack getHead(UUID uuid) {
+        OfflinePlayer player = CookieClickerZ.getInstance().getServer().getOfflinePlayer(uuid);
+        return getHead(player);
     }
 }

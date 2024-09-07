@@ -1,11 +1,19 @@
 package org.strassburger.cookieclickerz.util.storage;
 
+import org.strassburger.cookieclickerz.util.NumFormatter;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class PlayerData {
+    private final static BigDecimal TOTAL_COOKIES_WEIGHT = new BigDecimal("0.4");
+    private final static BigDecimal COOKIES_PER_CLICK_WEIGHT = new BigDecimal("0.3");
+    private final static BigDecimal PRESTIGE_WEIGHT = new BigDecimal("0.5");
+
     private final String name;
     private final String uuid;
     private BigInteger totalCookies = BigInteger.ZERO;
@@ -25,8 +33,8 @@ public class PlayerData {
         return name;
     }
 
-    public String getUuid() {
-        return uuid;
+    public UUID getUuid() {
+        return UUID.fromString(uuid);
     }
 
     public BigInteger getTotalCookies() {
@@ -95,5 +103,36 @@ public class PlayerData {
 
     public void setPrestige(int prestige) {
         this.prestige = prestige;
+    }
+
+    public BigDecimal getScore() {
+        return calculatePlayerScore(totalCookies, cookiesPerClick, prestige);
+    }
+
+    public static BigDecimal calculatePlayerScore(BigInteger totalCookies, BigInteger cookiesPerClick, int prestige) {
+        BigDecimal logTotalCookies = bigIntegerLog(totalCookies);
+        BigDecimal cookiesPerClickValue = new BigDecimal(cookiesPerClick);
+
+        // Formula: w1 * log10(totalCookies) + w2 * cookiesPerClick + w3 * prestige
+        return (TOTAL_COOKIES_WEIGHT.multiply(logTotalCookies))
+                .add(COOKIES_PER_CLICK_WEIGHT.multiply(cookiesPerClickValue))
+                .add(PRESTIGE_WEIGHT.multiply(new BigDecimal(prestige)));
+    }
+
+    private static BigDecimal bigIntegerLog(BigInteger value) {
+        if (value.compareTo(BigInteger.ONE) <= 0) {
+            return BigDecimal.ZERO;
+        }
+        int digits = value.toString().length() - 1;
+        BigDecimal bigDecimalValue = new BigDecimal(value);
+
+        BigDecimal firstDigitValue = bigDecimalValue.movePointLeft(digits);
+        BigDecimal fractionalLog = new BigDecimal(Math.log10(firstDigitValue.doubleValue()), MathContext.DECIMAL64);
+
+        return new BigDecimal(digits).add(fractionalLog);
+    }
+
+    public String getFormattedScore() {
+        return NumFormatter.formatBigDecimal(getScore());
     }
 }

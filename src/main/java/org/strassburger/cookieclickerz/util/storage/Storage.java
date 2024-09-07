@@ -1,5 +1,6 @@
 package org.strassburger.cookieclickerz.util.storage;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface Storage {
@@ -14,4 +15,6 @@ public interface Storage {
     String export(String fileName);
 
     void importData(String fileName);
+
+    List<PlayerData> getAllPlayers();
 }

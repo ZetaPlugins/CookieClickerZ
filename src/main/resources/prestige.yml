@@ -6,28 +6,28 @@ enabled: true
 levels:
   1:
     # The name of the prestige level
-    name: "&8&l> <!b>&6Prestige I"
+    name: "&8&l> <!b><#69e372>Prestige I"
     # The price of the prestige level
     cost: "1M"
     # The multiplier that will be applied to the player's cookies
     multiplier: 2
 
   2:
-    name: "&8&l> <!b>&6Prestige II"
+    name: "&8&l> <!b><#69e372>Prestige II"
     cost: "10M"
     multiplier: 3
 
   3:
-    name: "&8&l> <!b>&6Prestige III"
+    name: "&8&l> <!b><#69e372>Prestige III"
     price: "100M"
     multiplier: 4
 
   4:
-    name: "&8&l> <!b>&6Prestige IV"
+    name: "&8&l> <!b><#69e372>Prestige IV"
     cost: "1B"
     multiplier: 5
 
   5:
-    name: "&8&l> <!b>&6Prestige V"
+    name: "&8&l> <!b><#69e372>Prestige V"
     cost: "10B"
     multiplier: 6

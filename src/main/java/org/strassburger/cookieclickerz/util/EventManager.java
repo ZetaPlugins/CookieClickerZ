@@ -3,9 +3,7 @@ package org.strassburger.cookieclickerz.util;
 import org.bukkit.event.Listener;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.listeners.*;
-import org.strassburger.cookieclickerz.listeners.inventory.MainGuiClickListener;
-import org.strassburger.cookieclickerz.listeners.inventory.PrestigeGuiClickListener;
-import org.strassburger.cookieclickerz.listeners.inventory.UpgradeGuiClickListener;
+import org.strassburger.cookieclickerz.listeners.inventory.*;
 
 public class EventManager {
     private final CookieClickerZ plugin;
@@ -26,6 +24,7 @@ public class EventManager {
         registerListener(new MainGuiClickListener(plugin));
         registerListener(new UpgradeGuiClickListener(plugin));
         registerListener(new PrestigeGuiClickListener(plugin));
+        registerListener(new TopGuiClickListener());
     }
 
     /**

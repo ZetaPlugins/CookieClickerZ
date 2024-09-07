@@ -24,6 +24,12 @@ permissions:
   cookieclickerz.prestige:
     default: true
     description: Permission to open the prestige menu
+  cookieclickerz.boosters:
+    default: true
+    description: Permission to open the booster menu
+  cookieclickerz.top:
+    default: true
+    description: Permission to open the top players menu
   cookieclickerz.reload:
     default: op
     description: Permission to reload the plugin

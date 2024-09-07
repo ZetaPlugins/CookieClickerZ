@@ -3,12 +3,14 @@ package org.strassburger.cookieclickerz.commands;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +18,13 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
+import org.strassburger.cookieclickerz.util.RandomGenerators;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
     private final CookieClickerZ plugin;
@@ -43,6 +46,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return handlePrestige(sender, args);
             case "clicker":
                 return handleClicker(sender, args);
+            case "top":
+                List<PlayerData> topPlayers = plugin.getStorage().getAllPlayers().stream().sorted(Comparator.comparing(PlayerData::getTotalCookies).reversed()).collect(Collectors.toList());
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "topPlayers", "&7Top 10 players:"));
+                for (int i = 0; i < 10 && i < topPlayers.size(); i++) {
+                    PlayerData playerData = topPlayers.get(i);
+                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "topPlayer", "&7%ac%%position%. %ac%%player% - %ac%%cookies%", new MessageUtils.Replaceable<>("%position%", i + 1), new MessageUtils.Replaceable<>("%player%", playerData.getName()), new MessageUtils.Replaceable<>("%cookies%", NumFormatter.formatBigInt(playerData.getTotalCookies()))));
+                }
+                return true;
+            case "dev":
+                return handleDev(sender, args);
             default:
                 return false;
         }
@@ -300,6 +313,77 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    private boolean handleDev(@NotNull CommandSender sender, String[] args) {
+        if (!sender.hasPermission("cookieclickerz.dev")) {
+            throwPermissionError(sender);
+            return false;
+        }
+
+        if (args.length < 2) {
+            throwUsageError(sender, "/cc dev <test | addMockData>");
+            return false;
+        }
+
+        String optionTwo = args[1]; // command
+
+        if (optionTwo == null) {
+            throwUsageError(sender, "/cc dev <test | addMockData>");
+            return false;
+        }
+
+        if (optionTwo.equals("test")) {
+            sender.sendMessage(MessageUtils.getAndFormatMsg(true, "devTest", "&7Test successful!"));
+            return true;
+        }
+
+        if (optionTwo.equals("addMockData")) {
+            if (args.length < 3) {
+                throwUsageError(sender, "/cc dev addMockData <amount>");
+                return false;
+            }
+
+            String amountString = args[2]; // amount
+            int amount = Integer.parseInt(amountString);
+
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < amount; i++) {
+                        if (sender instanceof Player) {
+                            Player player = (Player) sender;
+                            player.sendActionBar(MessageUtils.formatMsg("&7Adding mock player &e" + (i + 1) + "/" + amount + "&7..."));
+                        }
+
+                        String name = RandomGenerators.generateRandomWord(8);
+                        BigInteger totalCookies = RandomGenerators.generateRandomBigInteger(BigInteger.ZERO, Objects.requireNonNull(NumFormatter.stringToBigInteger("1Q")));
+                        int prestige = RandomGenerators.generateRandomNumber(0, 5);
+
+                        PlayerData playerData = new PlayerData(name, plugin.getServer().getOfflinePlayer(name).getUniqueId());
+                        playerData.setTotalCookies(totalCookies);
+                        playerData.setPrestige(prestige);
+                        playerData.setLastLogoutTime(System.currentTimeMillis() - RandomGenerators.generateRandomLong(0, 1000000));
+                        playerData.setTotalClicks(RandomGenerators.generateRandomNumber(0, 1000));
+                        playerData.setCookiesPerClick(RandomGenerators.generateRandomBigInteger(BigInteger.ONE, Objects.requireNonNull(NumFormatter.stringToBigInteger("100K"))));
+                        playerData.setOfflineCookies(RandomGenerators.generateRandomBigInteger(BigInteger.ZERO, Objects.requireNonNull(NumFormatter.stringToBigInteger("100K"))));
+
+                        plugin.getStorage().save(playerData);
+                    }
+
+                    if (sender instanceof Player) {
+                        ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                    }
+                    sender.sendMessage(MessageUtils.formatMsg("&8[&a<b>!<!b>&8] &7Successfully added &e" + amount + " &7mock players!"));
+                }
+            };
+
+            runnable.runTaskAsynchronously(plugin);
+
+            return true;
+        }
+
+        return false;
+    }
+
     private void throwUsageError(@NotNull CommandSender sender, String usage) {
         Component msg = MessageUtils.getAndFormatMsg(false, "usageError", "&cUsage: %usage%", new MessageUtils.Replaceable<>("%usage%", usage));
         sender.sendMessage(msg);
@@ -348,6 +432,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             if (args[0].equals("clicker")) return List.of("add", "remove", "list");
             if (args[0].equals("cookies") || args[0].equals("prestige")) return null;
+            if (args[0].equals("dev")) return List.of("test", "addMockData");
         }
 
         if (args.length == 3) {
@@ -355,6 +440,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickers();
             if (args[0].equals("cookies")) return List.of("add", "remove", "set");
             if (args[0].equals("prestige")) return List.of("get", "set");
+            if (args[0].equals("dev") && args[1].equals("addMockData")) return List.of("1", "2", "3", "4", "5");
         }
 
         if (args.length == 4) {

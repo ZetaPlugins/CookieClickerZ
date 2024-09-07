@@ -7,10 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
-import org.strassburger.cookieclickerz.util.gui.GuiAssets;
-import org.strassburger.cookieclickerz.util.gui.MainGUI;
-import org.strassburger.cookieclickerz.util.gui.PrestigeGUI;
-import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
+import org.strassburger.cookieclickerz.util.gui.*;
 
 public class MainGuiClickListener implements Listener {
     private final CookieClickerZ plugin;
@@ -44,6 +41,16 @@ public class MainGuiClickListener implements Listener {
                 GuiAssets.playClickSound(player);
                 MainGUI.close(player);
                 PrestigeGUI.open(player);
+                break;
+            }
+            case 33: {// Top
+                if (!player.hasPermission("cookieclickerz.top")) {
+                    throwPermissionError(player);
+                    return;
+                }
+                GuiAssets.playClickSound(player);
+                MainGUI.close(player);
+                TopGUI.open(player);
                 break;
             }
         }
