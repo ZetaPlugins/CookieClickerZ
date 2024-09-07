@@ -36,6 +36,7 @@ upgradeBought: "&7You bought the upgrade %ac%%upgrade%&7!"
 prestigeSuccess: "&7You prestiged to Prestige %ac%%prestige%&7! You now have a %ac%%multiplier%x cookie multiplier!"
 getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
+offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
 inventories:
   main:
     title: "&8CookieClickerZ"

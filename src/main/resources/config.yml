@@ -22,6 +22,13 @@ lang: "en-US"
 # The the cookie name
 cookieName: "&7Cookies"
 
+offlineCookies:
+  # If set to true, players will earn cookies while they are offline
+  enabled: true
+
+  # Wether or not to send a message to the player when they join informing them about the cookies they earned while offline
+  joinMessage: true
+
 
 # === SOUNDS ===
 

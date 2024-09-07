@@ -20,6 +20,7 @@ public class EventManager {
     public void registerListeners() {
         registerListener(new PlayerInteractionListener(plugin));
         registerListener(new PlayerJoinListener(plugin));
+        registerListener(new PlayerQuitListener(plugin));
         registerListener(new BlockBreakListener());
         registerListener(new InventoryCloseListener());
         registerListener(new MainGuiClickListener(plugin));
