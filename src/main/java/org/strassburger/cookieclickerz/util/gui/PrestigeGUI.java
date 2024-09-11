@@ -28,7 +28,8 @@ public class PrestigeGUI {
         PlayerData playerData = CookieClickerZ.getInstance().getStorage().load(player.getUniqueId());
 
         Inventory inventory = Bukkit.createInventory(null, 4 * 9, MessageUtils.getAndFormatMsg(false, "inventories.prestige.title", "&8Prestige"));
-        GuiAssets.addBorder(inventory, 4 * 9);
+        GuiAssets.addBorder(inventory);
+        GuiAssets.addBackButton(inventory);
         addGlass(inventory);
 
         inventory.setItem(13,

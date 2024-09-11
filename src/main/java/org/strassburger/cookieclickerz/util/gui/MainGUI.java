@@ -2,7 +2,6 @@ package org.strassburger.cookieclickerz.util.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
@@ -27,7 +26,7 @@ public class MainGUI {
         PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
 
         Inventory inventory = Bukkit.createInventory(null, 5 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
-        GuiAssets.addBorder(inventory, 5 * 9);
+        GuiAssets.addBorder(inventory);
 
         inventory.setItem(11, new CustomItem(Material.GOLD_INGOT)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.shopTitle", "&e&lShop"))

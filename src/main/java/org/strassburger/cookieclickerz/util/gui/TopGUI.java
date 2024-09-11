@@ -32,10 +32,10 @@ public class TopGUI {
 
     public static void open(Player player) {
         final CookieClickerZ plugin = CookieClickerZ.getInstance();
-        PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
 
         Inventory inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.top.title", "&8Top Players"));
-        GuiAssets.addBorder(inventory, 6 * 9);
+        GuiAssets.addBorder(inventory);
+        GuiAssets.addBackButton(inventory);
 
         List<PlayerData> topPlayers = plugin.getStorage().getAllPlayers().parallelStream()
                         .sorted(Comparator.comparing(PlayerData::getScore).reversed())

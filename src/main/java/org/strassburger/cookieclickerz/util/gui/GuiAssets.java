@@ -1,28 +1,26 @@
 package org.strassburger.cookieclickerz.util.gui;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.CustomItem;
-import org.strassburger.cookieclickerz.util.MessageUtils;
-import org.strassburger.cookieclickerz.util.NumFormatter;
-import org.strassburger.cookieclickerz.util.PrestigeData;
+import org.strassburger.cookieclickerz.util.*;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GuiAssets {
     private GuiAssets() {}
 
-    public static void addBorder(Inventory inventory, int inventorySize) {
-        for (int i = 0; i < inventorySize; i++) {
-            if (i < 9 || i >= inventorySize - 9 || i % 9 == 0 || i % 9 == 8) {
+    public static void addBorder(Inventory inventory) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (i < 9 || i >= inventory.getSize() - 9 || i % 9 == 0 || i % 9 == 8) {
                 inventory.setItem(i, getGlassItem());
             }
         }
@@ -32,24 +30,39 @@ public class GuiAssets {
         return new CustomItem(Material.GRAY_STAINED_GLASS_PANE).setName("&r ").getItemStack();
     }
 
-    public static void addPagination(Inventory inventory, int invSizem, int page, boolean prevArr, boolean nextArr) {
+    public static void addPagination(Inventory inventory, int page, boolean prevArr, boolean nextArr) {
+        LanguageManager lm = CookieClickerZ.getInstance().getLanguageManager();
         ItemStack prev = new CustomItem(Material.ARROW)
-                .setName("&7Previous Page")
+                .setName(lm.getString("inventories.navigation.previous"))
                 .setCustomDataContainer("citype", PersistentDataType.STRING, "prev")
                 .setCustomDataContainer("openpage", PersistentDataType.INTEGER, page - 1)
                 .getItemStack();
         ItemStack next = new CustomItem(Material.ARROW)
-                .setName("&7Next Page")
+                .setName(lm.getString("inventories.navigation.next"))
                 .setCustomDataContainer("citype", PersistentDataType.STRING, "next")
                 .setCustomDataContainer("openpage", PersistentDataType.INTEGER, page + 1)
                 .getItemStack();
 
-        if (prevArr) inventory.setItem(invSizem - 7, prev);
-        if (nextArr) inventory.setItem(invSizem - 3, next);
+        if (prevArr) inventory.setItem(inventory.getSize() - 7, prev);
+        if (nextArr) inventory.setItem(inventory.getSize() - 3, next);
     }
 
     public static void playClickSound(Player player) {
         player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+    }
+
+    public static void addBackButton(Inventory inventory) {
+        inventory.setItem(inventory.getSize() - 5,
+                new CustomItem(Material.BARRIER)
+                        .setName(CookieClickerZ.getInstance().getLanguageManager().getString("inventories.navigation.back"))
+                        .setCustomDataContainer("citype", PersistentDataType.STRING, "back")
+                        .getItemStack()
+        );
+    }
+
+    public static boolean isBackButton(ItemStack itemStack) {
+        return itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(CookieClickerZ.getInstance(), "citype"), PersistentDataType.STRING)
+                && Objects.equals(itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(CookieClickerZ.getInstance(), "citype"), PersistentDataType.STRING), "back");
     }
 
     public static ItemStack createUpgradeItem(UpgradeGUI.Upgrade upgrade) {

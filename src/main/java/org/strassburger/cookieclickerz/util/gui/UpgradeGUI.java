@@ -142,7 +142,8 @@ public class UpgradeGUI {
 
     public static void open(Player player, int page) {
         Inventory inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
-        GuiAssets.addBorder(inventory, 6 * 9);
+        GuiAssets.addBorder(inventory);
+        GuiAssets.addBackButton(inventory);
 
         Storage storage = CookieClickerZ.getInstance().getStorage();
         PlayerData playerData = storage.load(player.getUniqueId());
@@ -163,7 +164,7 @@ public class UpgradeGUI {
             inventory.addItem(GuiAssets.createUpgradeItem(upgrade));
         }
 
-        GuiAssets.addPagination(inventory, 6 * 9, page, page > 1, page < (int) Math.ceil((double) upgrades.size() / ITEMS_PER_PAGE));
+        GuiAssets.addPagination(inventory, page, page > 1, page < (int) Math.ceil((double) upgrades.size() / ITEMS_PER_PAGE));
 
         player.openInventory(inventory);
         openInventories.add(player.getUniqueId());

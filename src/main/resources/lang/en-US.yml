@@ -38,6 +38,11 @@ getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
 offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
 inventories:
+  navigation:
+    back: "&8Back"
+    next: "&8Next Page"
+    previous: "&8Previous Page"
+    close: "&8Close"
   main:
     title: "&8CookieClickerZ"
     shopTitle: "<#fcf171>&lShop"

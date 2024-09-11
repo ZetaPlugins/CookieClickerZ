@@ -11,6 +11,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.gui.GuiAssets;
+import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
@@ -38,10 +39,19 @@ public class UpgradeGuiClickListener implements Listener {
         if (ciType == null) return;
 
         if (ciType.equals("prev") || ciType.equals("next")) {
+            event.setCancelled(true);
             GuiAssets.playClickSound(player);
             int targetPage = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "openpage"), PersistentDataType.INTEGER);
             if (targetPage < 0) return;
             UpgradeGUI.open(player, targetPage);
+            return;
+        }
+
+        if (ciType.equals("back")) {
+            event.setCancelled(true);
+            GuiAssets.playClickSound(player);
+            UpgradeGUI.close(player);
+            MainGUI.open(player);
             return;
         }
 

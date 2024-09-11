@@ -1,14 +1,17 @@
 package org.strassburger.cookieclickerz.listeners.inventory;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.PrestigeData;
-import org.strassburger.cookieclickerz.util.gui.PrestigeGUI;
+import org.strassburger.cookieclickerz.util.gui.*;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
 import java.math.BigInteger;
@@ -27,6 +30,19 @@ public class PrestigeGuiClickListener implements Listener {
         if (!PrestigeGUI.isOpen(player)) return;
 
         event.setCancelled(true);
+
+        ItemStack item = event.getCurrentItem();
+        if (item == null || item.getItemMeta() == null) return;
+        String ciType = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "citype"), PersistentDataType.STRING);
+        if (ciType == null) return;
+
+        if (ciType.equals("back")) {
+            event.setCancelled(true);
+            GuiAssets.playClickSound(player);
+            PrestigeGUI.close(player);
+            MainGUI.open(player);
+            return;
+        }
 
         if (event.getSlot() < 20 || event.getSlot() > 24) return;
 

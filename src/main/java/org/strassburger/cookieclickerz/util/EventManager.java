@@ -24,7 +24,7 @@ public class EventManager {
         registerListener(new MainGuiClickListener(plugin));
         registerListener(new UpgradeGuiClickListener(plugin));
         registerListener(new PrestigeGuiClickListener(plugin));
-        registerListener(new TopGuiClickListener());
+        registerListener(new TopGuiClickListener(plugin));
     }
 
     /**
