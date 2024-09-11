@@ -46,14 +46,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return handlePrestige(sender, args);
             case "clicker":
                 return handleClicker(sender, args);
-            case "top":
-                List<PlayerData> topPlayers = plugin.getStorage().getAllPlayers().stream().sorted(Comparator.comparing(PlayerData::getTotalCookies).reversed()).collect(Collectors.toList());
-                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "topPlayers", "&7Top 10 players:"));
-                for (int i = 0; i < 10 && i < topPlayers.size(); i++) {
-                    PlayerData playerData = topPlayers.get(i);
-                    sender.sendMessage(MessageUtils.getAndFormatMsg(false, "topPlayer", "&7%ac%%position%. %ac%%player% - %ac%%cookies%", new MessageUtils.Replaceable<>("%position%", i + 1), new MessageUtils.Replaceable<>("%player%", playerData.getName()), new MessageUtils.Replaceable<>("%cookies%", NumFormatter.formatBigInt(playerData.getTotalCookies()))));
-                }
-                return true;
             case "dev":
                 return handleDev(sender, args);
             default:
