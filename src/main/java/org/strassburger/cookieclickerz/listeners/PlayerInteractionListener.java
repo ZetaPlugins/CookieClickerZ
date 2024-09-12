@@ -41,7 +41,7 @@ public class PlayerInteractionListener implements Listener {
 
         Location clickedLocation = clickedBlock.getLocation();
 
-        if (ClickerManager.isClicker(clickedLocation)) {
+        if (plugin.getClickerManager().isClicker(clickedLocation)) {
             if (event.getAction().isLeftClick() && event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 if (!player.hasPermission("cookieclickerz.useclicker")) {
                     throwPermissionError(player);

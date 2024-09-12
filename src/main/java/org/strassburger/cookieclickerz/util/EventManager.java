@@ -19,7 +19,7 @@ public class EventManager {
         registerListener(new PlayerInteractionListener(plugin));
         registerListener(new PlayerJoinListener(plugin));
         registerListener(new PlayerQuitListener(plugin));
-        registerListener(new BlockBreakListener());
+        registerListener(new BlockBreakListener(plugin));
         registerListener(new InventoryCloseListener());
         registerListener(new MainGuiClickListener(plugin));
         registerListener(new UpgradeGuiClickListener(plugin));

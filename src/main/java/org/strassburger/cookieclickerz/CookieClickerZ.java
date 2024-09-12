@@ -18,6 +18,7 @@ public final class CookieClickerZ extends JavaPlugin {
     private ConfigManager configManager;
     private AntiCheat antiCheat;
     private HologramManager hologramManager;
+    private ClickerManager clickerManager;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     private final boolean hasDecentHolograms = Bukkit.getPluginManager().getPlugin("DecentHolograms") != null;
@@ -38,6 +39,7 @@ public final class CookieClickerZ extends JavaPlugin {
         storage.init();
 
         antiCheat = new AntiCheat(this);
+        clickerManager = new ClickerManager(this);
 
         if (hasDecentHolograms) {
             hologramManager = new HologramManager(this);
@@ -84,6 +86,10 @@ public final class CookieClickerZ extends JavaPlugin {
 
     public HologramManager getHologramManager() {
         return hologramManager;
+    }
+
+    public ClickerManager getClickerManager() {
+        return clickerManager;
     }
 
     private Storage createStorage() {

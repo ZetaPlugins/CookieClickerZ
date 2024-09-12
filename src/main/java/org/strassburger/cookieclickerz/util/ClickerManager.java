@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClickerManager {
-    private ClickerManager() {}
+    private final CookieClickerZ plugin;
+
+    public ClickerManager(CookieClickerZ plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Adds a clicker to the clicker.yml
@@ -17,8 +21,7 @@ public class ClickerManager {
      * @param clicker The location of the clicker
      * @param name The name of the clicker
      */
-    public static void addClicker(String clicker, String name) {
-        CookieClickerZ plugin = CookieClickerZ.getInstance();
+    public void addClicker(String clicker, String name) {
         ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
@@ -34,7 +37,7 @@ public class ClickerManager {
      * @param clicker The location of the clicker
      * @param name The name of the clicker
      */
-    public static void addClicker(Location clicker, String name) {
+    public void addClicker(Location clicker, String name) {
         addClicker(CookieClickerZ.locationToString(clicker), name);
     }
 
@@ -43,8 +46,8 @@ public class ClickerManager {
      *
      * @param clicker The name of the clicker
      */
-    public static boolean isClicker(String clicker) {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+    public boolean isClicker(String clicker) {
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return false;
         List<String> clickerNames = new ArrayList<>(clickerConfig.getKeys(false));
@@ -56,8 +59,8 @@ public class ClickerManager {
      *
      * @param location The location of the clicker
      */
-    public static boolean isClicker(Location location) {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+    public boolean isClicker(Location location) {
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return false;
         String locationString = CookieClickerZ.locationToString(location);
@@ -73,8 +76,7 @@ public class ClickerManager {
      *
      * @param name The name of the clicker
      */
-    public static void removeClicker(String name) {
-        CookieClickerZ plugin = CookieClickerZ.getInstance();
+    public void removeClicker(String name) {
         ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
@@ -88,7 +90,7 @@ public class ClickerManager {
      * @param name The name of the clicker
      * @return The clicker
      */
-    public static Clicker getClicker(String name) {
+    public Clicker getClicker(String name) {
         return new Clicker(name, getClickerLocation(name));
     }
 
@@ -96,7 +98,7 @@ public class ClickerManager {
      * Gets a list of all clickers
      * @return A list of all clickers
      */
-    public static List<Clicker> getClickers() {
+    public List<Clicker> getClickers() {
         List<Clicker> clickers = new ArrayList<>();
         for (String name : getClickerKeys()) {
             clickers.add(getClicker(name));
@@ -109,8 +111,8 @@ public class ClickerManager {
      * @return A list of all clicker names
      */
     @NotNull
-    public static List<String> getClickerKeys() {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+    public List<String> getClickerKeys() {
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return new ArrayList<>();
         return new ArrayList<>(clickerConfig.getKeys(false));
@@ -122,8 +124,8 @@ public class ClickerManager {
      * @param name The name of the clicker
      * @return The location of the clicker
      */
-    public static String getClickerLocationAsString(String name) {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+    public String getClickerLocationAsString(String name) {
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return null;
         return clickerConfig.getString(name + ".location");
@@ -135,7 +137,7 @@ public class ClickerManager {
      * @param name The name of the clicker
      * @return The location of the clicker
      */
-    public static Location getClickerLocation(String name) {
+    public Location getClickerLocation(String name) {
         String locationString = getClickerLocationAsString(name);
         if (locationString == null) return null;
         return CookieClickerZ.stringToLocation(locationString);

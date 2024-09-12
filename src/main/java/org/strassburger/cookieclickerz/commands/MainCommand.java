@@ -254,17 +254,17 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return false;
             }
 
-            if (ClickerManager.isClicker(targetBlock)) {
+            if (plugin.getClickerManager().isClicker(targetBlock)) {
                 sender.sendMessage(MessageUtils.getAndFormatMsg(false, "alreadyClicker", "&cThis block is already a clicker!"));
                 return false;
             }
 
-            if (ClickerManager.isClicker(optionThree)) {
+            if (plugin.getClickerManager().isClicker(optionThree)) {
                 sender.sendMessage(MessageUtils.getAndFormatMsg(false, "alreadyClickerName", "&cThis clicker name is already in use!"));
                 return false;
             }
 
-            ClickerManager.addClicker(targetBlock, optionThree);
+            plugin.getClickerManager().addClicker(targetBlock, optionThree);
 
             sender.sendMessage(
                     MessageUtils.getAndFormatMsg(
@@ -286,12 +286,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
             String optionThree = args[2]; // clicker name
 
-            if (!ClickerManager.isClicker(optionThree)) {
+            if (!plugin.getClickerManager().isClicker(optionThree)) {
                 sender.sendMessage(MessageUtils.getAndFormatMsg(false, "notClicker", "&cThis block is not a clicker!"));
                 return false;
             }
 
-            ClickerManager.removeClicker(optionThree);
+            plugin.getClickerManager().removeClicker(optionThree);
 
             sender.sendMessage(
                     MessageUtils.getAndFormatMsg(
@@ -305,7 +305,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
 
         if (optionTwo.equals("list")) {
-            List<ClickerManager.Clicker> clickers = ClickerManager.getClickers();
+            List<ClickerManager.Clicker> clickers = plugin.getClickerManager().getClickers();
 
             if (clickers.isEmpty()) {
                 sender.sendMessage(MessageUtils.getAndFormatMsg(false, "noClickers", "&cThere are no clickers!"));
@@ -458,7 +458,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 3) {
             if (args[0].equals("clicker") && args[1].equals("add")) return List.of("name");
-            if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickerKeys();
+            if (args[0].equals("clicker") && args[1].equals("remove")) return plugin.getClickerManager().getClickerKeys();
             if (args[0].equals("cookies")) return List.of("add", "remove", "set");
             if (args[0].equals("prestige")) return List.of("get", "set");
             if (args[0].equals("dev") && args[1].equals("addMockData")) return List.of("1", "2", "3", "4", "5");

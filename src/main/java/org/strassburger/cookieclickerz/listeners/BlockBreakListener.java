@@ -4,13 +4,19 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.strassburger.cookieclickerz.util.ClickerManager;
+import org.strassburger.cookieclickerz.CookieClickerZ;
 
 public class BlockBreakListener implements Listener {
+    private final CookieClickerZ plugin;
+
+    public BlockBreakListener(CookieClickerZ plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
 
-        if (ClickerManager.isClicker(block.getLocation())) event.setCancelled(true);
+        if (plugin.getClickerManager().isClicker(block.getLocation())) event.setCancelled(true);
     }
 }

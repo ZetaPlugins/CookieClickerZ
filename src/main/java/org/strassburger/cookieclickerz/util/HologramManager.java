@@ -17,7 +17,7 @@ public class HologramManager {
     }
 
     public void spawnAllHolograms() {
-        ClickerManager.getClickers().forEach(this::spawnHologram);
+        plugin.getClickerManager().getClickers().forEach(this::spawnHologram);
     }
 
     public void spawnHologram(@NotNull ClickerManager.Clicker clicker) {
