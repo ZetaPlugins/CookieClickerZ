@@ -2,6 +2,7 @@ package org.strassburger.cookieclickerz.util;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ public class ClickerManager {
      * @param name The name of the clicker
      */
     public static void addClicker(String clicker, String name) {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+        CookieClickerZ plugin = CookieClickerZ.getInstance();
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
         clickerConfig.set(name + ".name", name);
         clickerConfig.set(name + ".location", clicker);
         configManager.saveCustomConfig("clicker", clickerConfig);
+        if (plugin.getHologramManager() != null) plugin.getHologramManager().spawnHologram(new Clicker(name, CookieClickerZ.stringToLocation(clicker)));
     }
 
     /**
@@ -71,21 +74,45 @@ public class ClickerManager {
      * @param name The name of the clicker
      */
     public static void removeClicker(String name) {
-        ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
+        CookieClickerZ plugin = CookieClickerZ.getInstance();
+        ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
         if (clickerConfig == null) return;
-        clickerConfig.set("clicker." + name, null);
+        clickerConfig.set(name, null);
         configManager.saveCustomConfig("clicker", clickerConfig);
+        if (plugin.getHologramManager() != null) plugin.getHologramManager().removeHologram(name);
+    }
+
+    /**
+     * Gets a clicker
+     * @param name The name of the clicker
+     * @return The clicker
+     */
+    public static Clicker getClicker(String name) {
+        return new Clicker(name, getClickerLocation(name));
     }
 
     /**
      * Gets a list of all clickers
      * @return A list of all clickers
      */
-    public static List<String> getClickers() {
+    public static List<Clicker> getClickers() {
+        List<Clicker> clickers = new ArrayList<>();
+        for (String name : getClickerKeys()) {
+            clickers.add(getClicker(name));
+        }
+        return clickers;
+    }
+
+    /**
+     * Gets a list of all clicker names
+     * @return A list of all clicker names
+     */
+    @NotNull
+    public static List<String> getClickerKeys() {
         ConfigManager configManager = CookieClickerZ.getInstance().getConfigManager();
         FileConfiguration clickerConfig = configManager.getCustomConfig("clicker");
-        if (clickerConfig == null) return null;
+        if (clickerConfig == null) return new ArrayList<>();
         return new ArrayList<>(clickerConfig.getKeys(false));
     }
 
@@ -112,5 +139,23 @@ public class ClickerManager {
         String locationString = getClickerLocationAsString(name);
         if (locationString == null) return null;
         return CookieClickerZ.stringToLocation(locationString);
+    }
+
+    public static class Clicker {
+        private final String name;
+        private final Location location;
+
+        public Clicker(String name, Location location) {
+            this.name = name;
+            this.location = location;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Location getLocation() {
+            return location;
+        }
     }
 }

@@ -17,8 +17,10 @@ public final class CookieClickerZ extends JavaPlugin {
     private LanguageManager languageManager;
     private ConfigManager configManager;
     private AntiCheat antiCheat;
+    private HologramManager hologramManager;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+    private final boolean hasDecentHolograms = Bukkit.getPluginManager().getPlugin("DecentHolograms") != null;
 
     @Override
     public void onEnable() {
@@ -32,10 +34,15 @@ public final class CookieClickerZ extends JavaPlugin {
 
         new EventManager(this).registerListeners();
 
-        storage = createPlayerDataStorage();
+        storage = createStorage();
         storage.init();
 
         antiCheat = new AntiCheat(this);
+
+        if (hasDecentHolograms) {
+            hologramManager = new HologramManager(this);
+            hologramManager.spawnAllHolograms();
+        }
 
         versionChecker = new VersionChecker(this);
 
@@ -75,7 +82,11 @@ public final class CookieClickerZ extends JavaPlugin {
         return antiCheat;
     }
 
-    private Storage createPlayerDataStorage() {
+    public HologramManager getHologramManager() {
+        return hologramManager;
+    }
+
+    private Storage createStorage() {
         String option = getConfig().getString("storage.type");
 
         if (option.equalsIgnoreCase("mysql")) {

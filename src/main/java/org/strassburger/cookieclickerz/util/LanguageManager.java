@@ -60,4 +60,12 @@ public class LanguageManager {
     public List<String> getStringList(String key) {
         return langConfig.getStringList(key);
     }
+
+    public int getInt(String key) {
+        return langConfig.getInt(key);
+    }
+
+    public double getDouble(String key) {
+        return langConfig.getDouble(key);
+    }
 }

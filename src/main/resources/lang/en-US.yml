@@ -7,6 +7,7 @@ newVersionAvailable: "&7A new version of CookieClickerZ is available!\n%ac%<clic
 usageError: "&cUsage: %usage%"
 noPermsError: "&cYou do not have permission to execute this command!"
 playerNotFound: "&cPlayer not found!"
+noConsoleError: "&cYou need to be a player to execute this command!"
 playerDataStorageNull: "&cPlayer data not found! Player needs to rejoin!"
 noPermissionError: "&cYou don't have permission to use this!"
 noPlayerData: "&cThis player has not played on this server yet!"
@@ -37,6 +38,11 @@ prestigeSuccess: "&7You prestiged to Prestige %ac%%prestige%&7! You now have a %
 getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
 offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
+teleportToClicker: "Teleport to clicker %name%"
+clickerHologram:
+  - "%ac%&l🍪 Cookie Clicker 🍪"
+  - "&7Click to get cookies!"
+clickerHologramOffset: 2.0
 inventories:
   navigation:
     back: "&8Back"

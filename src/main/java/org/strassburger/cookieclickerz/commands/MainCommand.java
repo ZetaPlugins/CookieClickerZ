@@ -203,7 +203,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length < 2) {
-            throwUsageError(sender, "/cc clicker <add, remove>");
+            throwUsageError(sender, "/cc clicker <add, list, remove>");
             return false;
         }
 
@@ -215,7 +215,11 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
 
         if (optionTwo.equals("add")) {
-            if (!(sender instanceof Player)) return false;
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "noConsoleError", "&cYou need to be a player to execute this command!"));
+                return false;
+            }
+
             Player player = (Player) sender;
 
             if (args.length < 3) {
@@ -283,9 +287,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
 
         if (optionTwo.equals("list")) {
-            List<String> clickers = ClickerManager.getClickers();
+            List<ClickerManager.Clicker> clickers = ClickerManager.getClickers();
 
-            if (clickers == null || clickers.isEmpty()) {
+            if (clickers.isEmpty()) {
                 sender.sendMessage(MessageUtils.getAndFormatMsg(false, "noClickers", "&cThere are no clickers!"));
                 return false;
             }
@@ -295,7 +299,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                             true,
                             "clickerList",
                             "&7Clickers: %ac%%clickers%",
-                            new MessageUtils.Replaceable<>("%clickers%", formatList(clickers))
+                            new MessageUtils.Replaceable<>("%clickers%", formatList(clickers, sender.getName()))
                     )
             );
             return true;
@@ -397,15 +401,22 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return lastBlock.getType() != Material.AIR ? lastBlock.getLocation() : null;
     }
 
-    private static @NotNull String formatList(@NotNull List<String> items) {
-        StringBuilder formattedString = new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            formattedString.append(items.get(i));
-            if (i < items.size() - 1) {
-                formattedString.append("&7, ").append(MessageUtils.getAccentColor());
-            }
-        }
-        return formattedString.toString();
+    private static @NotNull String formatList(@NotNull List<ClickerManager.Clicker> items, String playerName) {
+        String teleportToClicker = CookieClickerZ.getInstance().getConfig().getString("teleportToClicker", "Teleport to clicker %name%");
+        return items.stream()
+                .map(item -> {
+                    String hoverText = teleportToClicker.replace("%name%", item.getName());
+
+                    double x = item.getLocation().getX();
+                    double y = item.getLocation().getY() + 1;
+                    double z = item.getLocation().getZ();
+
+                    String clickCommand = "<click:RUN_COMMAND:/tp " + playerName + " " + x + " " + y + " " + z + ">";
+
+                    return MessageUtils.getAccentColor() + "<u><hover:show_text:" + hoverText + ">" + clickCommand + item.getName() + "</click></hover></u>";
+                })
+                .reduce((s1, s2) -> s1 + "&7, " + s2)
+                .orElse("");
     }
 
     @Override
@@ -428,7 +439,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 3) {
             if (args[0].equals("clicker") && args[1].equals("add")) return List.of("name");
-            if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickers();
+            if (args[0].equals("clicker") && args[1].equals("remove")) return ClickerManager.getClickerKeys();
             if (args[0].equals("cookies")) return List.of("add", "remove", "set");
             if (args[0].equals("prestige")) return List.of("get", "set");
             if (args[0].equals("dev") && args[1].equals("addMockData")) return List.of("1", "2", "3", "4", "5");
