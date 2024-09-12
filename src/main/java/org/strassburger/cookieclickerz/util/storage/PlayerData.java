@@ -79,6 +79,10 @@ public class PlayerData {
         return upgrades.getOrDefault(upgradeName, 0);
     }
 
+    public void resetUpgrades() {
+        upgrades.clear();
+    }
+
     public BigInteger getCookiesPerClick() {
         return cookiesPerClick;
     }

@@ -24,7 +24,6 @@ import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
     private final CookieClickerZ plugin;

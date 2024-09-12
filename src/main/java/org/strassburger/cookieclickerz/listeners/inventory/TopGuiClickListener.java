@@ -8,10 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.gui.GuiAssets;
-import org.strassburger.cookieclickerz.util.gui.MainGUI;
-import org.strassburger.cookieclickerz.util.gui.TopGUI;
-import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
+import org.strassburger.cookieclickerz.util.gui.*;
 
 public class TopGuiClickListener implements Listener {
     private final CookieClickerZ plugin;
@@ -26,6 +23,8 @@ public class TopGuiClickListener implements Listener {
 
         if (!TopGUI.isOpen(player)) return;
 
+        event.setCancelled(true);
+
         ItemStack item = event.getCurrentItem();
         if (item == null || item.getItemMeta() == null) return;
         String ciType = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "citype"), PersistentDataType.STRING);
@@ -34,11 +33,8 @@ public class TopGuiClickListener implements Listener {
         if (ciType.equals("back")) {
             event.setCancelled(true);
             GuiAssets.playClickSound(player);
-            TopGUI.close(player);
+            PrestigeGUI.close(player);
             MainGUI.open(player);
-            return;
         }
-
-        event.setCancelled(true);
     }
 }

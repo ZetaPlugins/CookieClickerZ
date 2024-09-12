@@ -32,11 +32,9 @@ public class PrestigeGuiClickListener implements Listener {
         event.setCancelled(true);
 
         ItemStack item = event.getCurrentItem();
-        if (item == null || item.getItemMeta() == null) return;
-        String ciType = item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "citype"), PersistentDataType.STRING);
-        if (ciType == null) return;
+        String ciType = (item != null && item.getItemMeta() != null) ? item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "citype"), PersistentDataType.STRING) : null;
 
-        if (ciType.equals("back")) {
+        if (ciType != null && ciType.equals("back")) {
             event.setCancelled(true);
             GuiAssets.playClickSound(player);
             PrestigeGUI.close(player);
@@ -67,7 +65,9 @@ public class PrestigeGuiClickListener implements Listener {
         }
 
         playerData.setPrestige(prestigeData.getLevel());
-        playerData.setTotalCookies(playerData.getTotalCookies().subtract(cost));
+        playerData.setTotalCookies(BigInteger.ZERO);
+        playerData.setCookiesPerClick(BigInteger.ONE);
+        playerData.resetUpgrades();
         plugin.getStorage().save(playerData);
 
         player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString("prestigeSound", "ENTITY_PLAYER_LEVELUP")), 1, 1);
