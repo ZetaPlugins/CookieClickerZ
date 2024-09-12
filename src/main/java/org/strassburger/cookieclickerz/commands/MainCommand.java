@@ -19,6 +19,7 @@ import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.RandomGenerators;
+import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
 
@@ -34,9 +35,17 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (args.length == 0) return handleVersionCommand(sender);
+        if (args.length == 0) {
+            if (!(sender instanceof Player)) return handleVersionCommand(sender);
+            MainGUI.open((Player) sender);
+            return true;
+        }
 
         switch (args[0]) {
+            case "help":
+                return handleHelp(sender);
+            case "version":
+                return handleVersionCommand(sender);
             case "reload":
                 return handleReload(sender);
             case "cookies":
@@ -50,6 +59,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             default:
                 return false;
         }
+    }
+
+    private boolean handleHelp(@NotNull CommandSender sender) {
+        sender.sendMessage(MessageUtils.getAndFormatMsg(
+                false,
+                "helpMsg",
+                "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>You can create a clicker block with <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\nGet cookies by left clicking on the block and open the menu with a right click.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Documentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
+        ));
+        return true;
     }
 
     private boolean handleVersionCommand(@NotNull CommandSender sender) {
@@ -412,8 +430,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     double z = item.getLocation().getZ();
 
                     String clickCommand = "<click:RUN_COMMAND:/tp " + playerName + " " + x + " " + y + " " + z + ">";
-
                     return MessageUtils.getAccentColor() + "<u><hover:show_text:" + hoverText + ">" + clickCommand + item.getName() + "</click></hover></u>";
+
                 })
                 .reduce((s1, s2) -> s1 + "&7, " + s2)
                 .orElse("");
@@ -424,6 +442,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             ArrayList<String> returnlist = new ArrayList<>();
             returnlist.add("help");
+            returnlist.add("version");
             if (sender.hasPermission("cookieclickerz.reload")) returnlist.add("reload");
             if (sender.hasPermission("cookieclickerz.manageclickers")) returnlist.add("clicker");
             if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("cookies");
