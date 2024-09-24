@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.strassburger.cookieclickerz.util.*;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
 import org.strassburger.cookieclickerz.util.storage.Storage;
 import org.strassburger.cookieclickerz.util.storage.SQLiteStorage;
 
@@ -19,6 +20,7 @@ public final class CookieClickerZ extends JavaPlugin {
     private AntiCheat antiCheat;
     private HologramManager hologramManager;
     private ClickerManager clickerManager;
+    private CookieEventManager cookieEventManager;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     private final boolean hasDecentHolograms = Bukkit.getPluginManager().getPlugin("DecentHolograms") != null;
@@ -32,7 +34,6 @@ public final class CookieClickerZ extends JavaPlugin {
         languageManager = new LanguageManager(this);
 
         new CommandManager(this).registerCommands();
-
         new EventManager(this).registerListeners();
 
         storage = createStorage();
@@ -40,6 +41,7 @@ public final class CookieClickerZ extends JavaPlugin {
 
         antiCheat = new AntiCheat(this);
         clickerManager = new ClickerManager(this);
+        cookieEventManager = new CookieEventManager(this);
 
         if (hasDecentHolograms) {
             hologramManager = new HologramManager(this);
@@ -90,6 +92,10 @@ public final class CookieClickerZ extends JavaPlugin {
 
     public ClickerManager getClickerManager() {
         return clickerManager;
+    }
+
+    public CookieEventManager getCookieEventManager() {
+        return cookieEventManager;
     }
 
     private Storage createStorage() {

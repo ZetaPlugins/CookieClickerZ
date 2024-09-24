@@ -16,6 +16,8 @@ import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.PrestigeData;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEventType;
 import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
@@ -78,19 +80,40 @@ public class PlayerInteractionListener implements Listener {
                 int prestigeMultiplier = new PrestigeData(plugin, playerData.getPrestige()).getMultiplier();
                 cookiesPerClick = cookiesPerClick.multiply(BigInteger.valueOf(prestigeMultiplier));
 
+                BigInteger originalCookiesPerClick = new BigInteger(cookiesPerClick.toByteArray());
+
+                CookieEventManager cookieEventManager = plugin.getCookieEventManager();
+                if (cookieEventManager.hasEvent(player, CookieEventType.COOKIE_FRENZY)) {
+                    cookiesPerClick = cookiesPerClick.multiply(BigInteger.valueOf(7));
+                }
+                if (cookieEventManager.hasEvent(player, CookieEventType.CLICK_FRENZY)) {
+                    cookiesPerClick = cookiesPerClick.multiply(BigInteger.valueOf(777));
+                }
+                if (cookieEventManager.hasEvent(player, CookieEventType.CURSED_FINGER)) {
+                    cookiesPerClick = cookiesPerClick.divide(BigInteger.valueOf(2));
+                }
+
                 playerData.setTotalCookies(playerData.getTotalCookies().add(cookiesPerClick));
                 playerData.setTotalClicks(playerData.getTotalClicks() + 1);
                 storage.save(playerData);
+
+                String addedCookiesDisplay = cookieEventManager.hasEvent(player, CookieEventType.CURSED_FINGER)
+                        ? "<red><st>" + NumFormatter.formatBigInt(originalCookiesPerClick) + "</st></red> " + NumFormatter.formatBigInt(cookiesPerClick)
+                        : NumFormatter.formatBigInt(cookiesPerClick);
 
                 player.sendActionBar(
                         MessageUtils.getAndFormatMsg(
                                 false,
                                 "getCookieActionbar",
                                 "%ac%+%num% &7%cookieName%&7 &8| %ac%%total% &7%cookieName%&7",
-                                new MessageUtils.Replaceable<>("%num%", NumFormatter.formatBigInt(cookiesPerClick)),
+                                new MessageUtils.Replaceable<>("%num%", addedCookiesDisplay),
                                 new MessageUtils.Replaceable<>("%cookieName%", CookieClickerZ.getInstance().getConfig().getString("cookieName", "<#D2691E>Cookies")),
                                 new MessageUtils.Replaceable<>("%total%", NumFormatter.formatBigInt(playerData.getTotalCookies()))                        )
                 );
+
+                if (plugin.getConfig().getBoolean("events.enabled", true) && plugin.getCookieEventManager().getEvents(player).isEmpty()) {
+                    plugin.getCookieEventManager().startRandomEvent(player);
+                }
             }
 
             if (event.getAction().isRightClick() && event.getAction() == Action.RIGHT_CLICK_BLOCK) {

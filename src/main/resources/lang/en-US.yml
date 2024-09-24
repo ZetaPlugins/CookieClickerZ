@@ -40,6 +40,24 @@ getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
 offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
 teleportToClicker: "Teleport to clicker %name%"
+noEvent: "&cThere is no event for %ac%%player%"
+getEvent: "&7Events for %ac%%player%&7: %ac%%events%"
+eventMessages:
+  instant:
+    LUCKY: "&a&lLucky! &r&7You got %ac%%amount% &7cookies!"
+    RUIN: "&c&lRuin! &r&7You lost %ac%%amount% &7cookies!"
+  start:
+    COOKIE_FRENZY: "&a&lCookie Frenzy! &r&7You get %ac%7x &7more cookies for the next %ac%77 seconds&7!"
+    LUCKY: ""
+    CLICK_FRENZY: "&a&lClick Frenzy! &r&7You get %ac%777x &7more cookies for the next %ac%13 seconds&7!"
+    RUIN: ""
+    CURSED_FINGER: "&c&lCursed Finger! &r&7You get &c-50% &7cookies for the next &c66 seconds&7!"
+  end:
+    COOKIE_FRENZY: "&7Cookie Frenzy has ended!"
+    LUCKY: ""
+    CLICK_FRENZY: "&7Click Frenzy has ended!"
+    RUIN: ""
+    CURSED_FINGER: "&7Cursed Finger has ended!"
 clickerHologram:
   - "%ac%&l🍪 Cookie Clicker 🍪"
   - "&7Click to get cookies!"

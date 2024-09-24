@@ -36,6 +36,21 @@ offlineCookies:
 hologram: true
 
 
+# === EVENTS ===
+
+events:
+  # Toggle Events, like Click Frenzy, Cookie Frenzy, etc
+  enabled: true
+
+  # The probability of an event happening for each click
+  rates:
+    COOKIE_FRENZY: 0.005
+    LUCKY: 0.007
+    CLICK_FRENZY: 0.002
+    RUIN: 0.002
+    CURSED_FINGER: 0.002
+
+
 # === SOUNDS ===
 
 # The sound that will be played when a player clicks a block

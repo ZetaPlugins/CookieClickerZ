@@ -19,12 +19,16 @@ import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.RandomGenerators;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEvent;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
+import org.strassburger.cookieclickerz.util.cookieevents.CookieEventType;
 import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
     private final CookieClickerZ plugin;
@@ -54,6 +58,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return handlePrestige(sender, args);
             case "clicker":
                 return handleClicker(sender, args);
+            case "events":
+                return handleEvent(sender, args);
             case "dev":
                 return handleDev(sender, args);
             default:
@@ -397,6 +403,98 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    private boolean handleEvent(@NotNull CommandSender sender, String[] args) {
+        if (!sender.hasPermission("cookieclickerz.manageevents")) {
+            throwPermissionError(sender);
+            return false;
+        }
+
+        if (args.length < 3) {
+            throwUsageError(sender, "/cc events [player] <start, get>");
+            return false;
+        }
+
+        String optionTwo = args[1]; // player
+        String optionThree = args[2]; // start, stop
+
+        Player target = plugin.getServer().getPlayer(optionTwo);
+
+        if (target == null) {
+            sender.sendMessage(MessageUtils.getAndFormatMsg(false, "playerNotFound", "&cPlayer not found!"));
+            return false;
+        }
+
+        CookieEventManager eventManager = plugin.getCookieEventManager();
+
+        if (optionThree.equals("get")) {
+            List<CookieEvent> events = eventManager.getEvents(target);
+
+            if (events == null || events.isEmpty()) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(
+                        false,
+                        "noEvent",
+                        "&cThere is no event for %ac%%player%",
+                        new MessageUtils.Replaceable<>("%player%", target.getName())
+                ));
+                return false;
+            }
+
+            sender.sendMessage(MessageUtils.getAndFormatMsg(
+                    true,
+                    "getEvent",
+                    "&7Events for %ac%%player%&7: %ac%%events%",
+                    new MessageUtils.Replaceable<>("%player%", target.getName()),
+                    new MessageUtils.Replaceable<>(
+                            "%events%",
+                            events.stream()
+                                    .map(event -> event.getType().name())
+                                    .collect(Collectors.joining(", "))
+                    )
+            ));
+
+            return true;
+        }
+
+        if (optionThree.equals("start")) {
+            if (args.length < 4) {
+                throwUsageError(sender, "/cc events [player] start <event>");
+                return false;
+            }
+
+            String optionFour = args[3]; // event
+
+            if (optionFour.equals("random")) {
+                eventManager.startRandomEvent(target);
+                sender.sendMessage(MessageUtils.getAndFormatMsg(
+                        false,
+                        "randomEvent",
+                        "&7Random event started for %ac%%player%",
+                        new MessageUtils.Replaceable<>("%player%", target.getName())
+                ));
+                return true;
+            }
+
+            CookieEventType eventType = CookieEventType.valueOf(optionFour);
+
+            if (eventType == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "invalidEvent", "&cInvalid event!"));
+                return false;
+            }
+
+            eventManager.startEvent(target, eventType);
+            sender.sendMessage(MessageUtils.getAndFormatMsg(
+                    true,
+                    "startEvent",
+                    "&7Event %ac%%event% &7started for %ac%%player%",
+                    new MessageUtils.Replaceable<>("%event%", eventType.name()),
+                    new MessageUtils.Replaceable<>("%player%", target.getName())
+            ));
+            return true;
+        }
+
+        return false;
+    }
+
     private void throwUsageError(@NotNull CommandSender sender, String usage) {
         Component msg = MessageUtils.getAndFormatMsg(false, "usageError", "&cUsage: %usage%", new MessageUtils.Replaceable<>("%usage%", usage));
         sender.sendMessage(msg);
@@ -437,6 +535,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 .orElse("");
     }
 
+    public List<String> getEventCompletion() {
+        List<String> list = Arrays.stream(CookieEventType.values()).map(CookieEventType::name).collect(Collectors.toList());
+        list.add("random");
+        return list;
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String @NotNull [] args) {
         if (args.length == 1) {
@@ -447,12 +551,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("cookieclickerz.manageclickers")) returnlist.add("clicker");
             if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("cookies");
             if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("prestige");
+            if (sender.hasPermission("cookieclickerz.manageevents")) returnlist.add("events");
             return returnlist;
         }
 
         if (args.length == 2) {
             if (args[0].equals("clicker")) return List.of("add", "remove", "list");
-            if (args[0].equals("cookies") || args[0].equals("prestige")) return null;
+            if (args[0].equals("cookies") || args[0].equals("prestige") || args[0].equals("events")) return null;
             if (args[0].equals("dev")) return List.of("test", "addMockData");
         }
 
@@ -462,11 +567,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args[0].equals("cookies")) return List.of("add", "remove", "set");
             if (args[0].equals("prestige")) return List.of("get", "set");
             if (args[0].equals("dev") && args[1].equals("addMockData")) return List.of("1", "2", "3", "4", "5");
+            if (args[0].equals("events")) return List.of("start", "get");
         }
 
         if (args.length == 4) {
             if (args[0].equals("cookies")) return List.of("100", "1K", "1M", "1B", "1T", "1Q", "1QQ", "1S", "1SS", "1O", "1N", "1D");
             if (args[0].equals("prestige") && args[2].equals("set")) return List.of("0", "1", "2", "3", "4", "5");
+            if (args[0].equals("events") && args[2].equals("start")) return getEventCompletion();
         }
 
         return List.of();

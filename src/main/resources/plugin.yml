@@ -41,3 +41,6 @@ permissions:
   cookieclickerz.managecookies:
     default: op
     description: Permission to manage cookies
+  cookieclickerz.manageevents:
+    default: op
+    description: Permission to manage events

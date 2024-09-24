@@ -19,7 +19,7 @@ levels:
 
   3:
     name: "&8&l> <!b><#69e372>Prestige III"
-    price: "100M"
+    cost: "100M"
     multiplier: 4
 
   4:
