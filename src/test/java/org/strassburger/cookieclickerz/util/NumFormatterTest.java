@@ -11,6 +11,7 @@ public class NumFormatterTest {
 
     @Test
     public void testStringToBigInteger() {
+        assertEquals(new BigInteger("1510"), NumFormatter.stringToBigInteger("1.51K"));
         assertEquals(new BigInteger("123000"), NumFormatter.stringToBigInteger("123K"));
         assertEquals(new BigInteger("123000000"), NumFormatter.stringToBigInteger("123M"));
         assertEquals(new BigInteger("123000000000"), NumFormatter.stringToBigInteger("123B"));
@@ -22,6 +23,7 @@ public class NumFormatterTest {
 
     @Test
     public void testStringToBigDecimal() {
+        assertEquals(new BigDecimal("1510.00"), NumFormatter.stringToBigDecimal("1.51K"));
         assertEquals(new BigDecimal("123000"), NumFormatter.stringToBigDecimal("123K"));
         assertEquals(new BigDecimal("123000000"), NumFormatter.stringToBigDecimal("123M"));
         assertEquals(new BigDecimal("123000000000"), NumFormatter.stringToBigDecimal("123B"));
@@ -33,6 +35,7 @@ public class NumFormatterTest {
 
     @Test
     public void testFormatBigInt() {
+        assertEquals("1.51K", NumFormatter.formatBigInt(new BigInteger("1511")));
         assertEquals("123K", NumFormatter.formatBigInt(new BigInteger("123000")));
         assertEquals("123M", NumFormatter.formatBigInt(new BigInteger("123000000")));
         assertEquals("123B", NumFormatter.formatBigInt(new BigInteger("123000000000")));
@@ -43,6 +46,7 @@ public class NumFormatterTest {
 
     @Test
     public void testFormatBigDecimal() {
+        assertEquals("1.51K", NumFormatter.formatBigDecimal(new BigDecimal("1511")));
         assertEquals("123K", NumFormatter.formatBigDecimal(new BigDecimal("123000")));
         assertEquals("123M", NumFormatter.formatBigDecimal(new BigDecimal("123000000")));
         assertEquals("123B", NumFormatter.formatBigDecimal(new BigDecimal("123000000000")));
