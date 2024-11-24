@@ -61,6 +61,8 @@ public class NumFormatter {
     }
 
     private static String formatNumber(BigDecimal number) {
+        number = number.setScale(2, RoundingMode.DOWN);
+
         int index = 0;
         while (number.compareTo(BigDecimal.valueOf(1000)) >= 0 && index < suffixes.length - 1) {
             number = number.divide(BigDecimal.valueOf(1000), 2, RoundingMode.DOWN);
