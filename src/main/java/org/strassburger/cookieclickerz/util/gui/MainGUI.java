@@ -33,8 +33,8 @@ public class MainGUI {
                 .setLore(MessageUtils.getAndFormatMsgList("inventories.main.shopDescription"))
                 .getItemStack());
         inventory.setItem(15, new CustomItem(Material.EXPERIENCE_BOTTLE)
-                .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.boosterTitle", "<#9932cc>&lBoosters"))
-                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.boosterDescription"))
+                .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.achievementsTitle", "<#9932cc>&lBoosters"))
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.main.achievementsDescription"))
                 .getItemStack());
         inventory.setItem(22, new CustomItem(Material.COOKIE)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.clickerTitle", "%ac%&lYour Cookies"))

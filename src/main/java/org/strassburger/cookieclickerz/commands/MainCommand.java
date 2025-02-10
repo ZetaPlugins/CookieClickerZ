@@ -1,5 +1,6 @@
 package org.strassburger.cookieclickerz.commands;
 
+import eu.decentsoftware.holograms.api.Lang;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +20,9 @@ import org.strassburger.cookieclickerz.util.ClickerManager;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.RandomGenerators;
+import org.strassburger.cookieclickerz.util.achievements.Achievement;
+import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
+import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEvent;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEventType;
@@ -60,6 +64,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return handleClicker(sender, args);
             case "events":
                 return handleEvent(sender, args);
+            case "achievements":
+                return handleAchievements(sender, args);
             case "dev":
                 return handleDev(sender, args);
             default:
@@ -495,8 +501,110 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    private boolean handleAchievements(@NotNull CommandSender sender, String[] args) {
+        if (!sender.hasPermission("cookieclickerz.manageachievements")) {
+            throwPermissionError(sender);
+            return false;
+        }
+
+        if (args.length < 3) {
+            throwUsageError(sender, "/cc achievements [player] <get | set>");
+            return false;
+        }
+
+        String optionTwo = args[1]; // player
+
+        Player target = plugin.getServer().getPlayer(optionTwo);
+
+        if (target == null) {
+            sender.sendMessage(MessageUtils.getAndFormatMsg(false, "playerNotFound", "&cPlayer not found!"));
+            return false;
+        }
+
+        PlayerData targetPlayerData = plugin.getStorage().load(target.getUniqueId());
+
+        if (targetPlayerData == null) {
+            sender.sendMessage(MessageUtils.getAndFormatMsg(false, "playerDataStorageNull", "&cPlayerDataStorage is null!"));
+            return false;
+        }
+
+        if (args[2].equals("get")) {
+            if (args.length < 4) {
+                throwUsageError(sender, "/cc achievements [player] get <achievement>");
+                return false;
+            }
+
+            String optionFour = args[3]; // achievement
+
+            String achievementProgress = "0";
+
+            AchievementType achievementType = AchievementType.getBySlug(optionFour).orElse(null);
+
+            if (achievementType == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "achievementNotFound", "&cAchievement not found!"));
+                return false;
+            }
+
+            Achievement achievement = targetPlayerData.getAchievement(achievementType).orElse(null);
+
+            if (achievement != null) {
+                achievementProgress = String.valueOf(achievement.getProgress());
+
+                if (achievement.getType().getCategory() == AchievementCategory.COOKIES) {
+                    achievementProgress =
+                            targetPlayerData.getTotalCookies().compareTo(achievement.getType().getBigIntegerGoal()) >= 0
+                                    ? NumFormatter.formatBigInt(achievement.getType().getBigIntegerGoal())
+                                    : NumFormatter.formatBigInt(targetPlayerData.getTotalCookies());
+                }
+            }
+
+            sender.sendMessage(MessageUtils.getAndFormatMsg(true, "getAchievement", "&7Achievement %ac%%achievement% &7for %ac%%player%&7: %ac%%progress%&8/%ac%%goal%",
+                    new MessageUtils.Replaceable<>("%achievement%", plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".name")),
+                    new MessageUtils.Replaceable<>("%player%", target.getName()),
+                    new MessageUtils.Replaceable<>("%progress%", achievementProgress),
+                    new MessageUtils.Replaceable<>("%goal%", NumFormatter.formatBigInt(achievementType.getBigIntegerGoal()))
+            ));
+
+            return true;
+        }
+
+        if (args[2].equals("set")) {
+            if (args.length < 5) {
+                throwUsageError(sender, "/cc achievements [player] set <achievement> <progress>");
+                return false;
+            }
+
+            String optionFour = args[3]; // achievement
+            String optionFive = args[4]; // progress
+
+            int progress = Integer.parseInt(optionFive);
+
+            AchievementType achievementType = AchievementType.getBySlug(optionFour).orElse(null);
+
+            if (achievementType == null) {
+                sender.sendMessage(MessageUtils.getAndFormatMsg(false, "achievementNotFound", "&cAchievement not found!"));
+                return false;
+            }
+
+            targetPlayerData.setAchievementProgress(achievementType, progress);
+
+            plugin.getStorage().save(targetPlayerData);
+
+            sender.sendMessage(MessageUtils.getAndFormatMsg(true, "setAchievement", "&7Successfully set %ac%%player%&7's achievement %ac%%achievement% &7progress to %ac%%progress%",
+                    new MessageUtils.Replaceable<>("%player%", target.getName()),
+                    new MessageUtils.Replaceable<>("%achievement%", plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".name")),
+                    new MessageUtils.Replaceable<>("%progress%", progress)
+            ));
+
+            return true;
+        }
+
+        return false;
+    }
+
     private void throwUsageError(@NotNull CommandSender sender, String usage) {
-        Component msg = MessageUtils.getAndFormatMsg(false, "usageError", "&cUsage: %usage%", new MessageUtils.Replaceable<>("%usage%", usage));
+        Component msg = MessageUtils.getAndFormatMsg(false, "usageError", "&cUsage: %usage%",
+                new MessageUtils.Replaceable<>("%usage%", usage));
         sender.sendMessage(msg);
     }
 
@@ -528,7 +636,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     double z = item.getLocation().getZ();
 
                     String clickCommand = "<click:RUN_COMMAND:/tp " + playerName + " " + x + " " + y + " " + z + ">";
-                    return MessageUtils.getAccentColor() + "<u><hover:show_text:" + hoverText + ">" + clickCommand + item.getName() + "</click></hover></u>";
+                    return MessageUtils.getAccentColor() +
+                            "<u><hover:show_text:" + hoverText + ">" + clickCommand + item.getName() + "</click></hover></u>";
 
                 })
                 .reduce((s1, s2) -> s1 + "&7, " + s2)
@@ -552,12 +661,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("cookies");
             if (sender.hasPermission("cookieclickerz.managecookies")) returnlist.add("prestige");
             if (sender.hasPermission("cookieclickerz.manageevents")) returnlist.add("events");
+            if (sender.hasPermission("cookieclickerz.manageachievements")) returnlist.add("achievements");
             return returnlist;
         }
 
         if (args.length == 2) {
             if (args[0].equals("clicker")) return List.of("add", "remove", "list");
-            if (args[0].equals("cookies") || args[0].equals("prestige") || args[0].equals("events")) return null;
+            if (args[0].equals("cookies") || args[0].equals("prestige") || args[0].equals("events") || args[0].equals("achievements")) return null;
             if (args[0].equals("dev")) return List.of("test", "addMockData");
         }
 
@@ -565,7 +675,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args[0].equals("clicker") && args[1].equals("add")) return List.of("name");
             if (args[0].equals("clicker") && args[1].equals("remove")) return plugin.getClickerManager().getClickerKeys();
             if (args[0].equals("cookies")) return List.of("add", "remove", "set");
-            if (args[0].equals("prestige")) return List.of("get", "set");
+            if (args[0].equals("prestige") || args[0].equals("achievements")) return List.of("get", "set");
             if (args[0].equals("dev") && args[1].equals("addMockData")) return List.of("1", "2", "3", "4", "5");
             if (args[0].equals("events")) return List.of("start", "get");
         }
@@ -574,6 +684,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (args[0].equals("cookies")) return List.of("100", "1K", "1M", "1B", "1T", "1Q", "1QQ", "1S", "1SS", "1O", "1N", "1D");
             if (args[0].equals("prestige") && args[2].equals("set")) return List.of("0", "1", "2", "3", "4", "5");
             if (args[0].equals("events") && args[2].equals("start")) return getEventCompletion();
+            if (args[0].equals("achievements")) return AchievementType.getAll().stream().map(AchievementType::getSlug).collect(Collectors.toList());
+        }
+
+        if (args.length == 5) {
+            if (args[0].equals("achievements") && args[2].equals("set")) {
+                AchievementType achievementType = AchievementType.getBySlug(args[3]).orElse(null);
+                if (achievementType == null) return List.of();
+                return List.of("0", String.valueOf(achievementType.getBigIntegerGoal()));
+            }
         }
 
         return List.of();

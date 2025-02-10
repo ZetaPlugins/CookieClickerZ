@@ -3,13 +3,12 @@ package org.strassburger.cookieclickerz.util.storage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.NumFormatter;
+import org.strassburger.cookieclickerz.util.achievements.Achievement;
 
 import java.io.*;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SQLiteStorage implements Storage {
     private static final String CSV_SEPARATOR = ",";
@@ -19,7 +18,7 @@ public class SQLiteStorage implements Storage {
         try (Connection connection = createConnection()) {
             if (connection == null) return;
             try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS player_data (" +
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
                         "uuid TEXT PRIMARY KEY, " +
                         "name TEXT, " +
                         "totalCookies TEXT, " +
@@ -39,9 +38,21 @@ public class SQLiteStorage implements Storage {
                         "upgrade_name TEXT, " +
                         "level INTEGER, " +
                         "PRIMARY KEY (uuid, upgrade_name), " +
-                        "FOREIGN KEY (uuid) REFERENCES player_data(uuid))");
+                        "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
                 CookieClickerZ.getInstance().getLogger().severe("Failed to initialize upgrades table in SQLite database: " + e.getMessage());
+            }
+
+            // Create achievements table if not exists
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS achievements (" +
+                        "uuid TEXT, " +
+                        "achievement_name TEXT, " +
+                        "progress INTEGER, " +
+                        "PRIMARY KEY (uuid, achievement_name), " +
+                        "FOREIGN KEY (uuid) REFERENCES players(uuid))");
+            } catch (SQLException e) {
+                CookieClickerZ.getInstance().getLogger().severe("Failed to initialize achievements table in SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
             CookieClickerZ.getInstance().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
@@ -64,7 +75,7 @@ public class SQLiteStorage implements Storage {
         try (Connection connection = createConnection()) {
             if (connection == null) return;
             try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                    "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
                 statement.setString(1, playerData.getUuid().toString());
                 statement.setString(2, playerData.getName());
@@ -81,6 +92,9 @@ public class SQLiteStorage implements Storage {
 
             // Save upgrades
             saveUpgrades(connection, playerData);
+
+            // Save achievements
+            saveAchievements(connection, playerData);
         } catch (SQLException e) {
             CookieClickerZ.getInstance().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
         }
@@ -112,11 +126,38 @@ public class SQLiteStorage implements Storage {
         }
     }
 
+    private void saveAchievements(Connection connection, PlayerData playerData) throws SQLException {
+        // Clear existing achievements for the player
+        try (PreparedStatement deleteStatement = connection.prepareStatement(
+                "DELETE FROM achievements WHERE uuid = ?")) {
+            deleteStatement.setString(1, playerData.getUuid().toString());
+            deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            CookieClickerZ.getInstance().getLogger().severe("Failed to clear existing achievements for player: " + e.getMessage());
+            throw e;
+        }
+
+        // Save current achievements
+        try (PreparedStatement insertStatement = connection.prepareStatement(
+                "INSERT INTO achievements (uuid, achievement_name, progress) VALUES (?, ?, ?)")) {
+            for (Achievement achievement : playerData.getAchievements()) {
+                insertStatement.setString(1, playerData.getUuid().toString());
+                insertStatement.setString(2, achievement.getType().getSlug());
+                insertStatement.setInt(3, achievement.getProgress());
+                insertStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            CookieClickerZ.getInstance().getLogger().severe("Failed to save achievements for player: " + e.getMessage());
+            throw e;
+        }
+    }
+
     @Override
     public PlayerData load(UUID uuid) {
         PlayerData playerData = loadPlayerData(uuid);
         if (playerData != null) {
             loadUpgrades(uuid, playerData);
+            loadAchievements(uuid, playerData);
         }
         return playerData;
     }
@@ -125,7 +166,7 @@ public class SQLiteStorage implements Storage {
         try (Connection connection = createConnection()) {
             if (connection == null) return null;
             try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM player_data WHERE uuid = ?")) {
+                    "SELECT * FROM players WHERE uuid = ?")) {
                 statement.setString(1, uuid.toString());
                 ResultSet resultSet = statement.executeQuery();
 
@@ -177,6 +218,27 @@ public class SQLiteStorage implements Storage {
         }
     }
 
+    private void loadAchievements(UUID uuid, PlayerData playerData) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return;
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM achievements WHERE uuid = ?")) {
+                statement.setString(1, uuid.toString());
+                ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    String achievementSlug = resultSet.getString("achievement_name");
+                    int progress = resultSet.getInt("progress");
+                    playerData.setAchievementProgress(achievementSlug, progress);
+                }
+            } catch (SQLException e) {
+                CookieClickerZ.getInstance().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            CookieClickerZ.getInstance().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
+        }
+    }
+
     @Override
     public PlayerData load(String uuid) {
         return load(UUID.fromString(uuid));
@@ -189,20 +251,19 @@ public class SQLiteStorage implements Storage {
             if (connection == null) return null;
 
             try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM player_data");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM players");
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                     while (resultSet.next()) {
-                        StringBuilder line = new StringBuilder();
-                        line.append(resultSet.getString("uuid")).append(CSV_SEPARATOR)
-                                .append(resultSet.getString("name")).append(CSV_SEPARATOR)
-                                .append(resultSet.getString("totalCookies")).append(CSV_SEPARATOR)
-                                .append(resultSet.getInt("totalClicks")).append(CSV_SEPARATOR)
-                                .append(resultSet.getLong("lastLogoutTime")).append(CSV_SEPARATOR)
-                                .append(resultSet.getString("cookiesPerClick")).append(CSV_SEPARATOR)
-                                .append(resultSet.getString("offlineCookies")).append(CSV_SEPARATOR)
-                                .append(resultSet.getInt("prestige"));
-                        writer.write(line.toString());
+                        String line = resultSet.getString("uuid") + CSV_SEPARATOR +
+                                resultSet.getString("name") + CSV_SEPARATOR +
+                                resultSet.getString("totalCookies") + CSV_SEPARATOR +
+                                resultSet.getInt("totalClicks") + CSV_SEPARATOR +
+                                resultSet.getLong("lastLogoutTime") + CSV_SEPARATOR +
+                                resultSet.getString("cookiesPerClick") + CSV_SEPARATOR +
+                                resultSet.getString("offlineCookies") + CSV_SEPARATOR +
+                                resultSet.getInt("prestige");
+                        writer.write(line);
                         writer.newLine();
                     }
                 }
@@ -234,7 +295,7 @@ public class SQLiteStorage implements Storage {
                 try (Connection connection = createConnection()) {
                     if (connection == null) return;
                     try (PreparedStatement statement = connection.prepareStatement(
-                            "INSERT OR REPLACE INTO player_data (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                            "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
                                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
                         statement.setString(1, data[0]);
                         statement.setString(2, data[1]);
@@ -263,7 +324,7 @@ public class SQLiteStorage implements Storage {
         try (Connection connection = createConnection()) {
             if (connection == null) return players;
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM player_data");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM players");
 
             // Process each result and create PlayerData objects
             while (rs.next()) {

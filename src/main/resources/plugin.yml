@@ -44,3 +44,6 @@ permissions:
   cookieclickerz.manageevents:
     default: op
     description: Permission to manage events
+  cookieclickerz.manageachievements:
+    default: op
+    description: Permission to manage achievements

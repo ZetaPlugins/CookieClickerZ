@@ -42,6 +42,10 @@ offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
 teleportToClicker: "Teleport to clicker %name%"
 noEvent: "&cThere is no event for %ac%%player%"
 getEvent: "&7Events for %ac%%player%&7: %ac%%events%"
+achievementUnlocked: "<#9932cc>&lAchievement! &r&7You unlocked the achievement <hover:show_text:'%ac%%achievement%\n&7%description%'>%ac%%achievement%&7!</hover>"
+achievementNotFound: "&cAchievement not found!"
+getAchievement: "&7Achievement %ac%%achievement% &7for %ac%%player%&7: %ac%%progress%&8/%ac%%goal%"
+setAchievement: "&7Successfully set %ac%%player%&7's achievement %ac%%achievement% &7progress to %ac%%progress%"
 eventMessages:
   instant:
     LUCKY: "&a&lLucky! &r&7You got %ac%%amount% &7cookies!"
@@ -78,9 +82,9 @@ inventories:
     prestigeDescription:
       - "&7Prestige massively increase your cookie production!"
       - " "
-    boosterTitle: "<#9932cc>&lBoosters"
-    boosterDescription:
-      - "&7Use boosters to increase your cookie production!"
+    achievementsTitle: "<#9932cc>&lAchievements"
+    achievementsDescription:
+      - "&7Show off your achievements!"
       - " "
     topTitle: "<#FF5733>&lTop Players"
     topDescription:
@@ -128,3 +132,34 @@ inventories:
         - " "
         - "&8>> &7Overall Score: &a&l%score%"
         - " "
+achievements:
+  clicks_clicker_rookie:
+    name: "Rookie Clicker"
+    description: "Perform your first click"
+  clicks_finger_workout:
+    name: "Finger Workout"
+    description: "Perform 100 clicks"
+  clicks_click_champion:
+    name: "Click Champion"
+    description: "Perform 1,000 clicks"
+  clicks_unstoppable_clicker:
+    name: "Unstoppable Clicker"
+    description: "Perform 10,000 clicks"
+  clicks_cookie_machine:
+    name: "Cookie Machine"
+    description: "Perform 1,000,000 clicks"
+  cookies_first_batch:
+    name: "First Batch"
+    description: "Bake 1,000 cookies"
+  cookies_cookie_connoisseur:
+    name: "Cookie Connoisseur"
+    description: "Bake 100K cookies"
+  cookies_cookie_collector:
+    name: "Cookie Collector"
+    description: "Bake 1M cookies"
+  cookies_cookie_hoarder:
+    name: "Cookie Hoarder"
+    description: "Bake 1B cookies"
+  cookies_cookie_overlord:
+    name: "Cookie Overlord"
+    description: "Bake 1T cookies"
