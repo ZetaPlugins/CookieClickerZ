@@ -6,7 +6,7 @@
 
   <groupId>org.strassburger</groupId>
   <artifactId>CookieClickerZ</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-ALPHA-1</version>
   <packaging>jar</packaging>
 
   <name>CookieClickerZ</name>
