@@ -49,6 +49,8 @@ public final class CookieClickerZ extends JavaPlugin {
         if (hasDecentHolograms) {
             hologramManager = new HologramManager(this);
             hologramManager.spawnAllHolograms();
+        } else {
+            getLogger().warning("DecentHolograms not found! Holograms will not be displayed.");
         }
 
         versionChecker = new VersionChecker(this);
