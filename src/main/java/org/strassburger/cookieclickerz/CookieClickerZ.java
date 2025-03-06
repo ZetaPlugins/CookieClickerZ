@@ -39,7 +39,7 @@ public final class CookieClickerZ extends JavaPlugin {
         new EventManager(this).registerListeners();
 
         storage = createStorage();
-        storage.init();
+        if (storage != null) storage.init();
 
         antiCheat = new AntiCheat(this);
         clickerManager = new ClickerManager(this);

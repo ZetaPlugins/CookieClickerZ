@@ -50,6 +50,27 @@ public enum AchievementType {
             AchievementCategory.COOKIES,
             false,
             NumFormatter.stringToBigInteger("1T")),
+
+    SMART_SHOPPER("upgrades_smart_shopper",
+            AchievementCategory.UPGRADES,
+            false,
+            1),
+    UPGRADE_MASTER("upgrades_upgrade_master",
+            AchievementCategory.UPGRADES,
+            false,
+            50),
+    SAVVY_SPENDER("upgrades_savvy_spender",
+            AchievementCategory.UPGRADES,
+            false,
+            150),
+    UPGRADE_ENTHUSIAST("upgrades_upgrade_enthusiast",
+            AchievementCategory.UPGRADES,
+            false,
+            500),
+    GOTTA_UPGRADE_THEM_ALL("upgrades_gotta_upgrade_them_all",
+            AchievementCategory.UPGRADES,
+            false,
+            1000),
     ;
 
     private final String slug;

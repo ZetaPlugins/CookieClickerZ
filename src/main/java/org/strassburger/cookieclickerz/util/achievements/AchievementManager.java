@@ -59,18 +59,18 @@ public class AchievementManager {
      * @param achievementType The achievement type to send the message for
      */
     public void sendAchievementMessage(Player player, AchievementType achievementType) {
+        String achievementName = plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".name");
+        if (achievementName == null) achievementName = achievementType.getSlug();
+
+        String achievementDescription = plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".description");
+        if (achievementDescription == null) achievementDescription = "No description available";
+
         player.sendMessage(MessageUtils.getAndFormatMsg(
                 true,
                 "achievementUnlocked",
-                "<#9932cc>&lAchievement! &r&7You unlocked the achievement <hover:show_text:'%ac%%achievement%\n&7%description%'>%ac%%achievement%&7!</hover>",
-                new MessageUtils.Replaceable<>(
-                        "%achievement%",
-                        plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".name")
-                ),
-                new MessageUtils.Replaceable<>(
-                        "%description%",
-                        plugin.getLanguageManager().getString("achievements." + achievementType.getSlug() + ".description")
-                )
+                "<#9932cc>&lAchievement! &r&7You unlocked the achievement <hover:show_text:'<#9932cc>%achievement%\n&7%description%'><#9932cc>%achievement%&7!</hover>",
+                new MessageUtils.Replaceable<>("%achievement%", achievementName),
+                new MessageUtils.Replaceable<>("%description%", achievementDescription)
         ));
 
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);

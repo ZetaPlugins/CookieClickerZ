@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
+import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.gui.GuiAssets;
 import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
@@ -80,6 +82,11 @@ public class UpgradeGuiClickListener implements Listener {
 
         player.sendMessage(MessageUtils.getAndFormatMsg(true, "upgradeBought", "&7You bought the upgrade %ac%%upgrade%&7!", new MessageUtils.Replaceable("%upgrade%", upgrade.getName())));
         player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString("upgradeSound", "ENTITY_PLAYER_LEVELUP")), 1, 1);
+
+        for (AchievementType achievementType : AchievementType.getByCategory(AchievementCategory.UPGRADES)) {
+            playerData.progressAchievement(achievementType, 1, plugin);
+            storage.save(playerData);
+        }
 
         UpgradeGUI.close(player);
         UpgradeGUI.open(player);

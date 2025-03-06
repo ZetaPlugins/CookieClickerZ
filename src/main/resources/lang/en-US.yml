@@ -42,7 +42,7 @@ offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
 teleportToClicker: "Teleport to clicker %name%"
 noEvent: "&cThere is no event for %ac%%player%"
 getEvent: "&7Events for %ac%%player%&7: %ac%%events%"
-achievementUnlocked: "<#9932cc>&lAchievement! &r&7You unlocked the achievement <hover:show_text:'%ac%%achievement%\n&7%description%'>%ac%%achievement%&7!</hover>"
+achievementUnlocked: "<#9932cc>&lAchievement! &r&7You unlocked the achievement <hover:show_text:'<#9932cc>%achievement%\n&7%description%'><#9932cc>%achievement%&7!</hover>"
 achievementNotFound: "&cAchievement not found!"
 getAchievement: "&7Achievement %ac%%achievement% &7for %ac%%player%&7: %ac%%progress%&8/%ac%%goal%"
 setAchievement: "&7Successfully set %ac%%player%&7's achievement %ac%%achievement% &7progress to %ac%%progress%"
@@ -163,3 +163,18 @@ achievements:
   cookies_cookie_overlord:
     name: "Cookie Overlord"
     description: "Bake 1T cookies"
+  upgrades_smart_shopper:
+    name: "Smart Shopper"
+    description: "Buy your first upgrade"
+  upgrades_upgrade_master:
+    name: "Upgrade Master"
+    description: "Buy 50 upgrades"
+  upgrades_savvy_spender:
+    name: "Savvy Spender"
+    description: "Buy 150 upgrades"
+  upgrades_upgrade_enthusiast:
+    name: "Upgrade Enthusiast"
+    description: "Buy 500 upgrades"
+  upgrades_gotta_upgrade_them_all:
+    name: "Gotta Upgrade Them All"
+    description: "Buy 1,000 upgrades"
