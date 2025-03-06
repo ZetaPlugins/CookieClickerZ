@@ -178,3 +178,18 @@ achievements:
   upgrades_gotta_upgrade_them_all:
     name: "Gotta Upgrade Them All"
     description: "Buy 1,000 upgrades"
+  prestige_rebaked_and_ready:
+    name: "Rebaked and Ready"
+    description: "Prestige for the first time"
+  prestige_twice_as_tasty:
+    name: "Twice as Tasty"
+    description: "Prestige 2 times"
+  prestige_third_times_a_charm:
+    name: "Third Times a Charm"
+    description: "Prestige 3 times"
+  prestige_oops_i_did_it_again:
+    name: "Oops, I Did It Again"
+    description: "Prestige 4 times"
+  prestige_oven_eternal:
+    name: "Eternal Oven"
+    description: "Prestige 5 times"

@@ -71,6 +71,27 @@ public enum AchievementType {
             AchievementCategory.UPGRADES,
             false,
             1000),
+
+    REBAKED_AND_READY("prestige_rebaked_and_ready",
+            AchievementCategory.PRESTIGE,
+            false,
+            1),
+    TWICE_AS_TASTY("prestige_twice_as_tasty",
+            AchievementCategory.PRESTIGE,
+            false,
+            2),
+    THIRD_TIMES_A_CHARM("prestige_third_times_a_charm",
+            AchievementCategory.PRESTIGE,
+            false,
+            3),
+    OOPS_I_DID_IT_AGAIN("prestige_oops_i_did_it_again",
+            AchievementCategory.PRESTIGE,
+            false,
+            4),
+    OVEN_ETERNAL("prestige_oven_eternal",
+            AchievementCategory.PRESTIGE,
+            false,
+            5),
     ;
 
     private final String slug;

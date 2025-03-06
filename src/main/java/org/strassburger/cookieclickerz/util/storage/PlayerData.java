@@ -144,6 +144,24 @@ public class PlayerData {
         );
     }
 
+    public void setAchievementProgress(AchievementType achievementType, int progressAmount, CookieClickerZ plugin) throws IllegalArgumentException {
+        getAchievement(achievementType).ifPresentOrElse(
+                achievement -> {
+                    Player player = plugin.getServer().getPlayer(UUID.fromString(uuid));
+                    plugin.getAchievementManager().setAchievementProgress(player, achievement, progressAmount);
+                },
+                () -> {
+                    Achievement achievement = new Achievement(achievementType, 0);
+                    achievements.add(achievement);
+                    plugin.getAchievementManager().setAchievementProgress(
+                            plugin.getServer().getPlayer(UUID.fromString(uuid)),
+                            achievement,
+                            progressAmount
+                    );
+                }
+        );
+    }
+
     /**
      * Progress an achievement by a certain amount
      * @param achievementType The achievement type to progress

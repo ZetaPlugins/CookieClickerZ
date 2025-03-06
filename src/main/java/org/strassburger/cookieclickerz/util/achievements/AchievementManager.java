@@ -15,6 +15,26 @@ public class AchievementManager {
     }
 
     /**
+     * Set the progress of an achievement
+     * @param player The player to set the achievement progress for
+     * @param achievement The achievement to set the progress for
+     * @param progressAmount The amount to set the progress to
+     * @return Whether the achievement was completed
+     */
+    public boolean setAchievementProgress(Player player, Achievement achievement, int progressAmount) {
+        if (achievement.isCompleted()) return false;
+
+        achievement.setProgress(progressAmount);
+
+        if (achievement.isCompleted()) {
+            sendAchievementMessage(player, achievement.getType());
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Progress an achievement by a certain amount
      * @param player The player to progress the achievement for
      * @param achievement The achievement to progress

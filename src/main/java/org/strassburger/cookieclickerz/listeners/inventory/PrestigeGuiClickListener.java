@@ -11,6 +11,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.PrestigeData;
+import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
+import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.gui.*;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
@@ -78,6 +80,11 @@ public class PrestigeGuiClickListener implements Listener {
                 new MessageUtils.Replaceable<>("%prestige%", prestigeData.getLevel()),
                 new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier())
         ));
+
+        for (AchievementType achievementType : AchievementType.getByCategory(AchievementCategory.PRESTIGE)) {
+            playerData.setAchievementProgress(achievementType, prestigeData.getLevel(), plugin);
+        }
+        plugin.getStorage().save(playerData);
 
         PrestigeGUI.close(player);
         PrestigeGUI.open(player);

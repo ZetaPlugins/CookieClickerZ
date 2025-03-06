@@ -6,6 +6,8 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.commands.CommandUsageException;
 import org.strassburger.cookieclickerz.commands.SubCommand;
 import org.strassburger.cookieclickerz.util.MessageUtils;
+import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
+import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 import org.strassburger.cookieclickerz.util.storage.Storage;
 
@@ -89,6 +91,9 @@ public class PrestigeSubCommand implements SubCommand {
             }
 
             targetPlayerData.setPrestige(level);
+            for (AchievementType achievementType : AchievementType.getByCategory(AchievementCategory.PRESTIGE)) {
+                targetPlayerData.setAchievementProgress(achievementType, level);
+            }
             storage.save(targetPlayerData);
             sender.sendMessage(MessageUtils.getAndFormatMsg(
                     true,
