@@ -4,7 +4,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.commands.*;
+import org.strassburger.cookieclickerz.commands.MainCommand.MainCommandHandler;
+import org.strassburger.cookieclickerz.commands.MainCommand.MainTabCompleter;
 
 public class CommandManager {
     private final CookieClickerZ plugin;
@@ -17,7 +18,7 @@ public class CommandManager {
      * Registers all commands
      */
     public void registerCommands() {
-        registerCommand("cookieclicker", new MainCommand(plugin), new MainCommand(plugin));
+        registerCommand("cookieclicker", new MainCommandHandler(plugin), new MainTabCompleter(plugin));
     }
 
     /**
