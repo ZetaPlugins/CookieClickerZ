@@ -92,6 +92,27 @@ public enum AchievementType {
             AchievementCategory.PRESTIGE,
             false,
             5),
+
+    EVENT_HORIZON("event_event_horizon",
+            AchievementCategory.EVENTS,
+            false,
+            100),
+    NOT_MY_COOKIES("event_not_my_cookies",
+            AchievementCategory.EVENTS,
+            false,
+            25),
+    SUGAR_RUSH("event_sugar_rush",
+            AchievementCategory.EVENTS,
+            false,
+            10),
+    MONEY_MAGNET("event_money_magnet",
+            AchievementCategory.EVENTS,
+            false,
+            1),
+    OOF("event_oof",
+            AchievementCategory.EVENTS,
+            false,
+            1),
     ;
 
     private final String slug;

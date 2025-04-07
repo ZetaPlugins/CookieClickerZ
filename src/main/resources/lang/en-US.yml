@@ -193,3 +193,18 @@ achievements:
   prestige_oven_eternal:
     name: "Eternal Oven"
     description: "Prestige 5 times"
+  event_event_horizon:
+    name: "Event Horizon"
+    description: "Participate 100 events"
+  event_sugar_rush:
+    name: "Sugar Rush"
+    description: "Participate in 10 Cookie Frenzy events"
+  event_money_magnet:
+    name: "Money Magnet"
+    description: "Recieve more than 1M cookies in a single Lucky event"
+  event_oof:
+    name: "Oof!"
+    description: "Lose more than 1M cookies in a single Ruin event"
+  event_not_my_cookies:
+    name: "Not My Cookies!"
+    description: "Participate in 50 negative events"

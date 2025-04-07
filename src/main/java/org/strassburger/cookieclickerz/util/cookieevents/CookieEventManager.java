@@ -29,6 +29,7 @@ public class CookieEventManager {
         if (eventType.isInstant()) {
             event.runEvent(plugin);
         } else {
+            event.runEvent(plugin);
             activeEvents.add(event);
             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
             player.sendMessage(MessageUtils.getAndFormatMsg(

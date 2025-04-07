@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
+import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
 import java.math.BigDecimal;
@@ -14,13 +15,19 @@ import java.util.UUID;
 
 public enum CookieEventType {
     // cps x7 for 77 seconds
-    COOKIE_FRENZY(0.005, 77) {
+    COOKIE_FRENZY(0.005, 77, true) {
         @Override
-        public void run(CookieClickerZ plugin, UUID uuid) {}
+        public void run(CookieClickerZ plugin, UUID uuid) {
+            PlayerData playerData = plugin.getStorage().load(uuid);
+            if (playerData == null) return;
+            playerData.progressAchievement(AchievementType.SUGAR_RUSH, 1, plugin);
+            playerData.progressAchievement(AchievementType.EVENT_HORIZON, 1, plugin);
+            plugin.getStorage().save(playerData);
+        }
     },
 
     // get 10% of your bank
-    LUCKY(0.007, 0) {
+    LUCKY(0.007, 0, true) {
         @Override
         public void run(CookieClickerZ plugin, UUID uuid) {
             Player player = plugin.getServer().getPlayer(uuid);
@@ -31,6 +38,12 @@ public enum CookieEventType {
             BigDecimal totalCookies = new BigDecimal(playerData.getTotalCookies());
             BigDecimal luckyAmount = totalCookies.multiply(new BigDecimal("0.1"));
             playerData.setTotalCookies(playerData.getTotalCookies().add(luckyAmount.toBigInteger()));
+
+            playerData.progressAchievement(AchievementType.EVENT_HORIZON, 1, plugin);
+
+            if (luckyAmount.compareTo(new BigDecimal("1000000")) > 0) {
+                playerData.progressAchievement(AchievementType.MONEY_MAGNET, 1, plugin);
+            }
 
             plugin.getStorage().save(playerData);
 
@@ -46,13 +59,18 @@ public enum CookieEventType {
     },
 
     // clicks x777 for 7 seconds
-    CLICK_FRENZY(0.002, 7) {
+    CLICK_FRENZY(0.002, 7, true) {
         @Override
-        public void run(CookieClickerZ plugin, UUID uuid) {}
+        public void run(CookieClickerZ plugin, UUID uuid) {
+            PlayerData playerData = plugin.getStorage().load(uuid);
+            if (playerData == null) return;
+            playerData.progressAchievement(AchievementType.EVENT_HORIZON, 1, plugin);
+            plugin.getStorage().save(playerData);
+        }
     },
 
     // lose 5% of your bank
-    RUIN(0.002, 0) {
+    RUIN(0.002, 0, false) {
         @Override
         public void run(CookieClickerZ plugin, UUID uuid) {
             Player player = plugin.getServer().getPlayer(uuid);
@@ -63,6 +81,13 @@ public enum CookieEventType {
             BigDecimal totalCookies = new BigDecimal(playerData.getTotalCookies());
             BigDecimal ruinAmount = totalCookies.multiply(new BigDecimal("0.05"));
             playerData.setTotalCookies(playerData.getTotalCookies().subtract(ruinAmount.toBigInteger()));
+
+            playerData.progressAchievement(AchievementType.EVENT_HORIZON, 1, plugin);
+            playerData.progressAchievement(AchievementType.NOT_MY_COOKIES, 1, plugin);
+
+            if (ruinAmount.compareTo(new BigDecimal("1000000")) > 0) {
+                playerData.progressAchievement(AchievementType.OOF, 1, plugin);
+            }
 
             plugin.getStorage().save(playerData);
 
@@ -78,14 +103,21 @@ public enum CookieEventType {
     },
 
     // cps x0.5 for 66 seconds
-    CURSED_FINGER(0.002, 66) {
+    CURSED_FINGER(0.002, 66, false) {
         @Override
-        public void run(CookieClickerZ plugin, UUID uuid) {}
+        public void run(CookieClickerZ plugin, UUID uuid) {
+            PlayerData playerData = plugin.getStorage().load(uuid);
+            if (playerData == null) return;
+            playerData.progressAchievement(AchievementType.EVENT_HORIZON, 1, plugin);
+            playerData.progressAchievement(AchievementType.NOT_MY_COOKIES, 1, plugin);
+            plugin.getStorage().save(playerData);
+        }
     };
 
     private final String id = name();
     private final double appearanceRate;
     private final long duration;
+    private final boolean isPositive;
 
     private static final Random random = new Random();
 
@@ -93,9 +125,10 @@ public enum CookieEventType {
      * @param appearanceRate appearance rate of the event
      * @param duration duration of the event in seconds
      */
-    CookieEventType(double appearanceRate, long duration) {
+    CookieEventType(double appearanceRate, long duration, boolean isPositive) {
         this.appearanceRate = appearanceRate;
         this.duration = duration * 20;// convert seconds to ticks
+        this.isPositive = isPositive;
     }
 
     /**
@@ -103,6 +136,13 @@ public enum CookieEventType {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * @return true if the event is positive, false otherwise
+     */
+    public boolean isPositive() {
+        return isPositive;
     }
 
     /**
