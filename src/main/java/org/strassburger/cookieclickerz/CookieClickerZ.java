@@ -55,12 +55,12 @@ public final class CookieClickerZ extends JavaPlugin {
 
         versionChecker = new VersionChecker(this);
 
-        getLogger().info("LifeStealZ enabled!");
+        getLogger().info("CookieClickerZ enabled!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("LifeStealZ disabled!");
+        getLogger().info("CookieClickerZ disabled!");
     }
 
     public static CookieClickerZ getInstance() {
