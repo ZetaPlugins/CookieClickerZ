@@ -7,8 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.strassburger.cookieclickerz.util.*;
 import org.strassburger.cookieclickerz.util.achievements.AchievementManager;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
-import org.strassburger.cookieclickerz.util.storage.Storage;
-import org.strassburger.cookieclickerz.util.storage.SQLiteStorage;
+import org.strassburger.cookieclickerz.storage.Storage;
+import org.strassburger.cookieclickerz.storage.SQLiteStorage;
 
 import java.util.List;
 

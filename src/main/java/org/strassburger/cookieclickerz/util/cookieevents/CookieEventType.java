@@ -7,7 +7,7 @@ import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.achievements.AchievementType;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.PlayerData;
 
 import java.math.BigDecimal;
 import java.util.Random;

@@ -8,8 +8,8 @@ import org.strassburger.cookieclickerz.commands.SubCommand;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
 import org.strassburger.cookieclickerz.util.achievements.AchievementType;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.Storage;
 
 public class PrestigeSubCommand implements SubCommand {
     private final CookieClickerZ plugin;

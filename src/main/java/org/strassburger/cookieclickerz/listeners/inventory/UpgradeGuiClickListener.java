@@ -15,8 +15,8 @@ import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.gui.GuiAssets;
 import org.strassburger.cookieclickerz.util.gui.MainGUI;
 import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.Storage;
 
 import java.math.BigInteger;
 

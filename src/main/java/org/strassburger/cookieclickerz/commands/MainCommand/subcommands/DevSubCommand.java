@@ -10,7 +10,7 @@ import org.strassburger.cookieclickerz.commands.SubCommand;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.RandomGenerators;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.PlayerData;
 
 import java.math.BigInteger;
 import java.util.Objects;

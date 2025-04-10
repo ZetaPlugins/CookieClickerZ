@@ -10,7 +10,7 @@ import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.achievements.Achievement;
 import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
 import org.strassburger.cookieclickerz.util.achievements.AchievementType;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.PlayerData;
 
 public class AchievementsSubCommand implements SubCommand {
     private final CookieClickerZ plugin;

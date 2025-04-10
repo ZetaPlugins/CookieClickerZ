@@ -7,8 +7,8 @@ import org.strassburger.cookieclickerz.commands.CommandUsageException;
 import org.strassburger.cookieclickerz.commands.SubCommand;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.Storage;
 
 import java.math.BigInteger;
 

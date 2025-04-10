@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.MessageUtils;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.Storage;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

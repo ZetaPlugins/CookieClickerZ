@@ -13,7 +13,7 @@ import org.strassburger.cookieclickerz.util.achievements.Achievement;
 import org.strassburger.cookieclickerz.util.achievements.AchievementCategory;
 import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import org.strassburger.cookieclickerz.util.items.CustomItem;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.PlayerData;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;

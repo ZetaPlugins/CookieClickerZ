@@ -11,7 +11,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.*;
 import org.strassburger.cookieclickerz.util.items.CustomItem;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.PlayerData;
 
 import java.util.List;
 import java.util.Objects;
