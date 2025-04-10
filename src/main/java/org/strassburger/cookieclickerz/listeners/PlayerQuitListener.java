@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.storage.PlayerData;
-import org.strassburger.cookieclickerz.util.storage.Storage;
+import org.strassburger.cookieclickerz.storage.PlayerData;
+import org.strassburger.cookieclickerz.storage.Storage;
 
 public class PlayerQuitListener implements Listener {
     private final CookieClickerZ plugin;

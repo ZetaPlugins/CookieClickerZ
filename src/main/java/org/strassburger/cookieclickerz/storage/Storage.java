@@ -1,4 +1,4 @@
-package org.strassburger.cookieclickerz.util.storage;
+package org.strassburger.cookieclickerz.storage;
 
 import org.strassburger.cookieclickerz.CookieClickerZ;
 
