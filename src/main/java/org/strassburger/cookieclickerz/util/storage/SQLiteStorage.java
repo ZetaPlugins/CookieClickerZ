@@ -10,8 +10,12 @@ import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
 
-public class SQLiteStorage implements Storage {
+public final class SQLiteStorage extends Storage {
     private static final String CSV_SEPARATOR = ",";
+
+    public SQLiteStorage(CookieClickerZ plugin) {
+        super(plugin);
+    }
 
     @Override
     public void init() {
@@ -28,7 +32,7 @@ public class SQLiteStorage implements Storage {
                         "offlineCookies TEXT," +
                         "prestige INTEGER DEFAULT 0)");
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
             }
 
             // Create upgrades table if not exists
@@ -40,7 +44,7 @@ public class SQLiteStorage implements Storage {
                         "PRIMARY KEY (uuid, upgrade_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to initialize upgrades table in SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to initialize upgrades table in SQLite database: " + e.getMessage());
             }
 
             // Create achievements table if not exists
@@ -52,20 +56,20 @@ public class SQLiteStorage implements Storage {
                         "PRIMARY KEY (uuid, achievement_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to initialize achievements table in SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to initialize achievements table in SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
         }
     }
 
     private Connection createConnection() {
         try {
-            CookieClickerZ plugin = CookieClickerZ.getInstance();
+            CookieClickerZ plugin = getPlugin();
             String pluginFolderPath = plugin.getDataFolder().getPath();
             return DriverManager.getConnection("jdbc:sqlite:" + pluginFolderPath + "/userData.db");
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to create connection to SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to create connection to SQLite database: " + e.getMessage());
             return null;
         }
     }
@@ -87,7 +91,7 @@ public class SQLiteStorage implements Storage {
                 statement.setInt(8, playerData.getPrestige());
                 statement.executeUpdate();
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
             }
 
             // Save upgrades
@@ -96,7 +100,7 @@ public class SQLiteStorage implements Storage {
             // Save achievements
             saveAchievements(connection, playerData);
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
         }
     }
 
@@ -107,7 +111,7 @@ public class SQLiteStorage implements Storage {
             deleteStatement.setString(1, playerData.getUuid().toString());
             deleteStatement.executeUpdate();
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to clear existing upgrades for player: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to clear existing upgrades for player: " + e.getMessage());
             throw e;
         }
 
@@ -121,7 +125,7 @@ public class SQLiteStorage implements Storage {
                 insertStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to save upgrades for player: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to save upgrades for player: " + e.getMessage());
             throw e;
         }
     }
@@ -133,7 +137,7 @@ public class SQLiteStorage implements Storage {
             deleteStatement.setString(1, playerData.getUuid().toString());
             deleteStatement.executeUpdate();
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to clear existing achievements for player: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to clear existing achievements for player: " + e.getMessage());
             throw e;
         }
 
@@ -147,7 +151,7 @@ public class SQLiteStorage implements Storage {
                 insertStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to save achievements for player: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to save achievements for player: " + e.getMessage());
             throw e;
         }
     }
@@ -188,11 +192,11 @@ public class SQLiteStorage implements Storage {
 
                 return playerData;
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
                 return null;
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
             return null;
         }
     }
@@ -211,10 +215,10 @@ public class SQLiteStorage implements Storage {
                     playerData.addUpgrade(upgradeName, level);
                 }
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
         }
     }
 
@@ -232,10 +236,10 @@ public class SQLiteStorage implements Storage {
                     playerData.setAchievementProgress(achievementSlug, progress);
                 }
             } catch (SQLException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to load achievements from SQLite database: " + e.getMessage());
         }
     }
 
@@ -246,7 +250,7 @@ public class SQLiteStorage implements Storage {
 
     @Override
     public String export(String fileName) {
-        String filePath = CookieClickerZ.getInstance().getDataFolder().getPath() + "/" + fileName + ".csv";
+        String filePath = getPlugin().getDataFolder().getPath() + "/" + fileName + ".csv";
         try (Connection connection = createConnection()) {
             if (connection == null) return null;
 
@@ -268,11 +272,11 @@ public class SQLiteStorage implements Storage {
                     }
                 }
             } catch (SQLException | IOException e) {
-                CookieClickerZ.getInstance().getLogger().severe("Failed to export player data to CSV file: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to export player data to CSV file: " + e.getMessage());
                 return null;
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to export player data to CSV file: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to export player data to CSV file: " + e.getMessage());
             return null;
         }
         return filePath;
@@ -280,7 +284,7 @@ public class SQLiteStorage implements Storage {
 
     @Override
     public void importData(String fileName) {
-        String filePath = CookieClickerZ.getInstance().getDataFolder().getPath() + "/" + fileName;
+        String filePath = getPlugin().getDataFolder().getPath() + "/" + fileName;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -288,7 +292,7 @@ public class SQLiteStorage implements Storage {
                 String[] data = line.split(CSV_SEPARATOR);
 
                 if (data.length != 8) {
-                    CookieClickerZ.getInstance().getLogger().severe("Invalid CSV format.");
+                    getPlugin().getLogger().severe("Invalid CSV format.");
                     continue;
                 }
 
@@ -307,14 +311,14 @@ public class SQLiteStorage implements Storage {
                         statement.setInt(8, Integer.parseInt(data[7]));
                         statement.executeUpdate();
                     } catch (SQLException e) {
-                        CookieClickerZ.getInstance().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
+                        getPlugin().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
                     }
                 } catch (SQLException e) {
-                    CookieClickerZ.getInstance().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
+                    getPlugin().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to read CSV file: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to read CSV file: " + e.getMessage());
         }
     }
 
@@ -338,7 +342,7 @@ public class SQLiteStorage implements Storage {
                 players.add(player);
             }
         } catch (SQLException e) {
-            CookieClickerZ.getInstance().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to load upgrades from SQLite database: " + e.getMessage());
         }
 
         return players;

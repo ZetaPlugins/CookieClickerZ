@@ -39,7 +39,7 @@ public final class CookieClickerZ extends JavaPlugin {
         new EventManager(this).registerListeners();
 
         storage = createStorage();
-        if (storage != null) storage.init();
+        storage.init();
 
         antiCheat = new AntiCheat(this);
         clickerManager = new ClickerManager(this);
@@ -108,16 +108,8 @@ public final class CookieClickerZ extends JavaPlugin {
     }
 
     private Storage createStorage() {
-        String option = getConfig().getString("storage.type");
-
-        if (option.equalsIgnoreCase("mysql")) {
-            getLogger().info("Using MySQL storage");
-            // TODO: Implement MySQLPlayerDataStorage
-            return null;
-        }
-
         getLogger().info("Using SQLite storage");
-        return new SQLiteStorage();
+        return new SQLiteStorage(this);
     }
 
     private void initConfig() {

@@ -1,20 +1,32 @@
 package org.strassburger.cookieclickerz.util.storage;
 
+import org.strassburger.cookieclickerz.CookieClickerZ;
+
 import java.util.List;
 import java.util.UUID;
 
-public interface Storage {
-    void init();
+public abstract class Storage {
+    private final CookieClickerZ plugin;
 
-    void save(PlayerData playerData);
+    public Storage(CookieClickerZ plugin) {
+        this.plugin = plugin;
+    }
 
-    PlayerData load(String uuid);
+    protected CookieClickerZ getPlugin() {
+        return plugin;
+    }
 
-    PlayerData load(UUID uuid);
+    abstract public void init();
 
-    String export(String fileName);
+    abstract public void save(PlayerData playerData);
 
-    void importData(String fileName);
+    abstract public PlayerData load(String uuid);
 
-    List<PlayerData> getAllPlayers();
+    abstract public PlayerData load(UUID uuid);
+
+    abstract public String export(String fileName);
+
+    abstract public void importData(String fileName);
+
+    abstract public List<PlayerData> getAllPlayers();
 }

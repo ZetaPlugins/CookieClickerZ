@@ -1,7 +1,6 @@
 package org.strassburger.cookieclickerz.util.storage;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.achievements.Achievement;
@@ -12,7 +11,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.*;
 
-public class PlayerData {
+public final class PlayerData {
     private final static BigDecimal TOTAL_COOKIES_WEIGHT = new BigDecimal("0.4");
     private final static BigDecimal COOKIES_PER_CLICK_WEIGHT = new BigDecimal("0.3");
     private final static BigDecimal PRESTIGE_WEIGHT = new BigDecimal("0.5");
@@ -249,7 +248,7 @@ public class PlayerData {
      * @param prestige The player's prestige level
      * @return The player's score
      */
-    public static BigDecimal calculatePlayerScore(BigInteger totalCookies, BigInteger cookiesPerClick, int prestige) {
+    private BigDecimal calculatePlayerScore(BigInteger totalCookies, BigInteger cookiesPerClick, int prestige) {
         BigDecimal logTotalCookies = bigIntegerLog(totalCookies);
         BigDecimal cookiesPerClickValue = new BigDecimal(cookiesPerClick);
 
