@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.CustomItem;
+import org.strassburger.cookieclickerz.util.items.CustomItem;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 

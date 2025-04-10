@@ -100,7 +100,7 @@ public enum AchievementType {
     NOT_MY_COOKIES("event_not_my_cookies",
             AchievementCategory.EVENTS,
             false,
-            25),
+            50),
     SUGAR_RUSH("event_sugar_rush",
             AchievementCategory.EVENTS,
             false,

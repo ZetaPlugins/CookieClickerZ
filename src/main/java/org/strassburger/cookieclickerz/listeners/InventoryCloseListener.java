@@ -4,10 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.strassburger.cookieclickerz.util.gui.MainGUI;
-import org.strassburger.cookieclickerz.util.gui.PrestigeGUI;
-import org.strassburger.cookieclickerz.util.gui.TopGUI;
-import org.strassburger.cookieclickerz.util.gui.UpgradeGUI;
+import org.strassburger.cookieclickerz.util.gui.*;
 
 public class InventoryCloseListener implements Listener {
     @EventHandler
@@ -18,5 +15,6 @@ public class InventoryCloseListener implements Listener {
         UpgradeGUI.close(player);
         PrestigeGUI.close(player);
         TopGUI.close(player);
+        AchievementGUI.close(player);
     }
 }

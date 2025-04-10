@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.*;
+import org.strassburger.cookieclickerz.util.items.CustomItem;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
 import java.util.List;
@@ -28,6 +29,14 @@ public class GuiAssets {
 
     public static ItemStack getGlassItem() {
         return new CustomItem(Material.GRAY_STAINED_GLASS_PANE).setName("&r ").getItemStack();
+    }
+
+    public static void fillInventoryWithGlass(Inventory inventory) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, getGlassItem());
+            }
+        }
     }
 
     public static void addPagination(Inventory inventory, int page, boolean prevArr, boolean nextArr) {

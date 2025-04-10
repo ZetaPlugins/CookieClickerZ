@@ -1,4 +1,4 @@
-package org.strassburger.cookieclickerz.util;
+package org.strassburger.cookieclickerz.util.items;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -12,7 +12,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.strassburger.cookieclickerz.CookieClickerZ;
+import org.strassburger.cookieclickerz.util.MessageUtils;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,14 @@ public class CustomItem {
 
     public CustomItem() {
         this.itemStack = new ItemStack(Material.AIR);
+    }
+
+    public static CustomItem fromSkullBase64(String base64) throws MalformedURLException {
+        return new CustomItem(SkullUtils.getSkullFromBase64(base64));
+    }
+
+    public static CustomItem fromSkullUrl(String url) throws MalformedURLException {
+        return new CustomItem(SkullUtils.getSkullFromUrl(url));
     }
 
     public CustomItem setMaterial(Material material) {

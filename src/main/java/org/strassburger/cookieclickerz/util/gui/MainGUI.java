@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.*;
+import org.strassburger.cookieclickerz.util.items.CustomItem;
 import org.strassburger.cookieclickerz.util.storage.PlayerData;
 
 import java.util.ArrayList;

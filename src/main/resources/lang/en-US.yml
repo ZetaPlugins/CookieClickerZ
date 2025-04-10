@@ -129,6 +129,23 @@ inventories:
         - " "
         - "&8>> &7Overall Score: &a&l%score%"
         - " "
+  achievements:
+    title: "&8Achievements"
+    achievementTitle: "<#9932cc>%title% %completed%"
+    achievementDescription:
+      - "&7%description%"
+      - " "
+      - "&8> &7%progress%&8/&7%goal%"
+      - " "
+    completed: "&8[&a✔&8]"
+    notCompleted: "&8[&c✖&8]"
+achievementCategories:
+  clicks: "<#9932cc>Clicks"
+  cookies: "<#9932cc>Cookies"
+  upgrades: "<#9932cc>Upgrades"
+  prestige: "<#9932cc>Prestige"
+  events: "<#9932cc>Events"
+  misc: "<#9932cc>Miscellaneous"
 achievements:
   clicks_clicker_rookie:
     name: "Rookie Clicker"

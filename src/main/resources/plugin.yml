@@ -17,6 +17,9 @@ commands:
     description: Main command
 
 permissions:
+  cookieclickerz.viewachievements:
+    default: true
+    description: Permission to view achievements
   cookieclickerz.useclicker:
     default: true
     description: Permission to use a clicker

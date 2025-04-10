@@ -33,6 +33,16 @@ public class MainGuiClickListener implements Listener {
                 UpgradeGUI.open(player);
                 break;
             }
+            case 15: {// Achievements
+                if (!player.hasPermission("cookieclickerz.viewachievements")) {
+                    throwPermissionError(player);
+                    return;
+                }
+                GuiAssets.playClickSound(player);
+                MainGUI.close(player);
+                AchievementGUI.open(player);
+                break;
+            }
             case 29: {// Prestige
                 if (!player.hasPermission("cookieclickerz.prestige")) {
                     throwPermissionError(player);

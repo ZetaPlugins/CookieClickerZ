@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
-import org.strassburger.cookieclickerz.util.CustomItem;
+import org.strassburger.cookieclickerz.util.items.CustomItem;
 import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.util.NumFormatter;
 import org.strassburger.cookieclickerz.util.PrestigeData;
