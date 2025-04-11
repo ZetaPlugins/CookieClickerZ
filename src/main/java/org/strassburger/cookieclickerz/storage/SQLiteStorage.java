@@ -2,6 +2,7 @@ package org.strassburger.cookieclickerz.storage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.achievements.Achievement;
 
@@ -9,12 +10,21 @@ import java.io.*;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class SQLiteStorage extends Storage {
+    private final Map<UUID , PlayerData> playerDataCache = new ConcurrentHashMap<>();
     private static final String CSV_SEPARATOR = ",";
 
     public SQLiteStorage(CookieClickerZ plugin) {
         super(plugin);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveAllCachedData();
+            }
+        }.runTaskTimerAsynchronously(plugin, 60 * 20, 60 * 20);// 60s in ticks
     }
 
     @Override
@@ -77,6 +87,13 @@ public final class SQLiteStorage extends Storage {
 
     @Override
     public void save(PlayerData playerData) {
+        if (playerData == null) return;
+
+        if (playerDataCache.containsKey(playerData.getUuid())) {
+            playerDataCache.put(playerData.getUuid(), playerData);
+            return;
+        }
+
         final String query = "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -146,6 +163,10 @@ public final class SQLiteStorage extends Storage {
 
     @Override
     public PlayerData load(UUID uuid) {
+        if (playerDataCache.containsKey(uuid)) {
+            return playerDataCache.get(uuid);
+        }
+
         PlayerData playerData = loadPlayerData(uuid);
         if (playerData != null) {
             loadUpgrades(uuid, playerData);
@@ -346,5 +367,73 @@ public final class SQLiteStorage extends Storage {
         }
 
         return players;
+    }
+
+    @Override
+    public void saveAllCachedData() {
+        if (playerDataCache.isEmpty()) return;
+
+        Map<UUID, PlayerData> snapshot = new HashMap<>(playerDataCache);
+        playerDataCache.clear();
+
+        try (Connection connection = createConnection()) {
+            if (connection == null) return;
+
+            connection.setAutoCommit(false); // For better batch performance
+
+            // Save all players
+            try (PreparedStatement psPlayers = connection.prepareStatement(
+                    "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                for (PlayerData data : snapshot.values()) {
+                    psPlayers.setString(1, data.getUuid().toString());
+                    psPlayers.setString(2, data.getName());
+                    psPlayers.setString(3, data.getTotalCookies().toString());
+                    psPlayers.setInt(4, data.getTotalClicks());
+                    psPlayers.setLong(5, data.getLastLogoutTime());
+                    psPlayers.setString(6, data.getCookiesPerClick().toString());
+                    psPlayers.setString(7, data.getOfflineCookies().toString());
+                    psPlayers.setInt(8, data.getPrestige());
+                    psPlayers.addBatch();
+                }
+                psPlayers.executeBatch();
+            }
+
+            // Save upgrades
+            try (PreparedStatement psUpgrades = connection.prepareStatement(
+                    "INSERT INTO upgrades (uuid, upgrade_name, level) " +
+                            "VALUES (?, ?, ?) " +
+                            "ON CONFLICT(uuid, upgrade_name) DO UPDATE SET level = excluded.level")) {
+                for (PlayerData data : snapshot.values()) {
+                    for (Map.Entry<String, Integer> upgrade : data.getUpgrades().entrySet()) {
+                        psUpgrades.setString(1, data.getUuid().toString());
+                        psUpgrades.setString(2, upgrade.getKey());
+                        psUpgrades.setInt(3, upgrade.getValue());
+                        psUpgrades.addBatch();
+                    }
+                }
+                psUpgrades.executeBatch();
+            }
+
+            // Save achievements
+            try (PreparedStatement psAchievements = connection.prepareStatement(
+                    "INSERT INTO achievements (uuid, achievement_name, progress) " +
+                            "VALUES (?, ?, ?) " +
+                            "ON CONFLICT(uuid, achievement_name) DO UPDATE SET progress = excluded.progress")) {
+                for (PlayerData data : snapshot.values()) {
+                    for (Achievement achievement : data.getAchievements()) {
+                        psAchievements.setString(1, data.getUuid().toString());
+                        psAchievements.setString(2, achievement.getType().getSlug());
+                        psAchievements.setInt(3, achievement.getProgress());
+                        psAchievements.addBatch();
+                    }
+                }
+                psAchievements.executeBatch();
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to flush player data cache: " + e.getMessage());
+        }
     }
 }

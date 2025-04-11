@@ -29,4 +29,6 @@ public abstract class Storage {
     abstract public void importData(String fileName);
 
     abstract public List<PlayerData> getAllPlayers();
+
+    abstract public void saveAllCachedData();
 }

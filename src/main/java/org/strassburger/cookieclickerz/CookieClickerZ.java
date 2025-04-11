@@ -60,6 +60,7 @@ public final class CookieClickerZ extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        storage.saveAllCachedData();
         getLogger().info("CookieClickerZ disabled!");
     }
 
