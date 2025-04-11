@@ -9,7 +9,7 @@ description: How to install the CookieClicker plugin
 To install CookieClickerZ on your Server, you first have to download the latest version of CookieClickerZ from a trusted platform such as [Modrinth](https://modrinth.com/project/cookieclickerz), or any other **official** platform.
 
 {% hint style="warning" %}
-**Be Alert:** This Plugin has not been uploaded to any Third-Party Sites such as 9Minecraft.net. Any Plugins claiming to be CookieClickerZ may contain Malware.
+**Be alert:** This plugin is only available on its official [GitHub](https://github.com/KartoffelChipss/CookieClickerZ), [Modrinth](https://modrinth.com/project/cookieclickerz), and [Hangar](https://hangar.papermc.io/KartoffelChipss/CookieClickerZ) pages. Any versions found on third-party sites like 9Minecraft.net are **unauthorized and may contain malware**. Always download from official sources to stay safe.
 {% endhint %}
 
 **2. Upload:**
