@@ -135,6 +135,17 @@ public final class SQLiteStorage extends Storage {
     }
 
     private void saveUpgrades(Connection connection, PlayerData playerData) throws SQLException {
+        if (playerData.hasRemovedUpgrades()) {
+            final String deleteQuery = "DELETE FROM achievements WHERE uuid = ?";
+            try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+                deleteStatement.setString(1, playerData.getUuid().toString());
+                deleteStatement.executeUpdate();
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to delete upgrades for player: " + e.getMessage());
+                throw e;
+            }
+        }
+
         final String query = "INSERT INTO upgrades (uuid, upgrade_name, level) " +
                 "VALUES (?, ?, ?) " +
                 "ON CONFLICT(uuid, upgrade_name) DO UPDATE SET level = excluded.level";

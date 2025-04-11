@@ -9,7 +9,6 @@ import org.strassburger.cookieclickerz.util.achievements.AchievementType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.sql.ResultSet;
 import java.util.*;
 
 public final class PlayerData {
@@ -27,6 +26,7 @@ public final class PlayerData {
     private BigInteger cookiesPerClick = BigInteger.ONE;
     private BigInteger offlineCookies = BigInteger.ZERO;
     private int prestige = 0;
+    private boolean removedUpgrades = false;
 
     public PlayerData(String name, UUID uuid) {
         this.name = name;
@@ -85,6 +85,15 @@ public final class PlayerData {
 
     public void resetUpgrades() {
         upgrades.clear();
+        removedUpgrades = true;
+    }
+
+    public boolean hasRemovedUpgrades() {
+        return removedUpgrades;
+    }
+
+    public void setHasRemovedUpgrades(boolean removedUpgrades) {
+        this.removedUpgrades = removedUpgrades;
     }
 
     public List<Achievement> getAchievements() {

@@ -69,6 +69,7 @@ public class PrestigeGuiClickListener implements Listener {
         playerData.setPrestige(prestigeData.getLevel());
         playerData.setTotalCookies(BigInteger.ZERO);
         playerData.setCookiesPerClick(BigInteger.ONE);
+        playerData.setOfflineCookies(BigInteger.ZERO);
         playerData.resetUpgrades();
         plugin.getStorage().save(playerData);
 
