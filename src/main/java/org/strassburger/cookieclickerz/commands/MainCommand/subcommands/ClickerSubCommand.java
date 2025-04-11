@@ -158,7 +158,7 @@ public class ClickerSubCommand implements SubCommand {
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("cookieclickerz.manageclickers");
+        return sender.hasPermission("cookieclickerz.admin.manageclickers");
     }
 
     private @Nullable Location getTargetBlockLocation(Player player, int maxDistance) {

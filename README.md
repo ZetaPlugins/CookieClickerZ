@@ -23,9 +23,16 @@ CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the highly popu
 ## Permissions
 
 * **cookieclickerz.useclicker** - Allows the player to use the clicker block (default: true)
-* **cookieclickerz.openshop** - Allows the player to open the shop (default: true)
-* **cookieclickerz.manageclickers** - Allows the player to manage clickers (default: op)
-* **cookieclickerz.managecookies** - Allows the player to manage cookies (default: op)
+* **cookieclickerz.upgrades** - Allows the player to open the upgrades shop (default: true)
+* **cookieclickerz.prestige** - Allows the player to open the prestige menu (default: true)
+* **cookieclickerz.top** - Allows the player to open the top menu (default: true)
+* **cookieclickerz.viewachievements** - Allows the player to open the achievements menu (default: true)
+* **cookieclickerz.numcheatsheet** - Allows the player to open the numcheatsheet (default: true)
+* **cookieclickerz.admin.manageclickers** - Allows the player to manage clickers (default: op)
+* **cookieclickerz.admin.managecookies** - Allows the player to manage other players cookies (default: op)
+* **cookieclickerz.admin.manageprestige** - Allows the player to manage other players prestige (default: op)
+* **cookieclickerz.admin.manageevents** - Allows the player to manage events (default: op)
+* **cookieclickerz.admin.manageachievements** - Allows the player to manage other players achievements (default: op)
 
 ## Configuration
 

@@ -36,12 +36,12 @@ public class MainTabCompleter implements TabCompleter {
         List<String> options = new ArrayList<>();
         options.add("help");
         options.add("version");
-        if (sender.hasPermission("cookieclickerz.reload")) options.add("reload");
-        if (sender.hasPermission("cookieclickerz.manageclickers")) options.add("clicker");
-        if (sender.hasPermission("cookieclickerz.managecookies")) options.add("cookies");
-        if (sender.hasPermission("cookieclickerz.managecookies")) options.add("prestige");
-        if (sender.hasPermission("cookieclickerz.manageevents")) options.add("events");
-        if (sender.hasPermission("cookieclickerz.manageachievements")) options.add("achievements");
+        if (sender.hasPermission("cookieclickerz.admin.reload")) options.add("reload");
+        if (sender.hasPermission("cookieclickerz.admin.manageclickers")) options.add("clicker");
+        if (sender.hasPermission("cookieclickerz.admin.managecookies")) options.add("cookies");
+        if (sender.hasPermission("cookieclickerz.admin.manageprestige")) options.add("prestige");
+        if (sender.hasPermission("cookieclickerz.admin.manageevents")) options.add("events");
+        if (sender.hasPermission("cookieclickerz.admin.manageachievements")) options.add("achievements");
         if (sender.hasPermission("cookieclickerz.numcheatsheet")) options.add("numbers");
 
         return getDisplayOptions(options, input);

@@ -84,6 +84,6 @@ public class CookiesSubCommand implements SubCommand {
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("cookieclickerz.managecookies");
+        return sender.hasPermission("cookieclickerz.admin.managecookies");
     }
 }

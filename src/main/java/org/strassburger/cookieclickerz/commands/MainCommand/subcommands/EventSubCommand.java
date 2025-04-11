@@ -121,6 +121,6 @@ public class EventSubCommand implements SubCommand {
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("cookieclickerz.manageevents");
+        return sender.hasPermission("cookieclickerz.admin.manageevents");
     }
 }

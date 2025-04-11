@@ -147,6 +147,6 @@ public class AchievementsSubCommand implements SubCommand {
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("cookieclickerz.manageachievements");
+        return sender.hasPermission("cookieclickerz.admin.manageachievements");
     }
 }

@@ -29,27 +29,27 @@ permissions:
   cookieclickerz.prestige:
     default: true
     description: Permission to open the prestige menu
-  cookieclickerz.boosters:
-    default: true
-    description: Permission to open the booster menu
   cookieclickerz.top:
     default: true
     description: Permission to open the top players menu
   cookieclickerz.numcheatsheet:
     default: true
     description: Permission to use the number shorthand cheatsheet
-  cookieclickerz.reload:
+  cookieclickerz.admin.reload:
     default: op
     description: Permission to reload the plugin
-  cookieclickerz.manageclickers:
+  cookieclickerz.admin.manageclickers:
     default: op
     description: Permission to add a clicker blocks
-  cookieclickerz.managecookies:
+  cookieclickerz.admin.managecookies:
     default: op
     description: Permission to manage cookies
-  cookieclickerz.manageevents:
+  cookieclickerz.admin.manageprestige:
+    default: op
+    description: Permission to manage cookies
+  cookieclickerz.admin.manageevents:
     default: op
     description: Permission to manage events
-  cookieclickerz.manageachievements:
+  cookieclickerz.admin.manageachievements:
     default: op
     description: Permission to manage achievements
