@@ -152,13 +152,13 @@ achievements:
     description: "Perform your first click"
   clicks_finger_workout:
     name: "Finger Workout"
-    description: "Perform 100 clicks"
+    description: "Perform 1,000 clicks"
   clicks_click_champion:
     name: "Click Champion"
-    description: "Perform 1,000 clicks"
+    description: "Perform 10,000 clicks"
   clicks_unstoppable_clicker:
     name: "Unstoppable Clicker"
-    description: "Perform 10,000 clicks"
+    description: "Perform 100,000 clicks"
   clicks_cookie_machine:
     name: "Cookie Machine"
     description: "Perform 1,000,000 clicks"
@@ -167,31 +167,31 @@ achievements:
     description: "Bake 1,000 cookies"
   cookies_cookie_connoisseur:
     name: "Cookie Connoisseur"
-    description: "Bake 100K cookies"
+    description: "Bake 1M cookies"
   cookies_cookie_collector:
     name: "Cookie Collector"
-    description: "Bake 1M cookies"
+    description: "Bake 1B cookies"
   cookies_cookie_hoarder:
     name: "Cookie Hoarder"
-    description: "Bake 1B cookies"
+    description: "Bake 1T cookies"
   cookies_cookie_overlord:
     name: "Cookie Overlord"
-    description: "Bake 1T cookies"
+    description: "Bake 1Q cookies"
   upgrades_smart_shopper:
     name: "Smart Shopper"
     description: "Buy your first upgrade"
   upgrades_upgrade_master:
     name: "Upgrade Master"
-    description: "Buy 50 upgrades"
+    description: "Buy 100 upgrades"
   upgrades_savvy_spender:
     name: "Savvy Spender"
-    description: "Buy 150 upgrades"
+    description: "Buy 250 upgrades"
   upgrades_upgrade_enthusiast:
     name: "Upgrade Enthusiast"
-    description: "Buy 500 upgrades"
+    description: "Buy 1,000 upgrades"
   upgrades_gotta_upgrade_them_all:
     name: "Gotta Upgrade Them All"
-    description: "Buy 1,000 upgrades"
+    description: "Buy 5,000 upgrades"
   prestige_rebaked_and_ready:
     name: "Rebaked and Ready"
     description: "Prestige for the first time"
@@ -209,10 +209,10 @@ achievements:
     description: "Prestige 5 times"
   event_event_horizon:
     name: "Event Horizon"
-    description: "Participate 100 events"
+    description: "Participate 150 events"
   event_sugar_rush:
     name: "Sugar Rush"
-    description: "Participate in 10 Cookie Frenzy events"
+    description: "Participate in 25 Cookie Frenzy events"
   event_money_magnet:
     name: "Money Magnet"
     description: "Recieve more than 1M cookies in a single Lucky event"
@@ -221,4 +221,4 @@ achievements:
     description: "Lose more than 1M cookies in a single Ruin event"
   event_not_my_cookies:
     name: "Not My Cookies!"
-    description: "Participate in 50 negative events"
+    description: "Participate in 75 negative events"

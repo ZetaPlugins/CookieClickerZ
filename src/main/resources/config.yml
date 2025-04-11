@@ -98,6 +98,7 @@ playerCache:
     # The maximum amount of players that will be stored in the cache
     maxSize: 1000
 
+
 # === STORAGE ===
 
 storage:
