@@ -155,13 +155,16 @@ public final class SQLiteStorage extends Storage {
     }
 
     private PlayerData loadPlayerData(UUID uuid) {
+        final String query = "SELECT * FROM players WHERE uuid = ?";
+
         try (Connection connection = createConnection()) {
             if (connection == null) return null;
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM players WHERE uuid = ?")) {
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, uuid.toString());
                 ResultSet resultSet = statement.executeQuery();
 
+                // If no player data is found, create a new PlayerData object
                 if (!resultSet.next()) {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player == null) return null;
@@ -190,10 +193,12 @@ public final class SQLiteStorage extends Storage {
     }
 
     private void loadUpgrades(UUID uuid, PlayerData playerData) {
+        final String query = "SELECT * FROM upgrades WHERE uuid = ?";
+
         try (Connection connection = createConnection()) {
             if (connection == null) return;
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM upgrades WHERE uuid = ?")) {
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, uuid.toString());
                 ResultSet resultSet = statement.executeQuery();
 
@@ -211,10 +216,12 @@ public final class SQLiteStorage extends Storage {
     }
 
     private void loadAchievements(UUID uuid, PlayerData playerData) {
+        final String query = "SELECT * FROM achievements WHERE uuid = ?";
+
         try (Connection connection = createConnection()) {
             if (connection == null) return;
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM achievements WHERE uuid = ?")) {
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, uuid.toString());
                 ResultSet resultSet = statement.executeQuery();
 
@@ -310,11 +317,16 @@ public final class SQLiteStorage extends Storage {
         }
     }
 
+    /**
+     * Get all players from the database. The playerdata does not include upgrades or achievements.
+     * @return A list of PlayerData objects representing all players in the database.
+     */
     public List<PlayerData> getAllPlayers() {
         List<PlayerData> players = new ArrayList<>();
 
         try (Connection connection = createConnection()) {
             if (connection == null) return players;
+
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM players");
 
