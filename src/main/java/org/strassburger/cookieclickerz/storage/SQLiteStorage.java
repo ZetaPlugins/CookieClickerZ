@@ -2,7 +2,6 @@ package org.strassburger.cookieclickerz.storage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.strassburger.cookieclickerz.CookieClickerZ;
 import org.strassburger.cookieclickerz.util.achievements.Achievement;
 
@@ -18,24 +17,6 @@ public final class SQLiteStorage extends Storage {
 
     public SQLiteStorage(CookieClickerZ plugin) {
         super(plugin);
-
-        // Multiply by 20 to convert seconds to ticks
-        long saveInterval = plugin.getConfig().getInt("enabled.saveInterval", 60) * 20L;
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                saveAllCachedData();
-            }
-        }.runTaskTimerAsynchronously(plugin, saveInterval, saveInterval);
-    }
-
-    private boolean shouldUsePlayerCache() {
-        return getPlugin().getConfig().getBoolean("playerCache.enabled", true);
-    }
-
-    private int getMaxCacheSize() {
-        return getPlugin().getConfig().getInt("playerCache.maxSize", 1000);
     }
 
     @Override
