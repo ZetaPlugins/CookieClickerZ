@@ -19,12 +19,23 @@ public final class SQLiteStorage extends Storage {
     public SQLiteStorage(CookieClickerZ plugin) {
         super(plugin);
 
+        // Multiply by 20 to convert seconds to ticks
+        long saveInterval = plugin.getConfig().getInt("enabled.saveInterval", 60) * 20L;
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 saveAllCachedData();
             }
-        }.runTaskTimerAsynchronously(plugin, 60 * 20, 60 * 20);// 60s in ticks
+        }.runTaskTimerAsynchronously(plugin, saveInterval, saveInterval);
+    }
+
+    private boolean shouldUsePlayerCache() {
+        return getPlugin().getConfig().getBoolean("playerCache.enabled", true);
+    }
+
+    private int getMaxCacheSize() {
+        return getPlugin().getConfig().getInt("playerCache.maxSize", 1000);
     }
 
     @Override
@@ -89,7 +100,7 @@ public final class SQLiteStorage extends Storage {
     public void save(PlayerData playerData) {
         if (playerData == null) return;
 
-        if (playerDataCache.containsKey(playerData.getUuid())) {
+        if (shouldUsePlayerCache() && playerDataCache.containsKey(playerData.getUuid())) {
             playerDataCache.put(playerData.getUuid(), playerData);
             return;
         }
@@ -163,7 +174,7 @@ public final class SQLiteStorage extends Storage {
 
     @Override
     public PlayerData load(UUID uuid) {
-        if (playerDataCache.containsKey(uuid)) {
+        if (shouldUsePlayerCache() && playerDataCache.containsKey(uuid)) {
             return playerDataCache.get(uuid);
         }
 
@@ -171,6 +182,11 @@ public final class SQLiteStorage extends Storage {
         if (playerData != null) {
             loadUpgrades(uuid, playerData);
             loadAchievements(uuid, playerData);
+        }
+
+        if (shouldUsePlayerCache()) {
+            playerDataCache.put(uuid, playerData);
+            if (playerDataCache.size() > getMaxCacheSize()) saveAllCachedData();
         }
         return playerData;
     }
