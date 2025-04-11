@@ -1,0 +1,12 @@
+org.strassburger.cookieclickerz
+org.strassburger.cookieclickerz.commands
+org.strassburger.cookieclickerz.commands.MainCommand
+org.strassburger.cookieclickerz.commands.MainCommand.subcommands
+org.strassburger.cookieclickerz.listeners
+org.strassburger.cookieclickerz.listeners.inventory
+org.strassburger.cookieclickerz.storage
+org.strassburger.cookieclickerz.util
+org.strassburger.cookieclickerz.util.achievements
+org.strassburger.cookieclickerz.util.cookieevents
+org.strassburger.cookieclickerz.util.gui
+org.strassburger.cookieclickerz.util.items
