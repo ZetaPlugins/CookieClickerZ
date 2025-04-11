@@ -35,6 +35,9 @@ permissions:
   cookieclickerz.top:
     default: true
     description: Permission to open the top players menu
+  cookieclickerz.numcheatsheet:
+    default: true
+    description: Permission to use the number shorthand cheatsheet
   cookieclickerz.reload:
     default: op
     description: Permission to reload the plugin

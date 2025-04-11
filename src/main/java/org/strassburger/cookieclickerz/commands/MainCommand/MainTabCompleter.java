@@ -42,6 +42,7 @@ public class MainTabCompleter implements TabCompleter {
         if (sender.hasPermission("cookieclickerz.managecookies")) options.add("prestige");
         if (sender.hasPermission("cookieclickerz.manageevents")) options.add("events");
         if (sender.hasPermission("cookieclickerz.manageachievements")) options.add("achievements");
+        if (sender.hasPermission("cookieclickerz.numcheatsheet")) options.add("numbers");
 
         return getDisplayOptions(options, input);
     }
