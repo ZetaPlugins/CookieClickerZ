@@ -21,6 +21,7 @@ public final class SQLiteStorage extends Storage {
     public void init() {
         try (Connection connection = createConnection()) {
             if (connection == null) return;
+
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
                         "uuid TEXT PRIMARY KEY, " +
@@ -32,7 +33,7 @@ public final class SQLiteStorage extends Storage {
                         "offlineCookies TEXT," +
                         "prestige INTEGER DEFAULT 0)");
             } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to create players table in SQLite database: " + e.getMessage());
             }
 
             // Create upgrades table if not exists
@@ -44,7 +45,7 @@ public final class SQLiteStorage extends Storage {
                         "PRIMARY KEY (uuid, upgrade_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to initialize upgrades table in SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to create upgrades table in SQLite database: " + e.getMessage());
             }
 
             // Create achievements table if not exists
@@ -56,7 +57,7 @@ public final class SQLiteStorage extends Storage {
                         "PRIMARY KEY (uuid, achievement_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to initialize achievements table in SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to create achievements table in SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
             getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
@@ -76,11 +77,12 @@ public final class SQLiteStorage extends Storage {
 
     @Override
     public void save(PlayerData playerData) {
+        final String query = "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = createConnection()) {
             if (connection == null) return;
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, playerData.getUuid().toString());
                 statement.setString(2, playerData.getName());
                 statement.setString(3, playerData.getTotalCookies().toString());
@@ -105,25 +107,18 @@ public final class SQLiteStorage extends Storage {
     }
 
     private void saveUpgrades(Connection connection, PlayerData playerData) throws SQLException {
-        // Clear existing upgrades for the player
-        try (PreparedStatement deleteStatement = connection.prepareStatement(
-                "DELETE FROM upgrades WHERE uuid = ?")) {
-            deleteStatement.setString(1, playerData.getUuid().toString());
-            deleteStatement.executeUpdate();
-        } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to clear existing upgrades for player: " + e.getMessage());
-            throw e;
-        }
+        final String query = "INSERT INTO upgrades (uuid, upgrade_name, level) " +
+                "VALUES (?, ?, ?) " +
+                "ON CONFLICT(uuid, upgrade_name) DO UPDATE SET level = excluded.level";
 
-        // Save current upgrades
-        try (PreparedStatement insertStatement = connection.prepareStatement(
-                "INSERT INTO upgrades (uuid, upgrade_name, level) VALUES (?, ?, ?)")) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Map.Entry<String, Integer> entry : playerData.getUpgrades().entrySet()) {
-                insertStatement.setString(1, playerData.getUuid().toString());
-                insertStatement.setString(2, entry.getKey());
-                insertStatement.setInt(3, entry.getValue());
-                insertStatement.executeUpdate();
+                statement.setString(1, playerData.getUuid().toString());
+                statement.setString(2, entry.getKey());
+                statement.setInt(3, entry.getValue());
+                statement.addBatch();
             }
+            statement.executeBatch();
         } catch (SQLException e) {
             getPlugin().getLogger().severe("Failed to save upgrades for player: " + e.getMessage());
             throw e;
@@ -131,25 +126,18 @@ public final class SQLiteStorage extends Storage {
     }
 
     private void saveAchievements(Connection connection, PlayerData playerData) throws SQLException {
-        // Clear existing achievements for the player
-        try (PreparedStatement deleteStatement = connection.prepareStatement(
-                "DELETE FROM achievements WHERE uuid = ?")) {
-            deleteStatement.setString(1, playerData.getUuid().toString());
-            deleteStatement.executeUpdate();
-        } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to clear existing achievements for player: " + e.getMessage());
-            throw e;
-        }
+        final String query = "INSERT INTO achievements (uuid, achievement_name, progress) " +
+                "VALUES (?, ?, ?) " +
+                "ON CONFLICT(uuid, achievement_name) DO UPDATE SET progress = excluded.progress";
 
-        // Save current achievements
-        try (PreparedStatement insertStatement = connection.prepareStatement(
-                "INSERT INTO achievements (uuid, achievement_name, progress) VALUES (?, ?, ?)")) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Achievement achievement : playerData.getAchievements()) {
-                insertStatement.setString(1, playerData.getUuid().toString());
-                insertStatement.setString(2, achievement.getType().getSlug());
-                insertStatement.setInt(3, achievement.getProgress());
-                insertStatement.executeUpdate();
+                statement.setString(1, playerData.getUuid().toString());
+                statement.setString(2, achievement.getType().getSlug());
+                statement.setInt(3, achievement.getProgress());
+                statement.addBatch();
             }
+            statement.executeBatch();
         } catch (SQLException e) {
             getPlugin().getLogger().severe("Failed to save achievements for player: " + e.getMessage());
             throw e;
