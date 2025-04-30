@@ -55,6 +55,9 @@ public final class CookieClickerZ extends JavaPlugin {
 
         versionChecker = new VersionChecker(this);
 
+        // Bstats is currently not available so I can't get a plugin ID. When I get one, I will uncomment this.
+        // initializeBStats();
+
         getLogger().info("CookieClickerZ enabled!");
     }
 
@@ -122,6 +125,14 @@ public final class CookieClickerZ extends JavaPlugin {
         for (String file : List.of("upgrades", "prestige", "clicker")) {
             configManager.getCustomConfig(file);
         }
+    }
+
+    private void initializeBStats() {
+        int pluginId = 0;
+        Metrics metrics = new Metrics(this, pluginId);
+
+        metrics.addCustomChart(new Metrics.SimplePie("storage_type", () -> getConfig().getString("storage.type")));
+        metrics.addCustomChart(new Metrics.SimplePie("language", () -> getConfig().getString("lang")));
     }
 
     public static String locationToString(Location location) {
