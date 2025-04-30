@@ -1,12 +1,12 @@
-![banner](https://file.strassburger.dev/CookieClickerZ_banner.png)
+![banner](https://file.strassburger.dev/ccz_banner_round.png)
 
 ---
 ![paper](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/supported/paper_vector.svg)
 ![purpur](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/supported/purpur_vector.svg)
-[![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/github_vector.svg)](https://github.com/KartoffelChipss/cookieclickerz)
+[![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/github_vector.svg)](https://github.com/ZetaPlugins/CookieClickerZ)
 [![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/project/cookieclickerz)
 [![discord-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/social/discord-plural_vector.svg)](https://strassburger.org/discord)
-[![gitbook](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/documentation/gitbook_vector.svg)](https://cc.strassburger.dev/)
+[![gitbook](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/documentation/gitbook_vector.svg)](https://docs.zetaplugins.com/cookieclickerz)
 
 CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the popular Cookie Clicker game to your Minecraft Server. You can either customize the plugin to the last detail or use the standard installation for the traditional cookieclicker experience.
 
@@ -233,3 +233,7 @@ levels:
 ```
 
 </details>
+
+---
+
+[![Usage](https://bstats.org/signatures/bukkit/CookieClickerZ.svg)](https://bstats.org/plugin/bukkit/CookieClickerZ/25442)
