@@ -1,4 +1,4 @@
-![banner](https://file.strassburger.dev/CookieClickerZ_banner.png)
+![banner](https://file.strassburger.dev/ccz_banner_round.png)
 
 ---
 ![paper](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/supported/paper_vector.svg)
