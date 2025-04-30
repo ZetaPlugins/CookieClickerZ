@@ -233,3 +233,5 @@ levels:
 ```
 
 </details>
+
+[![Usage](https://bstats.org/signatures/bukkit/CookieClickerZ.svg)](https://bstats.org/plugin/bukkit/CookieClickerZ/25442)
