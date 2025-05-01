@@ -78,7 +78,7 @@ offlineCookies:
   joinMessage: true
 
 # Wether or not to show a hologram above the clicker block
-# You need to have HolographicDisplays installed for this to work:
+# You need to have DecentHolograms installed for this to work:
 # https://modrinth.com/plugin/decentholograms
 # You can change the content of the hologram in the language file
 hologram: true
