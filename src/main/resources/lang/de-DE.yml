@@ -1,6 +1,6 @@
 accentColor: "<#D2691E>" # This is the accent color code. It will replace %ac% in the messages.
 prefix: "&8[%ac%CookieClickerZ&8]"
-newVersionAvailable: "&7Eine neue Version von CookieClickerZ ist verfügbar!\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/lifestealz/versions>https://modrinth.com/plugin/lifestealz/versions</click>"
+newVersionAvailable: "&7Eine neue Version von CookieClickerZ ist verfügbar!\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/cookieclickerz/versions>https://modrinth.com/plugin/cookieclickerz/versions</click>"
 usageError: "&cVerwendung: %usage%"
 noPermsError: "&cDu hast keine Berechtigung, diesen Befehl auszuführen!"
 playerNotFound: "&cSpieler nicht gefunden!"
