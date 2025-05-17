@@ -26,6 +26,8 @@ public class MainGUI {
         final CookieClickerZ plugin = CookieClickerZ.getInstance();
         PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
 
+        Material mainItem = Material.valueOf(plugin.getConfig().getString("mainItem", "COOKIE"));
+
         Inventory inventory = Bukkit.createInventory(null, 5 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
         GuiAssets.addBorder(inventory);
 
@@ -37,7 +39,7 @@ public class MainGUI {
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.achievementsTitle", "<#9932cc>&lBoosters"))
                 .setLore(MessageUtils.getAndFormatMsgList("inventories.main.achievementsDescription"))
                 .getItemStack());
-        inventory.setItem(22, new CustomItem(Material.COOKIE)
+        inventory.setItem(22, new CustomItem(mainItem)
                 .setName(MessageUtils.getAndFormatMsg(false, "inventories.main.clickerTitle", "%ac%&lYour Cookies"))
                 .setLore(MessageUtils.getAndFormatMsgList(
                         "inventories.main.clickerDescription",

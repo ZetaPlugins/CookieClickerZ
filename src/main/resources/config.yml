@@ -23,6 +23,9 @@ lang: "en-US"
 # This is to conveniently change the cookie name in most messages. You will probably also want to adjust some other messages in your respective language file.
 cookieName: "Cookies"
 
+# The item that will be displayed in the middle of the main gui
+mainItem: "COOKIE"
+
 offlineCookies:
   # If set to true, players will earn cookies while they are offline
   enabled: true
