@@ -87,12 +87,16 @@ public class DevSubCommand implements SubCommand {
             return true;
         }
 
+        if (optionTwo.equals("savecached")) {
+            plugin.getStorage().saveAllCachedData();
+        }
+
         return false;
     }
 
     @Override
     public String getUsage() {
-        return "/cc dev <test | addMockData>";
+        return "/cc dev <test | addMockData | savecached>";
     }
 
     @Override

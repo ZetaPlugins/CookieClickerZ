@@ -61,7 +61,7 @@ public class MainTabCompleter implements TabCompleter {
             case "achievements":
                 return null;
             case "dev":
-                return getDisplayOptions(List.of("test", "addMockData"), input);
+                return getDisplayOptions(List.of("test", "addMockData", "savecached"), input);
             default:
                 return List.of();
         }

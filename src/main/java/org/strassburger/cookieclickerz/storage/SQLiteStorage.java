@@ -117,7 +117,7 @@ public final class SQLiteStorage extends Storage {
 
     private void saveUpgrades(Connection connection, PlayerData playerData) throws SQLException {
         if (playerData.hasRemovedUpgrades()) {
-            final String deleteQuery = "DELETE FROM achievements WHERE uuid = ?";
+            final String deleteQuery = "DELETE FROM upgrades WHERE uuid = ?";
             try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
                 deleteStatement.setString(1, playerData.getUuid().toString());
                 deleteStatement.executeUpdate();
@@ -408,19 +408,8 @@ public final class SQLiteStorage extends Storage {
             }
 
             // Save upgrades
-            try (PreparedStatement psUpgrades = connection.prepareStatement(
-                    "INSERT INTO upgrades (uuid, upgrade_name, level) " +
-                            "VALUES (?, ?, ?) " +
-                            "ON CONFLICT(uuid, upgrade_name) DO UPDATE SET level = excluded.level")) {
-                for (PlayerData data : snapshot.values()) {
-                    for (Map.Entry<String, Integer> upgrade : data.getUpgrades().entrySet()) {
-                        psUpgrades.setString(1, data.getUuid().toString());
-                        psUpgrades.setString(2, upgrade.getKey());
-                        psUpgrades.setInt(3, upgrade.getValue());
-                        psUpgrades.addBatch();
-                    }
-                }
-                psUpgrades.executeBatch();
+            for (PlayerData data : snapshot.values()) {
+                saveUpgrades(connection, data);
             }
 
             // Save achievements
