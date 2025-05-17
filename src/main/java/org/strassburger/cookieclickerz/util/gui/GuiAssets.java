@@ -79,13 +79,13 @@ public class GuiAssets {
         String levelColor = upgrade.getLevel() <= 0 ? "&8" : "&e";
         return new CustomItem(Material.valueOf(upgrade.getItem()))
                 .setName(upgrade.getName())
-                .setLore(List.of(
-                        MessageUtils.formatMsg("&7Cookies per Click: %ac%" + NumFormatter.formatBigInt(upgrade.getCpc())),
-                        MessageUtils.formatMsg("&7Offline Cookies: %ac%" + NumFormatter.formatBigInt(upgrade.getOfflineCookies())),
-                        MessageUtils.formatMsg("&r "),
-                        MessageUtils.formatMsg("&7Price: " + affordable + NumFormatter.formatBigInt(upgrade.getUpgradePrice())),
-                        MessageUtils.formatMsg(" "),
-                        MessageUtils.formatMsg("&7Level: " + levelColor + upgrade.getLevel())
+                .setLore(MessageUtils.getAndFormatMsgList("inventories.upgrades.upgradeDescription",
+                        new MessageUtils.Replaceable<>("%cpc%", NumFormatter.formatBigInt(upgrade.getCpc())),
+                        new MessageUtils.Replaceable<>("%oc%", NumFormatter.formatBigInt(upgrade.getOfflineCookies())),
+                        new MessageUtils.Replaceable<>("%affordablecolor%", affordable),
+                        new MessageUtils.Replaceable<>("%price%", NumFormatter.formatBigInt(upgrade.getUpgradePrice())),
+                        new MessageUtils.Replaceable<>("%levelcolor%", levelColor),
+                        new MessageUtils.Replaceable<>("%level%", upgrade.getLevel())
                 ))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_ENCHANTS)

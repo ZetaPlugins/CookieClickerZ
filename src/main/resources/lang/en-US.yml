@@ -8,7 +8,7 @@ noConsoleError: "&cYou need to be a player to execute this command!"
 playerDataStorageNull: "&cPlayer data not found! Player needs to rejoin!"
 noPermissionError: "&cYou don't have permission to use this!"
 noPlayerData: "&cThis player has not played on this server yet!"
-helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>You can create a clicker block with <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\nGet cookies by left clicking on the block and open the menu with a right click.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Documentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
+helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>You can create a clicker block with <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\nGet %cookieName% by left clicking on the block and open the menu with a right click.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Documentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
 reloadMsg: "&7Successfully reloaded the plugin!"
 versionMsg: "&7You are using version %ac%%version%"
 exportData: "&7Successfully exported player data to %ac%%file%.csv"
@@ -23,19 +23,19 @@ clickerRemoveConfirm: "&7Successfully removed the clicker with the name %ac%%nam
 clickerList: "&7Clickers: %ac%%clickers%"
 noClickers: "&cThere are no clickers!"
 getCookieActionbar: "%ac%+%num% &7%cookieName%&7 &8| %ac%%total% &7%cookieName%&7"
-addCookies: "&7Successfully added %ac%%amount% &7cookies to %ac%%player%"
-removeCookies: "&7Successfully removed %ac%%amount% &7cookies from %ac%%player%"
-setCookies: "&7Successfully set %ac%%player%&7's cookies to %ac%%amount%"
+addCookies: "&7Successfully added %ac%%amount% &7%cookieName% to %ac%%player%"
+removeCookies: "&7Successfully removed %ac%%amount% &7%cookieName% from %ac%%player%"
+setCookies: "&7Successfully set %ac%%player%&7's %cookieName% to %ac%%amount%"
 invalidAmount: "&cInvalid amount!"
-addCPC: "&7Successfully added %ac%%amount% &7cookies per click to %ac%%player%"
-removeCPC: "&7Successfully removed %ac%%amount% &7cookies per click from %ac%%player%"
-setCPC: "&7Successfully set %ac%%player%&7's cookies per click to %ac%%amount%"
-notEnoughCookies: "&cYou don't have enough cookies!"
+addCPC: "&7Successfully added %ac%%amount% &7%cookieName% per click to %ac%%player%"
+removeCPC: "&7Successfully removed %ac%%amount% &7%cookieName% per click from %ac%%player%"
+setCPC: "&7Successfully set %ac%%player%&7's %cookieName% per click to %ac%%amount%"
+notEnoughCookies: "&cYou don't have enough %cookieName%!"
 upgradeBought: "&7You bought the upgrade %ac%%upgrade%&7!"
 prestigeSuccess: "&7You prestiged to Prestige %ac%%prestige%&7! You now have a %ac%%multiplier%x cookie multiplier!"
 getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
-offlineCookies: "&7You earned &e%ac%%amount%&7 cookies while you were offline!"
+offlineCookies: "&7You earned &e%ac%%amount%&7 %cookieName% while you were offline!"
 teleportToClicker: "Teleport to clicker %name%"
 noEvent: "&cThere is no event for %ac%%player%"
 getEvent: "&7Events for %ac%%player%&7: %ac%%events%"
@@ -61,14 +61,14 @@ numCheatSheet:
   - "&r"
 eventMessages:
   instant:
-    LUCKY: "&a&lLucky! &r&7You got %ac%%amount% &7cookies!"
-    RUIN: "&c&lRuin! &r&7You lost %ac%%amount% &7cookies!"
+    LUCKY: "&a&lLucky! &r&7You got %ac%%amount% &7%cookieName%!"
+    RUIN: "&c&lRuin! &r&7You lost %ac%%amount% &7%cookieName%!"
   start:
-    COOKIE_FRENZY: "&a&lCookie Frenzy! &r&7You get %ac%7x &7more cookies for the next %ac%77 seconds&7!"
+    COOKIE_FRENZY: "&a&lCookie Frenzy! &r&7You get %ac%7x &7more %cookieName% for the next %ac%77 seconds&7!"
     LUCKY: ""
-    CLICK_FRENZY: "&a&lClick Frenzy! &r&7You get %ac%777x &7more cookies for the next %ac%13 seconds&7!"
+    CLICK_FRENZY: "&a&lClick Frenzy! &r&7You get %ac%777x &7more %cookieName% for the next %ac%13 seconds&7!"
     RUIN: ""
-    CURSED_FINGER: "&c&lCursed Finger! &r&7You get &c-50% &7cookies for the next &c66 seconds&7!"
+    CURSED_FINGER: "&c&lCursed Finger! &r&7You get &c-50% &7%cookieName% for the next &c66 seconds&7!"
   end:
     COOKIE_FRENZY: "&7Cookie Frenzy has ended!"
     LUCKY: ""
@@ -103,7 +103,7 @@ inventories:
     topDescription:
       - "&7The top players in the cookie world!"
       - " "
-    clickerTitle: "%ac%&lYour Cookies"
+    clickerTitle: "%ac%&lYour %cookieName%"
     clickerDescription:
       - " "
       - "&8>> %ac%%cookies% &7%cookieName%"
@@ -113,6 +113,18 @@ inventories:
       - " "
       - "&8>> %ac%%multiplier%x &7Prestige multiplier"
       - " "
+  upgrades:
+    title: "&8Upgrades"
+    description:
+      - "&7Buy upgrades to increase your cookie production!"
+      - " "
+    upgradeDescription:
+      - "&7%cookieName% per Click: %ac%%cpc%"
+      - "&7Offline %cookieName%: %ac%%oc%"
+      - "&r "
+      - "&7Price: %affordablecolor%%price%"
+      - "&r "
+      - "&7Level: %levelcolor%%level%"
   prestige:
     title: "&8Prestige"
     prestige: "<#69e372>&lPrestige"
@@ -120,17 +132,17 @@ inventories:
     upgradeDescription:
       available:
         - "&7Cookie Multiplier: %ac%%multiplier%x"
-        - "&7Price: %ac%%price% cookies"
+        - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&8[&7Click to prestige&8]"
       unavailable:
         - "&7Cookie Multiplier: %ac%%multiplier%x"
-        - "&7Price: %ac%%price% cookies"
+        - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&cYou need to prestige to unlock this!"
       bought:
         - "&7Cookie Multiplier: %ac%%multiplier%x"
-        - "&7Price: %ac%%price% cookies"
+        - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&7You already bought this level!"
   top:
@@ -157,7 +169,7 @@ inventories:
     notCompleted: "&8[&c✖&8]"
 achievementCategories:
   clicks: "<#9932cc>Clicks"
-  cookies: "<#9932cc>Cookies"
+  cookies: "<#9932cc>%cookieName%"
   upgrades: "<#9932cc>Upgrades"
   prestige: "<#9932cc>Prestige"
   events: "<#9932cc>Events"
@@ -180,19 +192,19 @@ achievements:
     description: "Perform 1,000,000 clicks"
   cookies_first_batch:
     name: "First Batch"
-    description: "Bake 1,000 cookies"
+    description: "Bake 1,000 %cookieName%"
   cookies_cookie_connoisseur:
     name: "Cookie Connoisseur"
-    description: "Bake 1M cookies"
+    description: "Bake 1M %cookieName%"
   cookies_cookie_collector:
     name: "Cookie Collector"
-    description: "Bake 1B cookies"
+    description: "Bake 1B %cookieName%"
   cookies_cookie_hoarder:
     name: "Cookie Hoarder"
-    description: "Bake 1T cookies"
+    description: "Bake 1T %cookieName%"
   cookies_cookie_overlord:
     name: "Cookie Overlord"
-    description: "Bake 1Q cookies"
+    description: "Bake 1Q %cookieName%"
   upgrades_smart_shopper:
     name: "Smart Shopper"
     description: "Buy your first upgrade"
@@ -231,10 +243,10 @@ achievements:
     description: "Participate in 25 Cookie Frenzy events"
   event_money_magnet:
     name: "Money Magnet"
-    description: "Recieve more than 1M cookies in a single Lucky event"
+    description: "Recieve more than 1M %cookieName% in a single Lucky event"
   event_oof:
     name: "Oof!"
-    description: "Lose more than 1M cookies in a single Ruin event"
+    description: "Lose more than 1M %cookieName% in a single Ruin event"
   event_not_my_cookies:
-    name: "Not My Cookies!"
+    name: "Not My %cookieName%!"
     description: "Participate in 75 negative events"

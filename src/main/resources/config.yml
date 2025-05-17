@@ -20,7 +20,8 @@ checkForUpdates: true
 lang: "en-US"
 
 # The the cookie name
-cookieName: "&7Cookies"
+# This is to conveniently change the cookie name in most messages. You will probably also want to adjust some other messages in your respective language file.
+cookieName: "Cookies"
 
 offlineCookies:
   # If set to true, players will earn cookies while they are offline
@@ -74,7 +75,7 @@ anticheat:
     message: "&cYou are clicking too fast!"
     # The commands that will be executed if a player clicks too fast
     commands:
-      #- "kick %player% &cYou are clicking too fast!"
+    #- "kick %player% &cYou are clicking too fast!"
 
   nomovement:
     # If set to true, the plugin will check if a player is moving
@@ -85,7 +86,8 @@ anticheat:
     message: "&cYou are not moving!"
     # The commands that will be executed if a player is not moving
     commands:
-      # - "kick %player% &cYou are not moving!"
+    # - "kick %player% &cYou are not moving!"
+
 
 # === EXPERT ===
 # This section is only relevant if you are an expert and know what you are doing

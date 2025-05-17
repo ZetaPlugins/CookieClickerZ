@@ -141,7 +141,7 @@ public class UpgradeGUI {
     }
 
     public static void open(Player player, int page) {
-        Inventory inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.main.title", "&8CookieClickerZ"));
+        Inventory inventory = Bukkit.createInventory(null, 6 * 9, MessageUtils.getAndFormatMsg(false, "inventories.upgrades.title", "&8Upgrades"));
         GuiAssets.addBorder(inventory);
         GuiAssets.addBackButton(inventory);
 
