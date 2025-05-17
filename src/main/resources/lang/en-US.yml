@@ -32,7 +32,7 @@ removeCPC: "&7Successfully removed %ac%%amount% &7%cookieName% per click from %a
 setCPC: "&7Successfully set %ac%%player%&7's %cookieName% per click to %ac%%amount%"
 notEnoughCookies: "&cYou don't have enough %cookieName%!"
 upgradeBought: "&7You bought the upgrade %ac%%upgrade%&7!"
-prestigeSuccess: "&7You prestiged to Prestige %ac%%prestige%&7! You now have a %ac%%multiplier%x cookie multiplier!"
+prestigeSuccess: "&7You prestiged to Prestige %ac%%prestige%&7! You now have a %ac%%multiplier%x %cookieName% multiplier!"
 getPrestige: "&7%ac%%player%&7's prestige level is %ac%%prestige%"
 setPrestige: "&7Successfully set %ac%%player%&7's prestige level to %ac%%amount%"
 offlineCookies: "&7You earned &e%ac%%amount%&7 %cookieName% while you were offline!"
@@ -77,7 +77,7 @@ eventMessages:
     CURSED_FINGER: "&7Cursed Finger has ended!"
 clickerHologram:
   - "%ac%&l🍪 Cookie Clicker 🍪"
-  - "&7Click to get cookies!"
+  - "&7Click to get %cookieName%!"
 clickerHologramOffset: 2.0
 inventories:
   navigation:
@@ -131,17 +131,17 @@ inventories:
     description: "&7Prestige to massively increase your cookie production!"
     upgradeDescription:
       available:
-        - "&7Cookie Multiplier: %ac%%multiplier%x"
+        - "&7%cookieName% Multiplier: %ac%%multiplier%x"
         - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&8[&7Click to prestige&8]"
       unavailable:
-        - "&7Cookie Multiplier: %ac%%multiplier%x"
+        - "&7%cookieName% Multiplier: %ac%%multiplier%x"
         - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&cYou need to prestige to unlock this!"
       bought:
-        - "&7Cookie Multiplier: %ac%%multiplier%x"
+        - "&7%cookieName% Multiplier: %ac%%multiplier%x"
         - "&7Price: %ac%%price% %cookieName%"
         - " "
         - "&7You already bought this level!"
