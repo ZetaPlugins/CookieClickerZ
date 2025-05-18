@@ -39,6 +39,15 @@ CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the popular Coo
 * **cookieclickerz.admin.manageevents** - Allows the player to manage events (default: op)
 * **cookieclickerz.admin.manageachievements** - Allows the player to manage other players achievements (default: op)
 
+## Placeholders
+
+* **%cookieclickerz_totalcookies%** - A users total cookies
+* **%cookieclickerz_totalcookies_formatted%** - A users total cookies (formatted, e.g. 1M, 3B, 5.1T)
+* **%cookieclickerz_cookiesperclick%** - The amount of cookies a user gets per click
+* **%cookieclickerz_offlinecookies%** - The amount of cookies a user gets while offline
+* **%cookieclickerz_prestige%** - The prestige of a user
+* **%cookieclickerz_totalclicks%** - A users total clicks
+
 ## Configuration
 
 You can customize the plugin to your liking by editing the `config.yml`, `upgrades.yml`, and `prestige.yml` files located in the `plugins/CookieClickerZ` folder.
