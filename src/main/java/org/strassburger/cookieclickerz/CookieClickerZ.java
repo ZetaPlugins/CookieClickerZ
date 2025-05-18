@@ -53,6 +53,14 @@ public final class CookieClickerZ extends JavaPlugin {
             getLogger().warning("DecentHolograms not found! Holograms will not be displayed.");
         }
 
+        if (hasPlaceholderApi()) {
+            PapiExpansion papiExpansion = new PapiExpansion(this);
+            if (papiExpansion.canRegister()) {
+                papiExpansion.register();
+                getLogger().info("PlaceholderAPI found! Enabled PlaceholderAPI support!");
+            }
+        }
+
         versionChecker = new VersionChecker(this);
 
         initializeBStats();
