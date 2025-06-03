@@ -17,12 +17,15 @@ commands:
     description: Main command
 
 permissions:
-  cookieclickerz.viewachievements:
+  cookieclickerz.openmenu:
     default: true
-    description: Permission to view achievements
+    description: Permission to open the main menu
   cookieclickerz.useclicker:
     default: true
     description: Permission to use a clicker
+  cookieclickerz.viewachievements:
+    default: true
+    description: Permission to view achievements
   cookieclickerz.upgrades:
     default: true
     description: Permission to open the upgrade shop

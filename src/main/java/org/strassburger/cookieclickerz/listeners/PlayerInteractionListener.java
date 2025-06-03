@@ -54,7 +54,7 @@ public class PlayerInteractionListener implements Listener {
     }
 
     private void handleGuiOpen(Player player) {
-        if (!player.hasPermission("cookieclickerz.openshop")) {
+        if (!player.hasPermission("cookieclickerz.openmenu")) {
             throwPermissionError(player);
             return;
         }
