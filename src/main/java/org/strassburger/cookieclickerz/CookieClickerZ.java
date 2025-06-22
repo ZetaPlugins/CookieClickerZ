@@ -9,6 +9,9 @@ import org.strassburger.cookieclickerz.util.achievements.AchievementManager;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
 import org.strassburger.cookieclickerz.storage.Storage;
 import org.strassburger.cookieclickerz.storage.SQLiteStorage;
+import org.strassburger.cookieclickerz.util.holograms.DecentHologramManager;
+import org.strassburger.cookieclickerz.util.holograms.FancyHologramManager;
+import org.strassburger.cookieclickerz.util.holograms.HologramManager;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public final class CookieClickerZ extends JavaPlugin {
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     private final boolean hasDecentHolograms = Bukkit.getPluginManager().getPlugin("DecentHolograms") != null;
+    private final boolean hasFancyHolograms = Bukkit.getPluginManager().getPlugin("FancyHolograms") != null;
 
     @Override
     public void onEnable() {
@@ -46,11 +50,16 @@ public final class CookieClickerZ extends JavaPlugin {
         cookieEventManager = new CookieEventManager(this);
         achievementManager = new AchievementManager(this);
 
-        if (hasDecentHolograms) {
-            hologramManager = new HologramManager(this);
+        if (hasFancyHolograms) {
+            getLogger().info("FancyHolograms found! Using FancyHolograms for holograms.");
+            hologramManager = new FancyHologramManager(this);
+            hologramManager.spawnAllHolograms();
+        } else if (hasDecentHolograms) {
+            getLogger().info("DecentHolograms found! Using DecentHolograms for holograms.");
+            hologramManager = new DecentHologramManager(this);
             hologramManager.spawnAllHolograms();
         } else {
-            getLogger().warning("DecentHolograms not found! Holograms will not be displayed.");
+            getLogger().warning("No hologram plugin found! Holograms will not be displayed.");
         }
 
         if (hasPlaceholderApi()) {
@@ -71,6 +80,9 @@ public final class CookieClickerZ extends JavaPlugin {
     @Override
     public void onDisable() {
         storage.saveAllCachedData();
+        if (hologramManager != null) {
+            hologramManager.removeAllHolograms();
+        }
         getLogger().info("CookieClickerZ disabled!");
     }
 
