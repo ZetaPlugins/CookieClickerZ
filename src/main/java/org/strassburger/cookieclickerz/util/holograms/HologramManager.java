@@ -65,7 +65,7 @@ public abstract class HologramManager {
 
     /**
      * Generates a unique hologram name based on the clicker's name.
-     * The format is "cc_<clickerName>".
+     * The format is "cc_[clickerName]".
      *
      * @param clicker the Clicker object
      * @return the hologram name
@@ -76,7 +76,7 @@ public abstract class HologramManager {
 
     /**
      * Generates a unique hologram name based on the clicker's name.
-     * The format is "cc_<clickerName>".
+     * The format is "cc_[clickerName]".
      *
      * @param clickerName the name of the clicker
      * @return the hologram name
