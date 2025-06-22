@@ -25,7 +25,6 @@ public final class FancyHologramManager extends HologramManager {
         if (!getPlugin().getConfig().getBoolean("hologram")) return;
         if (fancyHologramManager.getHologram(getHologramName(clicker)).isPresent()) return;
 
-        System.out.println("Location: " + getHologramLocation(clicker));
         TextHologramData hologramData = new TextHologramData(getHologramName(clicker), getHologramLocation(clicker));
         hologramData.setText(getHologramLines(clicker));
         Hologram hologram = fancyHologramManager.create(hologramData);

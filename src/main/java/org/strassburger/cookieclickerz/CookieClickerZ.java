@@ -80,9 +80,7 @@ public final class CookieClickerZ extends JavaPlugin {
     @Override
     public void onDisable() {
         storage.saveAllCachedData();
-        if (hologramManager != null) {
-            hologramManager.removeAllHolograms();
-        }
+        if (hologramManager != null) hologramManager.removeAllHolograms();
         getLogger().info("CookieClickerZ disabled!");
     }
 
