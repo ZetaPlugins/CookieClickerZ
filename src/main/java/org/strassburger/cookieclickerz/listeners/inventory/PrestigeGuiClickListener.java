@@ -44,9 +44,9 @@ public class PrestigeGuiClickListener implements Listener {
             return;
         }
 
-        if (event.getSlot() < 9 || event.getSlot() > 28) return;
+        if (event.getSlot() < 8 || event.getSlot() > 27) return;
 
-        PrestigeData prestigeData = new PrestigeData(plugin, event.getSlot() - 9);
+        PrestigeData prestigeData = new PrestigeData(plugin, event.getSlot() - 8);
 
         PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
 
