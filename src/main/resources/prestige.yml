@@ -31,3 +31,78 @@ levels:
     name: "&8&l> <!b><#69e372>Prestige V"
     cost: "10B"
     multiplier: 6
+
+  6:
+    name: "&8&l> <!b><#69e372>Prestige VI"
+    cost: "100B"
+    multiplier: 7
+
+  7:
+    name: "&8&l> <!b><#69e372>Prestige VII"
+    cost: "1T"
+    multiplier: 8
+
+  8:
+    name: "&8&l> <!b><#69e372>Prestige VII"
+    cost: "10T"
+    multiplier: 9
+
+  9:
+    name: "&8&l> <!b><#69e372>Prestige IX"
+    cost: "100T"
+    multiplier: 10
+
+  10:
+    name: "&8&l> <!b><#69e372>Prestige X"
+    cost: "1Q"
+    multiplier: 11
+
+  11:
+    name: "&8&l> <!b><#69e372>Prestige XI"
+    cost: "10Q"
+    multiplier: 12
+
+  12:
+    name: "&8&l> <!b><#69e372>Prestige XII"
+    cost: "100Q"
+    multiplier: 13
+
+  13:
+    name: "&8&l> <!b><#69e372>Prestige XIII"
+    cost: "1QQ"
+    multiplier: 14
+
+  14:
+    name: "&8&l> <!b><#69e372>Prestige XIV"
+    cost: "10QQ"
+    multiplier: 15
+
+  15:
+    name: "&8&l> <!b><#69e372>Prestige XV"
+    cost: "100QQ"
+    multiplier: 16
+
+  16:
+    name: "&8&l> <!b><#69e372>Prestige XVI"
+    cost: "1S"
+    multiplier: 17
+
+  17:
+    name: "&8&l> <!b><#69e372>Prestige XVII"
+    cost: "10S"
+    multiplier: 18
+
+  18:
+    name: "&8&l> <!b><#69e372>Prestige XVIII"
+    cost: "100S"
+    multiplier: 19
+
+  19:
+    name: "&8&l> <!b><#69e372>Prestige XIX"
+    cost: "1SS"
+    multiplier: 20
+
+  20:
+    name: "&8&l> <!b><#69e372>Prestige XX"
+    cost: "10SS"
+    multiplier: 21
