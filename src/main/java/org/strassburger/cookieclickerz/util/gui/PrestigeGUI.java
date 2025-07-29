@@ -32,7 +32,7 @@ public class PrestigeGUI {
         GuiAssets.addBackButton(inventory);
         addGlass(inventory);
 
-        inventory.setItem(5,
+        inventory.setItem(4,
                 new CustomItem(Material.FEATHER)
                         .setName(MessageUtils.getAndFormatMsg(false, "inventories.prestige.prestige", "&6&lPrestige"))
                         .setLore(List.of(
@@ -42,24 +42,24 @@ public class PrestigeGUI {
                         .getItemStack()
         );
 
-        inventory.setItem(10, GuiAssets.getPretsigeGlassItem(1, playerData));
-        inventory.setItem(11, GuiAssets.getPretsigeGlassItem(2, playerData));
-        inventory.setItem(12, GuiAssets.getPretsigeGlassItem(3, playerData));
-        inventory.setItem(13, GuiAssets.getPretsigeGlassItem(4, playerData));
-        inventory.setItem(14, GuiAssets.getPretsigeGlassItem(5, playerData));
-        inventory.setItem(15, GuiAssets.getPretsigeGlassItem(6, playerData));
-        inventory.setItem(16, GuiAssets.getPretsigeGlassItem(7, playerData));
-        inventory.setItem(17, GuiAssets.getPretsigeGlassItem(8, playerData));
-        inventory.setItem(18, GuiAssets.getPretsigeGlassItem(9, playerData));
-        inventory.setItem(19, GuiAssets.getPretsigeGlassItem(11, playerData));
-        inventory.setItem(20, GuiAssets.getPretsigeGlassItem(12, playerData));
-        inventory.setItem(21, GuiAssets.getPretsigeGlassItem(13, playerData));
-        inventory.setItem(22, GuiAssets.getPretsigeGlassItem(14, playerData));
-        inventory.setItem(23, GuiAssets.getPretsigeGlassItem(15, playerData));
-        inventory.setItem(24, GuiAssets.getPretsigeGlassItem(16, playerData));
-        inventory.setItem(25, GuiAssets.getPretsigeGlassItem(17, playerData));
-        inventory.setItem(26, GuiAssets.getPretsigeGlassItem(18, playerData));
-        inventory.setItem(27, GuiAssets.getPretsigeGlassItem(19, playerData));
+        inventory.setItem(9, GuiAssets.getPretsigeGlassItem(1, playerData));
+        inventory.setItem(10, GuiAssets.getPretsigeGlassItem(2, playerData));
+        inventory.setItem(11, GuiAssets.getPretsigeGlassItem(3, playerData));
+        inventory.setItem(12, GuiAssets.getPretsigeGlassItem(4, playerData));
+        inventory.setItem(13, GuiAssets.getPretsigeGlassItem(5, playerData));
+        inventory.setItem(14, GuiAssets.getPretsigeGlassItem(6, playerData));
+        inventory.setItem(15, GuiAssets.getPretsigeGlassItem(7, playerData));
+        inventory.setItem(16, GuiAssets.getPretsigeGlassItem(8, playerData));
+        inventory.setItem(17, GuiAssets.getPretsigeGlassItem(9, playerData));
+        inventory.setItem(18, GuiAssets.getPretsigeGlassItem(11, playerData));
+        inventory.setItem(19, GuiAssets.getPretsigeGlassItem(12, playerData));
+        inventory.setItem(20, GuiAssets.getPretsigeGlassItem(13, playerData));
+        inventory.setItem(21, GuiAssets.getPretsigeGlassItem(14, playerData));
+        inventory.setItem(22, GuiAssets.getPretsigeGlassItem(15, playerData));
+        inventory.setItem(23, GuiAssets.getPretsigeGlassItem(16, playerData));
+        inventory.setItem(24, GuiAssets.getPretsigeGlassItem(17, playerData));
+        inventory.setItem(25, GuiAssets.getPretsigeGlassItem(18, playerData));
+        inventory.setItem(26, GuiAssets.getPretsigeGlassItem(19, playerData));
 
 
 
@@ -72,7 +72,7 @@ public class PrestigeGUI {
     }
 
     private static void addGlass(Inventory inventory) {
-        inventory.setItem(4, GuiAssets.getGlassItem());
-        inventory.setItem(6, GuiAssets.getGlassItem());
+        inventory.setItem(3, GuiAssets.getGlassItem());
+        inventory.setItem(5, GuiAssets.getGlassItem());
     }
 }
