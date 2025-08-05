@@ -69,16 +69,19 @@ You can customize the plugin to your liking by editing the `config.yml`, `upgrad
 # https://docs.advntr.dev/minimessage/format.html
 # With these, you can also add HEX colors, gradients, hover and click events, etc
 
-# If set to true, LifeStealZ will check for updates and let you know if there's a newer version
+# If set to true, CookieClickerZ will check for updates and let you know if there's a newer version
 checkForUpdates: true
 
 # Set the language to any code found in the "lang" folder (don't add the .yml extension)
-# You can add your own language files. Use https://github.com/KartoffelChipss/LifeStealZ/tree/main/src/main/resources/lang/en-US.yml as a template
-# If you want to help translating the plugin, please refer to this article: https://lsz.strassburger.dev/contributing/localization
+# You can add your own language files. Use https://github.com/KartoffelChipss/CookieClickerZ/tree/main/src/main/resources/lang/en-US.yml as a template
 lang: "en-US"
 
 # The the cookie name
-cookieName: "&7Cookies"
+# This is to conveniently change the cookie name in most messages. You will probably also want to adjust some other messages in your respective language file.
+cookieName: "Cookies"
+
+# The item that will be displayed in the middle of the main gui
+mainItem: "COOKIE"
 
 offlineCookies:
   # If set to true, players will earn cookies while they are offline
@@ -87,7 +90,7 @@ offlineCookies:
   joinMessage: true
 
 # Wether or not to show a hologram above the clicker block
-# You need to have DecentHolograms installed for this to work:
+# You need to have DecentHolograms or FancyHolograms installed for this to work (although DecentHolograms is recommended):
 # https://modrinth.com/plugin/decentholograms
 # You can change the content of the hologram in the language file
 hologram: true
@@ -145,23 +148,24 @@ anticheat:
     commands:
     # - "kick %player% &cYou are not moving!"
 
+
 # === EXPERT ===
 # This section is only relevant if you are an expert and know what you are doing
 
 playerCache:
-  # If set to true, the plugin will use a cache to store player data
-  enabled: true
-  # The amount of time (in seconds) the plugin will wait before saving the whole cache to the database
-  saveInterval: 60
-  # The maximum amount of players that will be stored in the cache
-  maxSize: 1000
+    # If set to true, the plugin will use a cache to store player data
+    enabled: true
+    # The amount of time (in seconds) the plugin will wait before saving the whole cache to the database
+    saveInterval: 60
+    # The maximum amount of players that will be stored in the cache
+    maxSize: 1000
 
 
 # === STORAGE ===
 
 storage:
   # The type of storage to use. You have the following options:
-  # "SQLite"
+  # "SQLite" | "MySQL"
   type: "SQLite"
 
   # This section is only relevant if you use a remote database
@@ -211,6 +215,7 @@ wooden_pickaxe:
 # If set to true, the plugin will enable the prestige system
 enabled: true
 
+# You can add or remove as many prestige levels as you want. (Everything beyond the 29th level will be ignored)
 levels:
   1:
     # The name of the prestige level
