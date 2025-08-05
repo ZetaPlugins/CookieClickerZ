@@ -1,20 +1,44 @@
 package org.strassburger.cookieclickerz.storage;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.strassburger.cookieclickerz.CookieClickerZ;
+import org.strassburger.cookieclickerz.storage.connectionPool.ConnectionPool;
+import org.strassburger.cookieclickerz.storage.connectionPool.MySQLConnectionPool;
 import org.strassburger.cookieclickerz.util.achievements.Achievement;
 
 import java.io.*;
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-public final class SQLiteStorage extends SQLStorage {
+public class MySQLStorage extends SQLStorage {
     private final Map<UUID , PlayerData> playerDataCache = new ConcurrentHashMap<>();
     private static final String CSV_SEPARATOR = ",";
+    private final MySQLConnectionPool connectionPool;
 
-    public SQLiteStorage(CookieClickerZ plugin) {
+    public MySQLStorage(CookieClickerZ plugin) {
         super(plugin);
+
+        FileConfiguration config = getPlugin().getConfig();
+
+        final String HOST = config.getString("storage.host");
+        final String PORT = config.getString("storage.port");
+        final String DATABASE = config.getString("storage.database");
+        final String USERNAME = config.getString("storage.username");
+        final String PASSWORD = config.getString("storage.password");
+
+        connectionPool = new MySQLConnectionPool(HOST, PORT, DATABASE, USERNAME, PASSWORD);
+    }
+
+    public ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
+
+    Connection createConnection() throws SQLException {
+        return getConnectionPool().getConnection();
     }
 
     @Override
@@ -23,55 +47,43 @@ public final class SQLiteStorage extends SQLStorage {
             if (connection == null) return;
 
             try (Statement statement = connection.createStatement()) {
+
+                // Create players table
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
-                        "uuid TEXT PRIMARY KEY, " +
-                        "name TEXT, " +
-                        "totalCookies TEXT, " +
-                        "totalClicks INTEGER, " +
-                        "lastLogoutTime INTEGER, " +
-                        "cookiesPerClick TEXT, " +
-                        "offlineCookies TEXT," +
-                        "prestige INTEGER DEFAULT 0)");
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to create players table in SQLite database: " + e.getMessage());
-            }
+                        "uuid VARCHAR(36) PRIMARY KEY, " +
+                        "name VARCHAR(255), " +
+                        "totalCookies VARCHAR, " +
+                        "totalClicks INT, " +
+                        "lastLogoutTime BIGINT, " +
+                        "cookiesPerClick VARCHAR, " +
+                        "offlineCookies VARCHAR, " +
+                        "prestige INT DEFAULT 0" +
+                        ")");
 
-            // Create upgrades table if not exists
-            try (Statement statement = connection.createStatement()) {
+                // Create upgrades table
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS upgrades (" +
-                        "uuid TEXT, " +
-                        "upgrade_name TEXT, " +
-                        "level INTEGER, " +
+                        "uuid VARCHAR(36), " +
+                        "upgrade_name VARCHAR, " +
+                        "level INT, " +
                         "PRIMARY KEY (uuid, upgrade_name), " +
-                        "FOREIGN KEY (uuid) REFERENCES players(uuid))");
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to create upgrades table in SQLite database: " + e.getMessage());
-            }
+                        "FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE ON UPDATE CASCADE" +
+                        ")");
 
-            // Create achievements table if not exists
-            try (Statement statement = connection.createStatement()) {
+                // Create achievements table
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS achievements (" +
-                        "uuid TEXT, " +
-                        "achievement_name TEXT, " +
-                        "progress INTEGER, " +
+                        "uuid VARCHAR(36), " +
+                        "achievement_name VARCHAR, " +
+                        "progress INT, " +
                         "PRIMARY KEY (uuid, achievement_name), " +
-                        "FOREIGN KEY (uuid) REFERENCES players(uuid))");
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to create achievements table in SQLite database: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
-        }
-    }
+                        "FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE ON UPDATE CASCADE" +
+                        ")");
 
-    Connection createConnection() {
-        try {
-            CookieClickerZ plugin = getPlugin();
-            String pluginFolderPath = plugin.getDataFolder().getPath();
-            return DriverManager.getConnection("jdbc:sqlite:" + pluginFolderPath + "/userData.db");
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to create tables in MySQL database: " + e.getMessage());
+            }
+
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to create connection to SQLite database: " + e.getMessage());
-            return null;
+            getPlugin().getLogger().severe("Failed to initialize MySQL database: " + e.getMessage());
         }
     }
 
@@ -84,8 +96,16 @@ public final class SQLiteStorage extends SQLStorage {
             return;
         }
 
-        final String query = "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE " +
+                "name = VALUES(name), " +
+                "totalCookies = VALUES(totalCookies), " +
+                "totalClicks = VALUES(totalClicks), " +
+                "lastLogoutTime = VALUES(lastLogoutTime), " +
+                "cookiesPerClick = VALUES(cookiesPerClick), " +
+                "offlineCookies = VALUES(offlineCookies), " +
+                "prestige = VALUES(prestige)";
 
         try (Connection connection = createConnection()) {
             if (connection == null) return;
@@ -99,21 +119,16 @@ public final class SQLiteStorage extends SQLStorage {
                 statement.setString(7, playerData.getOfflineCookies().toString());
                 statement.setInt(8, playerData.getPrestige());
                 statement.executeUpdate();
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
             }
 
-            // Save upgrades
             saveUpgrades(connection, playerData);
-
-            // Save achievements
             saveAchievements(connection, playerData);
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to save player data to SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to save player data to MySQL database: " + e.getMessage());
         }
     }
 
-    private void saveUpgrades(Connection connection, PlayerData playerData) throws SQLException {
+    protected void saveUpgrades(Connection connection, PlayerData playerData) throws SQLException {
         if (playerData.hasRemovedUpgrades()) {
             final String deleteQuery = "DELETE FROM upgrades WHERE uuid = ?";
             try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
@@ -127,7 +142,7 @@ public final class SQLiteStorage extends SQLStorage {
 
         final String query = "INSERT INTO upgrades (uuid, upgrade_name, level) " +
                 "VALUES (?, ?, ?) " +
-                "ON CONFLICT(uuid, upgrade_name) DO UPDATE SET level = excluded.level";
+                "ON DUPLICATE KEY UPDATE level = VALUES(level)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Map.Entry<String, Integer> entry : playerData.getUpgrades().entrySet()) {
@@ -143,10 +158,10 @@ public final class SQLiteStorage extends SQLStorage {
         }
     }
 
-    private void saveAchievements(Connection connection, PlayerData playerData) throws SQLException {
+    protected void saveAchievements(Connection connection, PlayerData playerData) throws SQLException {
         final String query = "INSERT INTO achievements (uuid, achievement_name, progress) " +
                 "VALUES (?, ?, ?) " +
-                "ON CONFLICT(uuid, achievement_name) DO UPDATE SET progress = excluded.progress";
+                "ON DUPLICATE KEY UPDATE progress = VALUES(progress)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Achievement achievement : playerData.getAchievements()) {
@@ -165,10 +180,15 @@ public final class SQLiteStorage extends SQLStorage {
     @Override
     public PlayerData load(UUID uuid) {
         if (shouldUsePlayerCache() && playerDataCache.containsKey(uuid)) {
+            //System.out.println("Loading player data from cache for UUID: " + uuid);
             return playerDataCache.get(uuid);
         }
 
         try (Connection connection = createConnection()) {
+            if (connection == null) return null;
+
+            //System.out.println("Loading player data from MySQL database for UUID: " + uuid);
+
             PlayerData playerData = loadPlayerData(connection, uuid);
             if (playerData != null) {
                 loadUpgrades(connection, uuid, playerData);
@@ -176,19 +196,16 @@ public final class SQLiteStorage extends SQLStorage {
 
                 if (shouldUsePlayerCache()) {
                     playerDataCache.put(uuid, playerData);
+                    //System.out.println("Player data cached for UUID: " + uuid);
                     if (playerDataCache.size() > getMaxCacheSize()) saveAllCachedData();
                 }
             }
+
             return playerData;
         } catch (SQLException e) {
             getPlugin().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
             return null;
         }
-    }
-
-    @Override
-    public PlayerData load(String uuid) {
-        return load(UUID.fromString(uuid));
     }
 
     @Override
@@ -208,8 +225,16 @@ public final class SQLiteStorage extends SQLStorage {
                 try (Connection connection = createConnection()) {
                     if (connection == null) return;
                     try (PreparedStatement statement = connection.prepareStatement(
-                            "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
-                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                            "INSERT INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                                    "ON DUPLICATE KEY UPDATE " +
+                                    "name = VALUES(name), " +
+                                    "totalCookies = VALUES(totalCookies), " +
+                                    "totalClicks = VALUES(totalClicks), " +
+                                    "lastLogoutTime = VALUES(lastLogoutTime), " +
+                                    "cookiesPerClick = VALUES(cookiesPerClick), " +
+                                    "offlineCookies = VALUES(offlineCookies), " +
+                                    "prestige = VALUES(prestige)")) {
                         statement.setString(1, data[0]);
                         statement.setString(2, data[1]);
                         statement.setString(3, data[2]);
@@ -220,14 +245,14 @@ public final class SQLiteStorage extends SQLStorage {
                         statement.setInt(8, Integer.parseInt(data[7]));
                         statement.executeUpdate();
                     } catch (SQLException e) {
-                        getPlugin().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
+                        getPlugin().getLogger().log(Level.SEVERE, "Failed to import player data from CSV file: " + e.getMessage(), e);
                     }
                 } catch (SQLException e) {
-                    getPlugin().getLogger().severe("Failed to import player data from CSV file: " + e.getMessage());
+                    getPlugin().getLogger().log(Level.SEVERE, "Failed to import player data from CSV file: " + e.getMessage(), e);
                 }
             }
         } catch (IOException e) {
-            getPlugin().getLogger().severe("Failed to read CSV file: " + e.getMessage());
+            getPlugin().getLogger().log(Level.SEVERE, "Failed to read CSV file: " + e.getMessage(), e);
         }
     }
 
@@ -237,6 +262,8 @@ public final class SQLiteStorage extends SQLStorage {
 
         Map<UUID, PlayerData> snapshot = new HashMap<>(playerDataCache);
 
+        //System.out.println("Flushing player data cache to MySQL database...");
+
         try (Connection connection = createConnection()) {
             if (connection == null) return;
 
@@ -244,8 +271,16 @@ public final class SQLiteStorage extends SQLStorage {
 
             // Save all players
             try (PreparedStatement psPlayers = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    "INSERT INTO players (uuid, name, totalCookies, totalClicks, lastLogoutTime, cookiesPerClick, offlineCookies, prestige) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                            "ON DUPLICATE KEY UPDATE " +
+                            "name = VALUES(name), " +
+                            "totalCookies = VALUES(totalCookies), " +
+                            "totalClicks = VALUES(totalClicks), " +
+                            "lastLogoutTime = VALUES(lastLogoutTime), " +
+                            "cookiesPerClick = VALUES(cookiesPerClick), " +
+                            "offlineCookies = VALUES(offlineCookies), " +
+                            "prestige = VALUES(prestige)")) {
                 for (PlayerData data : snapshot.values()) {
                     psPlayers.setString(1, data.getUuid().toString());
                     psPlayers.setString(2, data.getName());
@@ -273,7 +308,7 @@ public final class SQLiteStorage extends SQLStorage {
             try (PreparedStatement psAchievements = connection.prepareStatement(
                     "INSERT INTO achievements (uuid, achievement_name, progress) " +
                             "VALUES (?, ?, ?) " +
-                            "ON CONFLICT(uuid, achievement_name) DO UPDATE SET progress = excluded.progress")) {
+                            "ON DUPLICATE KEY UPDATE progress = VALUES(progress)")) {
                 for (PlayerData data : snapshot.values()) {
                     for (Achievement achievement : data.getAchievements()) {
                         psAchievements.setString(1, data.getUuid().toString());
@@ -289,7 +324,7 @@ public final class SQLiteStorage extends SQLStorage {
 
             playerDataCache.keySet().removeAll(snapshot.keySet()); // Clear the cache for saved players
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to flush player data cache: " + e.getMessage());
+            getPlugin().getLogger().log(Level.SEVERE, "Failed to flush player data cache: " + e.getMessage(), e);
         }
     }
 }

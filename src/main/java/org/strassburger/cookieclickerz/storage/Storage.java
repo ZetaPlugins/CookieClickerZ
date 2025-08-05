@@ -51,7 +51,9 @@ public abstract class Storage {
      * @param uuid The UUID of the player.
      * @return The player data object.
      */
-    abstract public PlayerData load(String uuid);
+    public PlayerData load(String uuid) {
+        return load(UUID.fromString(uuid));
+    }
 
     /**
      * Load a player data object from the storage system.

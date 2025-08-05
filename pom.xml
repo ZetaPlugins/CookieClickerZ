@@ -49,6 +49,29 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>com.zaxxer:HikariCP</artifact> <!-- Include only HikariCP -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </filter>
+                    </filters>
+                    <artifactSet>
+                        <includes>
+                            <include>com.zaxxer:HikariCP</include> <!-- Include HikariCP dependency -->
+                        </includes>
+                    </artifactSet>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>org.strassburger.cookieclickerz.CookieClickerZ</mainClass>
+                        </transformer>
+                    </transformers>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -123,6 +146,21 @@
             <artifactId>FancyHolograms</artifactId>
             <version>2.5.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>6.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.2.0</version>
         </dependency>
     </dependencies>
 </project>

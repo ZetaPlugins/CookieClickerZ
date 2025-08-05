@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.strassburger.cookieclickerz.storage.MySQLStorage;
 import org.strassburger.cookieclickerz.util.*;
 import org.strassburger.cookieclickerz.util.achievements.AchievementManager;
 import org.strassburger.cookieclickerz.util.cookieevents.CookieEventManager;
@@ -129,8 +130,15 @@ public final class CookieClickerZ extends JavaPlugin {
     }
 
     private Storage createStorage() {
-        getLogger().info("Using SQLite storage");
-        return new SQLiteStorage(this);
+        switch (getConfig().getString("storage.type", "sqlite").toLowerCase()) {
+            case "mysql":
+                getLogger().info("Using MySQL storage");
+                return new MySQLStorage(this);
+            case "sqlite":
+            default:
+                getLogger().info("Using SQLite storage");
+                return new SQLiteStorage(this);
+        }
     }
 
     private void initConfig() {
