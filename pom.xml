@@ -4,27 +4,19 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.strassburger</groupId>
+    <groupId>com.zetaplugins</groupId>
     <artifactId>CookieClickerZ</artifactId>
     <version>0.3.0</version>
     <packaging>jar</packaging>
 
     <name>CookieClickerZ</name>
-    <url>strassburger.org</url>
+    <url>zetaplugins.com</url>
 
     <description>A highly customizable Cookie Clicker plugin!</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/ZetaPlugins/CookieClickerZ</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <plugins>
@@ -68,7 +60,7 @@
                                 implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>org.strassburger.cookieclickerz.CookieClickerZ</mainClass>
+                            <mainClass>com.zetaplugins.cookieclickerz.CookieClickerZ</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>
