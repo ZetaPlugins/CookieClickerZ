@@ -3,6 +3,7 @@
 # If set to true, the plugin will enable the prestige system
 enabled: true
 
+# You can add or remove as many prestige levels as you want. (Everything beyond the 29th level will be ignored)
 levels:
   1:
     # The name of the prestige level
@@ -43,7 +44,7 @@ levels:
     multiplier: 8
 
   8:
-    name: "&8&l> <!b><#69e372>Prestige VII"
+    name: "&8&l> <!b><#69e372>Prestige VIII"
     cost: "10T"
     multiplier: 9
 

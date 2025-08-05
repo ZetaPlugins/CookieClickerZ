@@ -99,10 +99,11 @@ public class GuiAssets {
 
     public static ItemStack getPretsigeGlassItem(int prestigeLevel , PlayerData playerData) {
         PrestigeData prestigeData = new PrestigeData(CookieClickerZ.getInstance(), prestigeLevel);
+        String prestigeName = prestigeData.getName() != null ? prestigeData.getName() : "&8&l> <!b><#69e372>Prestige " + RomanNumber.toRoman(prestigeLevel);
 
         if (playerData.getPrestige() + 1 == prestigeLevel) {
             return new CustomItem(Material.YELLOW_STAINED_GLASS_PANE)
-                    .setName(prestigeData.getName())
+                    .setName(prestigeName)
                     .setLore(MessageUtils.getAndFormatMsgList(
                             "inventories.prestige.upgradeDescription.available",
                             new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
@@ -111,7 +112,7 @@ public class GuiAssets {
                     .getItemStack();
         } else if (playerData.getPrestige() >= prestigeLevel) {
             return new CustomItem(Material.LIME_STAINED_GLASS_PANE)
-                    .setName(prestigeData.getName())
+                    .setName(prestigeName)
                     .setLore(MessageUtils.getAndFormatMsgList(
                             "inventories.prestige.upgradeDescription.bought",
                             new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
@@ -120,7 +121,7 @@ public class GuiAssets {
                     .getItemStack();
         } else {
             return new CustomItem(Material.RED_STAINED_GLASS_PANE)
-                    .setName(prestigeData.getName())
+                    .setName(prestigeName)
                     .setLore(MessageUtils.getAndFormatMsgList(
                             "inventories.prestige.upgradeDescription.unavailable",
                             new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),

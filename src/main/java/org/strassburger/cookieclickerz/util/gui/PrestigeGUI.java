@@ -2,6 +2,7 @@ package org.strassburger.cookieclickerz.util.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -11,8 +12,10 @@ import org.strassburger.cookieclickerz.util.MessageUtils;
 import org.strassburger.cookieclickerz.storage.PlayerData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PrestigeGUI {
     private static final List<UUID> openInventories = new ArrayList<>();
@@ -27,7 +30,34 @@ public class PrestigeGUI {
     public static void open(Player player) {
         PlayerData playerData = CookieClickerZ.getInstance().getStorage().load(player.getUniqueId());
 
-        Inventory inventory = Bukkit.createInventory(null, 4 * 9, MessageUtils.getAndFormatMsg(false, "inventories.prestige.title", "&8Prestige"));
+        if (playerData == null) {
+            CookieClickerZ.getInstance().getLogger().warning("Player data not found for " + player.getName());
+            return;
+        }
+
+        final int firstSlot = 9;
+        final int rowSize = 9;
+        final int maxRows = 3;
+        final int maxSlots = rowSize * maxRows;
+
+        FileConfiguration config = CookieClickerZ.getInstance().getConfigManager().getPrestigeConfig();
+        ConfigurationSection levelsSection = config.getConfigurationSection("levels");
+
+        if (levelsSection == null) {
+            CookieClickerZ.getInstance().getLogger().warning("Prestige levels configuration section is missing!");
+            return;
+        }
+
+        // Ensure levels are sorted numerically
+        List<Integer> levelKeys = levelsSection.getKeys(false).stream()
+                .map(Integer::parseInt)
+                .sorted()
+                .collect(Collectors.toList());
+
+        final int rowsNeeded = Math.min(maxRows, (int) Math.ceil(levelKeys.size() / 9.0));
+
+        // {rowsNeeded} for the levels + 2 for the header and footer * 9 for the slots in each row
+        Inventory inventory = Bukkit.createInventory(null, (rowsNeeded + 2) * rowSize, MessageUtils.getAndFormatMsg(false, "inventories.prestige.title", "&8Prestige"));
         GuiAssets.addBorder(inventory);
         GuiAssets.addBackButton(inventory);
         addGlass(inventory);
@@ -42,26 +72,24 @@ public class PrestigeGUI {
                         .getItemStack()
         );
 
-        inventory.setItem(9, GuiAssets.getPretsigeGlassItem(1, playerData));
-        inventory.setItem(10, GuiAssets.getPretsigeGlassItem(2, playerData));
-        inventory.setItem(11, GuiAssets.getPretsigeGlassItem(3, playerData));
-        inventory.setItem(12, GuiAssets.getPretsigeGlassItem(4, playerData));
-        inventory.setItem(13, GuiAssets.getPretsigeGlassItem(5, playerData));
-        inventory.setItem(14, GuiAssets.getPretsigeGlassItem(6, playerData));
-        inventory.setItem(15, GuiAssets.getPretsigeGlassItem(7, playerData));
-        inventory.setItem(16, GuiAssets.getPretsigeGlassItem(8, playerData));
-        inventory.setItem(17, GuiAssets.getPretsigeGlassItem(9, playerData));
-        inventory.setItem(18, GuiAssets.getPretsigeGlassItem(11, playerData));
-        inventory.setItem(19, GuiAssets.getPretsigeGlassItem(12, playerData));
-        inventory.setItem(20, GuiAssets.getPretsigeGlassItem(13, playerData));
-        inventory.setItem(21, GuiAssets.getPretsigeGlassItem(14, playerData));
-        inventory.setItem(22, GuiAssets.getPretsigeGlassItem(15, playerData));
-        inventory.setItem(23, GuiAssets.getPretsigeGlassItem(16, playerData));
-        inventory.setItem(24, GuiAssets.getPretsigeGlassItem(17, playerData));
-        inventory.setItem(25, GuiAssets.getPretsigeGlassItem(18, playerData));
-        inventory.setItem(26, GuiAssets.getPretsigeGlassItem(19, playerData));
+        int index = 0;
+        for (int level : levelKeys) {
+            int slot = firstSlot + index;
+            if (slot >= firstSlot + maxSlots) break;
 
+            try {
+                inventory.setItem(slot, GuiAssets.getPretsigeGlassItem(level, playerData));
+            } catch (NumberFormatException e) {
+                CookieClickerZ.getInstance().getLogger().warning("Invalid prestige level key: " + level);
+            }
 
+            index++;
+        }
+
+        // fill empty slots with glass
+        for (int i = firstSlot + index; i < firstSlot + (rowsNeeded * rowSize); i++) {
+            inventory.setItem(i, GuiAssets.getGlassItem());
+        }
 
         player.openInventory(inventory);
         openInventories.add(player.getUniqueId());
