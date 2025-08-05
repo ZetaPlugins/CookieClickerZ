@@ -23,6 +23,7 @@ CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the popular Coo
 * ✅ Fully customizable messages, sounds, and items
 * ✅ HEX colors and gradients support
 * ✅ PlaceholderAPI placeholders
+* ✅ SQLite and MySQL support
 * ✅ Admin commands
 
 ## Permissions
