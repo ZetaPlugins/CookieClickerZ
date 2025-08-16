@@ -11,7 +11,7 @@ import java.util.List;
 
 public class LanguageManager {
     private final JavaPlugin plugin;
-    public static final List<String> defaultLangs = List.of("en-US", "de-DE");
+    public static final List<String> defaultLangs = List.of("en-US", "de-DE", "ru-RU", "cs-CZ");
 
     private HashMap<String, String> translationMap;
     private FileConfiguration langConfig;
