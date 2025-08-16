@@ -1,0 +1,253 @@
+accentColor: "<#D2691E>" # Toto je barva zvýraznění. Nahrazuje %ac% ve zprávách.
+prefix: "&8[%ac%CookieClickerZ&8]"
+newVersionAvailable: "&7Je dostupná nová verze CookieClickerZ!\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/cookieclickerz/versions>https://modrinth.com/plugin/cookieclickerz/versions</click>"
+usageError: "&cPoužití: %usage%"
+noPermsError: "&cNemáš oprávnění k provedení tohoto příkazu!"
+playerNotFound: "&cHráč nebyl nalezen!"
+noConsoleError: "&cTento příkaz můžeš spustit jen jako hráč!"
+playerDataStorageNull: "&cData hráče nebyla nalezena! Hráč se musí znovu připojit!"
+noPermissionError: "&cNemáš oprávnění to použít!"
+noPlayerData: "&cTento hráč ještě na serveru nehrál!"
+helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Můžeš vytvořit Clicker blok pomocí <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\n%cookieName% získáš levým kliknutím na blok a menu otevřeš pravým kliknutím.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Dokumentace</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Podpora na Discordu</click></u>\n"
+reloadMsg: "&7Plugin byl úspěšně znovu načten!"
+versionMsg: "&7Používáš verzi %ac%%version%"
+exportData: "&7Úspěšně exportována data hráčů do %ac%%file%.csv"
+importData: "&7Úspěšně importováno %ac%%file%.csv&7!\n&cProsím restartuj server, aby byla migrace bezchybně dokončena!"
+notLookingAtBlock: "&cMusíš se dívat na blok!"
+alreadyClicker: "&cTento blok už je Clicker!"
+invalidLocation: "&cTato lokace není platná!"
+notClicker: "&cTento blok není Clicker!"
+alreadyClickerName: "&cTento název Clicker bloku už je použitý!"
+clickerAddConfirm: "&7Úspěšně byl přidán Clicker blok s názvem %ac%%name% &7na %ac%%location%"
+clickerRemoveConfirm: "&7Úspěšně byl odstraněn Clicker blok s názvem %ac%%name%"
+clickerList: "&7Clicker bloky: %ac%%clickers%"
+noClickers: "&cNejsou žádné Clicker bloky!"
+getCookieActionbar: "%ac%+%num% &7%cookieName%&7 &8| %ac%%total% &7%cookieName%&7"
+addCookies: "&7Úspěšně přidáno %ac%%amount% &7%cookieName% hráči %ac%%player%"
+removeCookies: "&7Úspěšně odebráno %ac%%amount% &7%cookieName% hráči %ac%%player%"
+setCookies: "&7Úspěšně nastaveno %cookieName% hráče %ac%%player%&7 na %ac%%amount%"
+invalidAmount: "&cNeplatná hodnota!"
+addCPC: "&7Úspěšně přidáno %ac%%amount% &7%cookieName% na klik hráči %ac%%player%"
+removeCPC: "&7Úspěšně odebráno %ac%%amount% &7%cookieName% na klik hráči %ac%%player%"
+setCPC: "&7Úspěšně nastaveno %cookieName% na klik hráče %ac%%player%&7 na %ac%%amount%"
+notEnoughCookies: "&cNemáš dostatek %cookieName%!"
+upgradeBought: "&7Koupil jsi vylepšení %ac%%upgrade%&7!"
+prestigeSuccess: "&7Dosáhl jsi prestiže %ac%%prestige%&7! Nyní máš %ac%%multiplier%x násobič %cookieName%!"
+getPrestige: "&7Prestige úroveň hráče %ac%%player%&7 je %ac%%prestige%"
+setPrestige: "&7Úspěšně nastavena úroveň prestiže hráče %ac%%player%&7 na %ac%%amount%"
+offlineCookies: "&7Získal jsi &e%ac%%amount%&7 %cookieName%, když jsi byl offline!"
+teleportToClicker: "Teleportovat se ke Clicker bloku %name%"
+noEvent: "&cŽádná událost pro %ac%%player%"
+getEvent: "&7Události hráče %ac%%player%&7: %ac%%events%"
+achievementUnlocked: "<#9932cc>&lÚspěch! &r&7Získal jsi úspěch <hover:show_text:'<#9932cc>%achievement%\n&7%description%'><#9932cc>%achievement%&7!</hover>"
+achievementNotFound: "&cÚspěch nebyl nalezen!"
+getAchievement: "&7Úspěch %ac%%achievement% &7pro %ac%%player%&7: %ac%%progress%&8/%ac%%goal%"
+setAchievement: "&7Úspěšně nastaven postup úspěchu %ac%%achievement% hráče %ac%%player%&7 na %ac%%progress%"
+numCheatSheet:
+  - "&r"
+  - "&8&l> %ac%&lZkrácený zápis čísel"
+  - "&r"
+  - " %ac%1K &8= &71 000"
+  - " %ac%1M &8= &71 000 000"
+  - " %ac%1B &8= &71 000 000 000"
+  - " %ac%1T &8= &71 000 000 000 000"
+  - " %ac%1Q &8= &71 000 000 000 000 000"
+  - " %ac%1QQ &8= &71 000 000 000 000 000 000"
+  - " %ac%1S &8= &71 000 000 000 000 000 000 000"
+  - " %ac%1SS &8= &71 000 000 000 000 000 000 000 000"
+  - " %ac%1O &8= &71 000 000 000 000 000 000 000 000 000"
+  - " %ac%1N &8= &71 000 000 000 000 000 000 000 000 000 000"
+  - " %ac%1D &8= &71 000 000 000 000 000 000 000 000 000 000 000"
+  - "&r"
+eventMessages:
+  instant:
+    LUCKY: "&a&lŠtěstí! &r&7Získal jsi %ac%%amount% &7%cookieName%!"
+    RUIN: "&c&lSmůla! &r&7Ztratil jsi %ac%%amount% &7%cookieName%!"
+  start:
+    COOKIE_FRENZY: "&a&lSušenková horečka! &r&7Na příštích %ac%77 sekund &7získáváš %ac%7x více %cookieName%!"
+    LUCKY: ""
+    CLICK_FRENZY: "&a&lKlikací horečka! &r&7Na příštích %ac%13 sekund &7získáváš %ac%777x více %cookieName%!"
+    RUIN: ""
+    CURSED_FINGER: "&c&lProkletý prst! &r&7Na příštích &c66 sekund &7získáváš &c-50% &7%cookieName%!"
+  end:
+    COOKIE_FRENZY: "&7Sušenková horečka skončila!"
+    LUCKY: ""
+    CLICK_FRENZY: "&7Klikací horečka skončila!"
+    RUIN: ""
+    CURSED_FINGER: "&7Prokletý prst skončil!"
+clickerHologram:
+  - "%ac%&l🍪 Cookie Clicker 🍪"
+  - "&7Klikni pro získání %cookieName%!"
+clickerHologramOffset: 2.0
+inventories:
+  navigation:
+    back: "&8Zpět"
+    next: "&8Další stránka"
+    previous: "&8Předchozí stránka"
+    close: "&8Zavřít"
+  main:
+    title: "&8CookieClickerZ"
+    shopTitle: "<#fcf171>&lObchod"
+    shopDescription:
+      - "&7Kupujte vylepšení a zvyšte svou produkci cookies!"
+      - " "
+    prestigeTitle: "<#69e372>&lPrestiž"
+    prestigeDescription:
+      - "&7Prestiž výrazně zvyšuje vaši produkci cookies!"
+      - " "
+    achievementsTitle: "<#9932cc>&lÚspěchy"
+    achievementsDescription:
+      - "&7Ukažte své úspěchy!"
+      - " "
+    topTitle: "<#FF5733>&lNejlepší hráči"
+    topDescription:
+      - "&7Nejlepší hráči ve světě cookies!"
+      - " "
+    clickerTitle: "%ac%&lTvůj %cookieName%"
+    clickerDescription:
+      - " "
+      - "&8>> %ac%%cookies% &7%cookieName%"
+      - " "
+      - "&8>> %ac%+%cpc% &7%cookieName% na klik"
+      - "&8>> %ac%+%offlinecookies% &7%cookieName% offline"
+      - " "
+      - "&8>> %ac%%multiplier%x &7násobitel prestiže"
+      - " "
+  upgrades:
+    title: "&8Vylepšení"
+    description:
+      - "&7Kupujte vylepšení a zvyšte svou produkci cookies!"
+      - " "
+    upgradeDescription:
+      - "&7%cookieName% na klik: %ac%%cpc%"
+      - "&7Offline %cookieName%: %ac%%oc%"
+      - "&r "
+      - "&7Cena: %affordablecolor%%price%"
+      - "&r "
+      - "&7Úroveň: %levelcolor%%level%"
+  prestige:
+    title: "&8Prestiž"
+    prestige: "<#69e372>&lPrestiž"
+    description: "&7Prestiž výrazně zvyšuje vaši produkci cookies!"
+    upgradeDescription:
+      available:
+        - "&7Násobitel %cookieName%: %ac%%multiplier%x"
+        - "&7Cena: %ac%%price% %cookieName%"
+        - " "
+        - "&8[&7Klikněte pro prestiž&8]"
+      unavailable:
+        - "&7Násobitel %cookieName%: %ac%%multiplier%x"
+        - "&7Cena: %ac%%price% %cookieName%"
+        - " "
+        - "&cMusíte získat prestiž pro odemčení!"
+      bought:
+        - "&7Násobitel %cookieName%: %ac%%multiplier%x"
+        - "&7Cena: %ac%%price% %cookieName%"
+        - " "
+        - "&7Tuto úroveň jste již zakoupili!"
+  top:
+    title: "&8Nejlepší hráči"
+    player:
+      title: "%placeColor%#%place% <!b>&7%player%"
+      description:
+        - " "
+        - "&8>> %ac%%cookies% &7%cookieName%"
+        - "&8>> %ac%+%cpc% &7%cookieName% na klik"
+        - "&8>> %ac%%multiplier%x &7násobitel prestiže"
+        - " "
+        - "&8>> &7Celkové skóre: &a&l%score%"
+        - " "
+  achievements:
+    title: "&8Úspěchy"
+    achievementTitle: "<#9932cc>%title% %completed%"
+    achievementDescription:
+      - "&7%description%"
+      - " "
+      - "&8> &7%progress%&8/&7%goal%"
+      - " "
+    completed: "&8[&a✔&8]"
+    notCompleted: "&8[&c✖&8]"
+achievementCategories:
+  clicks: "<#9932cc>Kliky"
+  cookies: "<#9932cc>%cookieName%"
+  upgrades: "<#9932cc>Vylepšení"
+  prestige: "<#9932cc>Prestiž"
+  events: "<#9932cc>Události"
+  misc: "<#9932cc>Různé"
+achievements:
+  clicks_clicker_rookie:
+    name: "Začátečník klikání"
+    description: "Proveď svůj první klik"
+  clicks_finger_workout:
+    name: "Cvičení prstů"
+    description: "Proveď 1 000 kliků"
+  clicks_click_champion:
+    name: "Mistr klikání"
+    description: "Proveď 10 000 kliků"
+  clicks_unstoppable_clicker:
+    name: "Nezastavitelný klikátor"
+    description: "Proveď 100 000 kliků"
+  clicks_cookie_machine:
+    name: "Cookies stroj"
+    description: "Proveď 1 000 000 kliků"
+  cookies_first_batch:
+    name: "První várka"
+    description: "Upeč 1 000 %cookieName%"
+  cookies_cookie_connoisseur:
+    name: "Znalec cookies"
+    description: "Upeč 1 milion %cookieName%"
+  cookies_cookie_collector:
+    name: "Sbírka cookies"
+    description: "Upeč 1 miliardu %cookieName%"
+  cookies_cookie_hoarder:
+    name: "Hromaditel cookies"
+    description: "Upeč 1 bilion %cookieName%"
+  cookies_cookie_overlord:
+    name: "Pán cookies"
+    description: "Upeč 1 kvadrilion %cookieName%"
+  upgrades_smart_shopper:
+    name: "Chytrý nakupující"
+    description: "Kup své první vylepšení"
+  upgrades_upgrade_master:
+    name: "Mistr vylepšení"
+    description: "Kup 100 vylepšení"
+  upgrades_savvy_spender:
+    name: "Chytrý utrácení"
+    description: "Kup 250 vylepšení"
+  upgrades_upgrade_enthusiast:
+    name: "Nadšenec vylepšení"
+    description: "Kup 1 000 vylepšení"
+  upgrades_gotta_upgrade_them_all:
+    name: "Musíš je všechny vylepšit"
+    description: "Kup 5 000 vylepšení"
+  prestige_rebaked_and_ready:
+    name: "Znovu upečeno a připraveno"
+    description: "Získej prestiž poprvé"
+  prestige_twice_as_tasty:
+    name: "Dvakrát chutnější"
+    description: "Získej prestiž 2×"
+  prestige_third_times_a_charm:
+    name: "Třetí pokus je kouzelný"
+    description: "Získej prestiž 3×"
+  prestige_oops_i_did_it_again:
+    name: "Ups, udělal jsem to znovu"
+    description: "Získej prestiž 4×"
+  prestige_oven_eternal:
+    name: "Věčná trouba"
+    description: "Získej prestiž 5×"
+  event_event_horizon:
+    name: "Horizont událostí"
+    description: "Účastni se 150 událostí"
+  event_sugar_rush:
+    name: "Cukrová horečka"
+    description: "Účastni se 25 událostí Cookie Frenzy"
+  event_money_magnet:
+    name: "Magnet na peníze"
+    description: "Získej více než 1 milion %cookieName% v jedné Lucky události"
+  event_oof:
+    name: "Oof!"
+    description: "Ztratit více než 1 milion %cookieName% v jedné Ruin události"
+  event_not_my_cookies:
+    name: "Ne moje %cookieName%!"
+    description: "Účastni se 75 negativních událostí"
+
