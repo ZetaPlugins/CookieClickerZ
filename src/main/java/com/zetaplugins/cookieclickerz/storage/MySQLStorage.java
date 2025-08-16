@@ -52,18 +52,18 @@ public class MySQLStorage extends SQLStorage {
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
                         "uuid VARCHAR(36) PRIMARY KEY, " +
                         "name VARCHAR(255), " +
-                        "totalCookies VARCHAR, " +
+                        "totalCookies VARCHAR(255), " +
                         "totalClicks INT, " +
                         "lastLogoutTime BIGINT, " +
-                        "cookiesPerClick VARCHAR, " +
-                        "offlineCookies VARCHAR, " +
+                        "cookiesPerClick VARCHAR(255), " +
+                        "offlineCookies VARCHAR(255), " +
                         "prestige INT DEFAULT 0" +
                         ")");
 
                 // Create upgrades table
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS upgrades (" +
                         "uuid VARCHAR(36), " +
-                        "upgrade_name VARCHAR, " +
+                        "upgrade_name VARCHAR(255), " +
                         "level INT, " +
                         "PRIMARY KEY (uuid, upgrade_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE ON UPDATE CASCADE" +
@@ -72,7 +72,7 @@ public class MySQLStorage extends SQLStorage {
                 // Create achievements table
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS achievements (" +
                         "uuid VARCHAR(36), " +
-                        "achievement_name VARCHAR, " +
+                        "achievement_name VARCHAR(255), " +
                         "progress INT, " +
                         "PRIMARY KEY (uuid, achievement_name), " +
                         "FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE ON UPDATE CASCADE" +
