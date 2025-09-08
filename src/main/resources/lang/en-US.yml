@@ -125,6 +125,10 @@ inventories:
       - "&7Price: %affordablecolor%%price%"
       - "&r "
       - "&7Level: %levelcolor%%level%"
+      - "&r "
+      - "&8[<#A8C686>Left-Click &7to buy %ac%1x&8]"
+      - "&8[<#A8C686>Right-Click &7to buy %ac%10x&8]"
+      - "&8[<#A8C686>Shift-Click &7to buy %ac%max&8]"
   prestige:
     title: "&8Prestige"
     prestige: "<#69e372>&lPrestige"

@@ -1,5 +1,6 @@
 package com.zetaplugins.cookieclickerz.util.gui;
 
+import com.zetaplugins.cookieclickerz.util.PricingUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -158,7 +159,11 @@ public class UpgradeGUI {
         for (String key : config.getKeys(false)) {
             Upgrade upgrade = new Upgrade(key);
             int upgradelevel = playerData.getUpgradeLevel("upgrade_" + upgrade.getId());
-            BigInteger upgradePrice = upgrade.getBaseprice().multiply(BigInteger.valueOf((long) Math.pow(upgrade.getPriceMultiplier(), upgradelevel)));
+            BigInteger upgradePrice = PricingUtils.priceAtLevel(
+                    upgrade.getBaseprice(),
+                    upgrade.getPriceMultiplier(),
+                    upgradelevel
+            );
             upgrade.setUpgradePrice(upgradePrice);
             upgrade.setAffordable(playerData.getTotalCookies().compareTo(upgradePrice) >= 0);
             upgrade.setLevel(upgradelevel);
