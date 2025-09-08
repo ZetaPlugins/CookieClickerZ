@@ -90,6 +90,13 @@ public class PrestigeGuiClickListener implements Listener {
         }
         plugin.getStorage().save(playerData);
 
+        for (String command : prestigeData.getCommands()) {
+            plugin.getServer().dispatchCommand(
+                    plugin.getServer().getConsoleSender(),
+                    command.replace("%player%", player.getName())
+            );
+        }
+
         PrestigeGUI.close(player);
         PrestigeGUI.open(player);
     }

@@ -12,6 +12,10 @@ levels:
     cost: "1M"
     # The multiplier that will be applied to the player's cookies
     multiplier: 2
+    # The commands that will be executed when a player prestiges to this level
+    # You can use %player% to insert the player's name
+    commands:
+      - "say %player% has just prestiged to Prestige I!"
 
   2:
     name: "&8&l> <!b><#69e372>Prestige II"
