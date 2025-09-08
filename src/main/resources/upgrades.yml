@@ -14,6 +14,8 @@ wooden_pickaxe:
   cpc: "1"
   # The amount of cookies the player will get while offline
   offlineCookies: "0"
+  # Custom mdoel ID to apply a texture to the item (requires a resource pack)
+  customModelId: 300
 
 stone_pickaxe:
   name: "&6Stone Pickaxe"
@@ -22,6 +24,7 @@ stone_pickaxe:
   item: "STONE_PICKAXE"
   cpc: "2"
   offlineCookies: "1"
+  customModelId: 301
 
 iron_pickaxe:
   name: "&6Iron Pickaxe"
@@ -30,6 +33,7 @@ iron_pickaxe:
   item: "IRON_PICKAXE"
   cpc: "4"
   offlineCookies: "2"
+  customModelId: 302
 
 # Advanced Resources
 diamond_pickaxe:
@@ -39,6 +43,7 @@ diamond_pickaxe:
   item: "DIAMOND_PICKAXE"
   cpc: "8"
   offlineCookies: "5"
+  customModelId: 303
 
 netherite_pickaxe:
   name: "&6Netherite Pickaxe"
@@ -47,6 +52,7 @@ netherite_pickaxe:
   item: "NETHERITE_PICKAXE"
   cpc: "16"
   offlineCookies: "10"
+  customModelId: 304
 
 # Rare Items
 enchanted_apple:
@@ -56,6 +62,7 @@ enchanted_apple:
   item: "ENCHANTED_GOLDEN_APPLE"
   cpc: "32"
   offlineCookies: "20"
+  customModelId: 305
 
 elytra:
   name: "&6Elytra"
@@ -64,6 +71,7 @@ elytra:
   item: "ELYTRA"
   cpc: "64"
   offlineCookies: "40"
+  customModelId: 306
 
 dragon_egg:
   name: "&6Dragon Egg"
@@ -72,6 +80,7 @@ dragon_egg:
   item: "DRAGON_EGG"
   cpc: "128"
   offlineCookies: "80"
+  customModelId: 307
 
 # Special Items
 beacon:
@@ -81,6 +90,7 @@ beacon:
   item: "BEACON"
   cpc: "256"
   offlineCookies: "160"
+  customModelId: 308
 
 nether_star:
   name: "&6Nether Star"
@@ -89,6 +99,7 @@ nether_star:
   item: "NETHER_STAR"
   cpc: "512"
   offlineCookies: "320"
+  customModelId: 309
 
 heart_of_the_sea:
   name: "&6Heart of the Sea"
@@ -97,6 +108,7 @@ heart_of_the_sea:
   item: "HEART_OF_THE_SEA"
   cpc: "1024"
   offlineCookies: "640"
+  customModelId: 310
 
 # Exotic Items
 totem_of_undying:
@@ -106,6 +118,7 @@ totem_of_undying:
   item: "TOTEM_OF_UNDYING"
   cpc: "2048"
   offlineCookies: "1280"
+  customModelId: 311
 
 end_crystal:
   name: "&6End Crystal"
@@ -114,6 +127,7 @@ end_crystal:
   item: "END_CRYSTAL"
   cpc: "4096"
   offlineCookies: "2560"
+  customModelId: 312
 
 shulker_shell:
   name: "&6Shulker Shell"
@@ -122,6 +136,7 @@ shulker_shell:
   item: "SHULKER_SHELL"
   cpc: "8192"
   offlineCookies: "5120"
+  customModelId: 313
 
 # Ultimate Items
 enchanted_netherite:
@@ -131,6 +146,7 @@ enchanted_netherite:
   item: "NETHERITE_INGOT"
   cpc: "16384"
   offlineCookies: "10240"
+  customModelId: 314
 
 ancient_debris:
   name: "&6Ancient Debris"
@@ -139,6 +155,7 @@ ancient_debris:
   item: "ANCIENT_DEBRIS"
   cpc: "32768"
   offlineCookies: "20480"
+  customModelId: 315
 
 block_of_netherite:
   name: "&6Block of Netherite"
@@ -147,6 +164,7 @@ block_of_netherite:
   item: "NETHERITE_BLOCK"
   cpc: "65536"
   offlineCookies: "40960"
+  customModelId: 316
 
 # Ultimate Special Items
 god_apple:
@@ -156,5 +174,6 @@ god_apple:
   item: "ENCHANTED_GOLDEN_APPLE"
   cpc: "131072"
   offlineCookies: "81920"
+  customModelId: 317
 
 # Add more items as needed following this structure

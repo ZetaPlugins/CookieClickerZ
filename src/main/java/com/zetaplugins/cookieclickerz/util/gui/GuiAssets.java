@@ -87,6 +87,7 @@ public class GuiAssets {
                         new MessageUtils.Replaceable<>("%levelcolor%", levelColor),
                         new MessageUtils.Replaceable<>("%level%", upgrade.getLevel())
                 ))
+                .setCustomModelID(upgrade.getCustomModelId())
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_ENCHANTS)
                 .addFlag(ItemFlag.HIDE_ADDITIONAL_TOOLTIP)

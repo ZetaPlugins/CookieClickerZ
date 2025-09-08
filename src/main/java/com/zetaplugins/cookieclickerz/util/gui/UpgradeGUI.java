@@ -30,6 +30,7 @@ public class UpgradeGUI {
         private BigInteger upgradePrice;
         private boolean affordable;
         private int level;
+        private int customModelId;
 
         // Getters and setters
 
@@ -51,6 +52,11 @@ public class UpgradeGUI {
             this.item = config.getString(id + ".item");
             this.cpc = new BigInteger(config.getString(id + ".cpc", "0"));
             this.offlineCookies = new BigInteger(config.getString(id + ".offlineCookies", "0"));
+            this.customModelId = config.getInt(id + ".customModelId", 0);
+        }
+
+        public int getCustomModelId() {
+            return customModelId;
         }
 
         public int getLevel() {
