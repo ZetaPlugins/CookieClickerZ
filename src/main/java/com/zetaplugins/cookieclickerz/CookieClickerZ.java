@@ -157,7 +157,7 @@ public final class CookieClickerZ extends JavaPlugin {
 
         configManager = new ConfigManager(this);
 
-        for (String file : List.of("upgrades", "prestige", "clicker")) {
+        for (String file : List.of("upgrades", "prestige", "clicker", "achievements")) {
             configManager.getCustomConfig(file);
         }
     }

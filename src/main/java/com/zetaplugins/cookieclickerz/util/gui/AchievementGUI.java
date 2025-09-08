@@ -137,7 +137,7 @@ public class AchievementGUI {
         if (name == null) name = category.getSlug();
 
         try {
-            return CustomItem.fromSkullBase64(category.getHeadBase64())
+            return CustomItem.fromSkullBase64(category.getHeadBase64(CookieClickerZ.getInstance()))
                     .setName(name)
                     .getItemStack();
         } catch (MalformedURLException e) {

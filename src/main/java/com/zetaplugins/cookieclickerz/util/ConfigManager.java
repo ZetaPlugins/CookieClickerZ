@@ -25,6 +25,10 @@ public class ConfigManager {
         return getCustomConfig("prestige");
     }
 
+    public FileConfiguration getAchievementsConfig() {
+        return getCustomConfig("achievements");
+    }
+
     public FileConfiguration getCustomConfig(String fileName) {
         File configFile = new File(plugin.getDataFolder(),  fileName.contains(".yml") ? fileName : fileName + ".yml");
         if (!configFile.exists()) {
