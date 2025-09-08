@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.zetaplugins.cookieclickerz.CookieClickerZ;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigManager {
     private final CookieClickerZ plugin;
@@ -48,4 +50,19 @@ public class ConfigManager {
             plugin.getLogger().severe("Could not save " + name + ": " + e.getMessage());
         }
     }
+
+    /**
+     * Gets all configs as a map of file name to file content used for debug command
+     * @return Map of file name to file content
+     */
+    public Map<String, String> getConfigsMap() {
+        Map<String, String> configs = new HashMap<>();
+        configs.put("config.yml", plugin.getConfig().saveToString());
+        configs.put("clicker.yml", getClickerConfig().saveToString());
+        configs.put("upgrades.yml", getUpgradesConfig().saveToString());
+        configs.put("prestige.yml", getPrestigeConfig().saveToString());
+        configs.put("achievements.yml", getAchievementsConfig().saveToString());
+        return configs;
+    }
+
 }

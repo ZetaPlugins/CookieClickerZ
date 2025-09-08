@@ -16,6 +16,9 @@ commands:
       - cookieclickerz
       - cc
     description: Main command
+  ccdebug:
+    description: Generates debug logs
+    permission: cookieclickerz.admin.debug
 
 permissions:
   cookieclickerz.openmenu:
@@ -39,6 +42,9 @@ permissions:
   cookieclickerz.numcheatsheet:
     default: true
     description: Permission to use the number shorthand cheatsheet
+  cookieclickerz.admin.debug:
+    default: op
+    description: Permission to generate debug logs
   cookieclickerz.admin.reload:
     default: op
     description: Permission to reload the plugin

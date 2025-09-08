@@ -16,6 +16,7 @@ import com.zetaplugins.cookieclickerz.util.holograms.DecentHologramManager;
 import com.zetaplugins.cookieclickerz.util.holograms.FancyHologramManager;
 import com.zetaplugins.cookieclickerz.util.holograms.HologramManager;
 
+import java.io.File;
 import java.util.List;
 
 public final class CookieClickerZ extends JavaPlugin {
@@ -201,5 +202,9 @@ public final class CookieClickerZ extends JavaPlugin {
         }
 
         return stringToLocation(string, world);
+    }
+
+    public File getPluginFile() {
+        return this.getFile();
     }
 }

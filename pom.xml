@@ -49,10 +49,17 @@
                                 <include>**/*</include>
                             </includes>
                         </filter>
+                        <filter>
+                            <artifact>com.zetaplugins:zetacore</artifact>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </filter>
                     </filters>
                     <artifactSet>
                         <includes>
                             <include>com.zaxxer:HikariCP</include> <!-- Include HikariCP dependency -->
+                            <include>com.zetaplugins:zetacore</include>
                         </includes>
                     </artifactSet>
                     <transformers>
@@ -99,6 +106,10 @@
             <id>fancyinnovations-releases</id>
             <name>FancyInnovations Repository</name>
             <url>https://repo.fancyinnovations.com/releases</url>
+        </repository>
+        <repository>
+            <id>zetaplugins</id>
+            <url>https://maven.zetaplugins.com/</url>
         </repository>
     </repositories>
 
@@ -153,6 +164,11 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>9.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zetaplugins</groupId>
+            <artifactId>zetacore</artifactId>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 </project>

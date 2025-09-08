@@ -1,5 +1,6 @@
 package com.zetaplugins.cookieclickerz.util;
 
+import com.zetaplugins.zetacore.debug.command.DebugCommandHandler;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -19,6 +20,16 @@ public class CommandManager {
      */
     public void registerCommands() {
         registerCommand("cookieclicker", new MainCommandHandler(plugin), new MainTabCompleter(plugin));
+
+        DebugCommandHandler debugCommandHandler = new DebugCommandHandler(
+                "YE4jVOVg",
+                plugin,
+                plugin.getPluginFile(),
+                "cookieclickerz.admin.debug",
+                plugin.getConfigManager().getConfigsMap()
+        );
+        registerCommand("ccdebug", debugCommandHandler, debugCommandHandler);
+
     }
 
     /**
