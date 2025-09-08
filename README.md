@@ -75,6 +75,7 @@ checkForUpdates: true
 
 # Set the language to any code found in the "lang" folder (don't add the .yml extension)
 # You can add your own language files. Use https://github.com/KartoffelChipss/CookieClickerZ/tree/main/src/main/resources/lang/en-US.yml as a template
+# Default languages are: en-US, de-DE, ru-RU, cs-CZ
 lang: "en-US"
 
 # The the cookie name
@@ -95,6 +96,20 @@ offlineCookies:
 # https://modrinth.com/plugin/decentholograms
 # You can change the content of the hologram in the language file
 hologram: true
+
+
+# === LEADERBOARD ===
+
+# [!] After changing any of these settings, you need to restart the server for them to take effect
+
+leaderboard:
+    # Leaderboard calculations are expensive, so they are only calculated every interval.
+    # If you don't use it and want to save some performance, you can disable it all together.
+    enabled: true
+    # The number of top players to show on the leaderboard
+    size: 10
+    # The interval (in seconds) at which the leaderboard will be updated
+    updateInterval: 60
 
 
 # === EVENTS ===
@@ -199,6 +214,8 @@ wooden_pickaxe:
   cpc: "1"
   # The amount of cookies the player will get while offline
   offlineCookies: "0"
+  # Custom mdoel ID to apply a texture to the item (requires a resource pack)
+  customModelId: 300
 
 ...
 
@@ -225,6 +242,10 @@ levels:
     cost: "1M"
     # The multiplier that will be applied to the player's cookies
     multiplier: 2
+    # The commands that will be executed when a player prestiges to this level
+    # You can use %player% to insert the player's name
+    commands:
+      - "say %player% has just prestiged to Prestige I!"
 
   2:
     name: "&8&l> <!b>&6Prestige II"
