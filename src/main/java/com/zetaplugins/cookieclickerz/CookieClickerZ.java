@@ -1,6 +1,7 @@
 package com.zetaplugins.cookieclickerz;
 
 import com.zetaplugins.cookieclickerz.util.*;
+import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -28,6 +29,7 @@ public final class CookieClickerZ extends JavaPlugin {
     private ClickerManager clickerManager;
     private CookieEventManager cookieEventManager;
     private AchievementManager achievementManager;
+    private LeaderBoardService leaderBoardService;
 
     private final boolean hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     private final boolean hasDecentHolograms = Bukkit.getPluginManager().getPlugin("DecentHolograms") != null;
@@ -51,6 +53,9 @@ public final class CookieClickerZ extends JavaPlugin {
         clickerManager = new ClickerManager(this);
         cookieEventManager = new CookieEventManager(this);
         achievementManager = new AchievementManager(this);
+
+        leaderBoardService = new LeaderBoardService(this);
+        leaderBoardService.start();
 
         if (hasFancyHolograms) {
             getLogger().info("FancyHolograms found! Using FancyHolograms for holograms.");
@@ -128,6 +133,10 @@ public final class CookieClickerZ extends JavaPlugin {
 
     public AchievementManager getAchievementManager() {
         return achievementManager;
+    }
+
+    public LeaderBoardService getLeaderBoardService() {
+        return leaderBoardService;
     }
 
     private Storage createStorage() {

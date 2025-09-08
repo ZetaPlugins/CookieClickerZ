@@ -39,6 +39,20 @@ offlineCookies:
 hologram: true
 
 
+# === LEADERBOARD ===
+
+# [!] After changing any of these settings, you need to restart the server for them to take effect
+
+leaderboard:
+    # Leaderboard calculations are expensive, so they are only calculated every interval.
+    # If you don't use it and want to save some performance, you can disable it all together.
+    enabled: true
+    # The number of top players to show on the leaderboard
+    size: 10
+    # The interval (in seconds) at which the leaderboard will be updated
+    updateInterval: 60
+
+
 # === EVENTS ===
 
 events:

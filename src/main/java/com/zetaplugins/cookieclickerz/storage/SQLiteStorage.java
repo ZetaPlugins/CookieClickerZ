@@ -1,9 +1,13 @@
 package com.zetaplugins.cookieclickerz.storage;
 
 import com.zetaplugins.cookieclickerz.CookieClickerZ;
+import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardEntry;
+import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardService;
+import com.zetaplugins.cookieclickerz.util.NumFormatter;
 import com.zetaplugins.cookieclickerz.util.achievements.Achievement;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +40,6 @@ public final class SQLiteStorage extends SQLStorage {
                 getPlugin().getLogger().severe("Failed to create players table in SQLite database: " + e.getMessage());
             }
 
-            // Create upgrades table if not exists
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS upgrades (" +
                         "uuid TEXT, " +
@@ -48,7 +51,6 @@ public final class SQLiteStorage extends SQLStorage {
                 getPlugin().getLogger().severe("Failed to create upgrades table in SQLite database: " + e.getMessage());
             }
 
-            // Create achievements table if not exists
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS achievements (" +
                         "uuid TEXT, " +
@@ -58,6 +60,13 @@ public final class SQLiteStorage extends SQLStorage {
                         "FOREIGN KEY (uuid) REFERENCES players(uuid))");
             } catch (SQLException e) {
                 getPlugin().getLogger().severe("Failed to create achievements table in SQLite database: " + e.getMessage());
+            }
+
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cookie_order ON players (LENGTH(totalCookies) DESC, totalCookies DESC);");
+                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cpc_order ON players (LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC);");
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to enable foreign key support in SQLite database: " + e.getMessage());
             }
         } catch (SQLException e) {
             getPlugin().getLogger().severe("Failed to initialize SQLite database: " + e.getMessage());
@@ -228,6 +237,78 @@ public final class SQLiteStorage extends SQLStorage {
             }
         } catch (IOException e) {
             getPlugin().getLogger().severe("Failed to read CSV file: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<LeaderBoardEntry> getTopCookiesPlayers(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query = "SELECT" +
+                    " ROW_NUMBER() OVER (ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC) AS rank," +
+                    " uuid," +
+                    " name," +
+                    " totalCookies," +
+                    " cookiesPerClick" +
+                    " FROM players" +
+                    " ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC" +
+                    " LIMIT ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, limit);
+                try (ResultSet rs = statement.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("uuid"));
+                        String name = rs.getString("name");
+                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                    }
+                }
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from SQLite database: " + e.getMessage());
+            }
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from SQLite database: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<LeaderBoardEntry> getTopCpcPlayers(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query = "SELECT" +
+                    " ROW_NUMBER() OVER (ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC) AS rank," +
+                    " uuid," +
+                    " name," +
+                    " totalCookies," +
+                    " cookiesPerClick" +
+                    " FROM players" +
+                    " ORDER BY LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC" +
+                    " LIMIT ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, limit);
+                try (ResultSet rs = statement.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("uuid"));
+                        String name = rs.getString("name");
+                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                    }
+                }
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to retrieve top players by cpc from SQLite database: " + e.getMessage());
+            }
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by cpc from SQLite database: " + e.getMessage());
+            return List.of();
         }
     }
 

@@ -1,5 +1,7 @@
 package com.zetaplugins.cookieclickerz.storage;
 
+import com.zetaplugins.cookieclickerz.util.NumFormatter;
+import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardEntry;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.zetaplugins.cookieclickerz.CookieClickerZ;
 import com.zetaplugins.cookieclickerz.storage.connectionPool.ConnectionPool;
@@ -7,10 +9,9 @@ import com.zetaplugins.cookieclickerz.storage.connectionPool.MySQLConnectionPool
 import com.zetaplugins.cookieclickerz.util.achievements.Achievement;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
@@ -80,6 +81,13 @@ public class MySQLStorage extends SQLStorage {
 
             } catch (SQLException e) {
                 getPlugin().getLogger().severe("Failed to create tables in MySQL database: " + e.getMessage());
+            }
+
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cookie_order ON players (LENGTH(totalCookies) DESC, totalCookies DESC);");
+                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cpc_order ON players (LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC);");
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to enable foreign key support in SQLite database: " + e.getMessage());
             }
 
         } catch (SQLException e) {
@@ -253,6 +261,84 @@ public class MySQLStorage extends SQLStorage {
             }
         } catch (IOException e) {
             getPlugin().getLogger().log(Level.SEVERE, "Failed to read CSV file: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<LeaderBoardEntry> getTopCookiesPlayers(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query =
+                    "SELECT " +
+                            "  ROW_NUMBER() OVER (ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC) AS rank, " +
+                            "  uuid, " +
+                            "  name, " +
+                            "  totalCookies, " +
+                            "  cookiesPerClick " +
+                            "FROM players " +
+                            "ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC " +
+                            "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("uuid"));
+                        String name = rs.getString("name");
+                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                    }
+                }
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from MySQL: " + e.getMessage());
+            }
+
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from MySQL: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<LeaderBoardEntry> getTopCpcPlayers(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query =
+                    "SELECT " +
+                            "  ROW_NUMBER() OVER (ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC) AS rank, " +
+                            "  uuid, " +
+                            "  name, " +
+                            "  totalCookies, " +
+                            "  cookiesPerClick " +
+                            "FROM players " +
+                            "ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
+                            "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("uuid"));
+                        String name = rs.getString("name");
+                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                    }
+                }
+            } catch (SQLException e) {
+                getPlugin().getLogger().severe("Failed to retrieve top players by CPC from MySQL: " + e.getMessage());
+            }
+
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by CPC from MySQL: " + e.getMessage());
+            return List.of();
         }
     }
 

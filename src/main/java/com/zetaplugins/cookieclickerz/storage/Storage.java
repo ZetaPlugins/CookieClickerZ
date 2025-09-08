@@ -1,5 +1,6 @@
 package com.zetaplugins.cookieclickerz.storage;
 
+import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardEntry;
 import org.bukkit.scheduler.BukkitRunnable;
 import com.zetaplugins.cookieclickerz.CookieClickerZ;
 
@@ -78,6 +79,20 @@ public abstract class Storage {
      * @return A List of all players. PlayerData does not contain achievements and upgrades.
      */
     abstract public List<PlayerData> getAllPlayers();
+
+    /**
+     * Get a List of the top players by total cookies.
+     * @param limit The maximum number of players to return.
+     * @return A List of the top players. PlayerData does not contain achievements and upgrades.
+     */
+    abstract public List<LeaderBoardEntry> getTopCookiesPlayers(int limit);
+
+    /**
+     * Get a List of the top players by cookies per click.
+     * @param limit The maximum number of players to return.
+     * @return A List of the top players. PlayerData does not contain achievements and upgrades.
+     */
+    abstract public List<LeaderBoardEntry> getTopCpcPlayers(int limit);
 
     /**
      * Save all cached data to the storage system.
