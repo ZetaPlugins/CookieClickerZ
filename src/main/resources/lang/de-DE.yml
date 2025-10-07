@@ -1,24 +1,38 @@
-accentColor: "<#D2691E>" # This is the accent color code. It will replace %ac% in the messages.
+---
+accentColor: "<#D2691E>"
 prefix: "&8[%ac%CookieClickerZ&8]"
-newVersionAvailable: "&7Eine neue Version von CookieClickerZ ist verfügbar!\n%ac%<click:OPEN_URL:https://modrinth.com/plugin/cookieclickerz/versions>https://modrinth.com/plugin/cookieclickerz/versions</click>"
+newVersionAvailable: |-
+  &7Eine neue Version von CookieClickerZ ist verfügbar!
+  %ac%<click:OPEN_URL:https://modrinth.com/plugin/cookieclickerz/versions>https://modrinth.com/plugin/cookieclickerz/versions</click>
 usageError: "&cBenutzung: %usage%"
 noPermsError: "&cDu hast keine Berechtigung um diesen Befehl zu benutzen!"
+noUpgradePerms: "&cDu hast keine Berechtigung, dieses Upgrade zu kaufen!"
 playerNotFound: "&cSpieler konnte nicht gefunden werden!"
 noConsoleError: "&cDu musst ein Spieler sein um diesen Befehl ausführen zu können!"
 playerDataStorageNull: "&cSpielerdaten nicht gefunden!"
 noPermissionError: "&cDu hast keine Berechtigung dies zu benutzen!"
 noPlayerData: "&cDieser spieler hat noch nicht auf diesem Server gespielt!"
-helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Du kannst einen Klickerblock mit <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click> erstellen.\nMit Linksklick erhälst du %cookieName% und mit Rechtsklick öffnest du das Menü.\n\n%ac%<u><click:open_url:'https://docs.zetaplugins.com/cookieclickerz'>Dokumentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
+helpMsg: |2
+
+  %ac%<b><grey>></grey> CookieClickerZ</b>
+
+  <gray>Du kannst einen Klickerblock mit <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click> erstellen.
+  Mit Linksklick erhälst du %cookieName% und mit Rechtsklick öffnest du das Menü.
+
+  %ac%<u><click:open_url:'https://docs.zetaplugins.com/cookieclickerz'>Dokumentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>
 reloadMsg: "&7Plugin erfolgreich neu geladen!"
 versionMsg: "&7Du benutzt version %ac%%version%"
 exportData: "&7Spielerdaten erfolgreich in %ac%%file%.csv exportiert!"
-importData: "&7Spielerdaten aus %ac%%file%.csv&7 erfolgreich importiert!\n&cBitte starte den Server neu um eine saubere Migration zu gewährleisten!"
+importData: |-
+  &7Spielerdaten aus %ac%%file%.csv&7 erfolgreich importiert!
+  &cBitte starte den Server neu um eine saubere Migration zu gewährleisten!
 notLookingAtBlock: "&cDu musst einen Block anschauen!"
 alreadyClicker: "&cDieser Block ist bereits ein Klicker!"
 invalidLocation: "&cUngültiger Ort!"
 notClicker: "&cDieser Block ist kein Klicker!"
 alreadyClickerName: "&cDieser Klickername ist bereits vergeben!"
-clickerAddConfirm: "&7Erfolgreich einen Klickerblock mit namen %ac%%name% &7und Ort %ac%%location% &7hinzugefügt!"
+clickerAddConfirm: "&7Erfolgreich einen Klickerblock mit namen %ac%%name% &7und Ort
+  %ac%%location% &7hinzugefügt!"
 clickerRemoveConfirm: "&7Erfolgreich den Klickerblock mit namen %ac%%name%&7 entfernt!"
 clickerList: "&7Klickerblöcke: %ac%%clickers%"
 noClickers: "&cEs gibt keine Klickerblöcke!"
@@ -32,52 +46,64 @@ removeCPC: "&7Erfolgreich %ac%%amount% &7%cookieName% pro klick von %ac%%player%
 setCPC: "&7Erfolgreich %ac%%player%&7's %cookieName% pro klick auf %ac%%amount% gesetzt."
 notEnoughCookies: "&cDu hast nicht genug %cookieName%!"
 upgradeBought: "&7Du hast das upgrade %ac%%upgrade%&7 gekauft!"
-prestigeSuccess: "&7Du bist auf Prestige Level %ac%%prestige%&7 augestiegen! Du hast jetzt einen %ac%%multiplier%x &7%cookieName% Multiplikator!"
+prestigeSuccess: "&7Du bist auf Prestige Level %ac%%prestige%&7 augestiegen! Du hast
+  jetzt einen %ac%%multiplier%x &7%cookieName% Multiplikator!"
 getPrestige: "&7%ac%%player%&7's Prestige Level ist %ac%%prestige%&7."
 setPrestige: "&Erfolgreich %ac%%player%&7's Prestige Level auf %ac%%amount% gesetzt!"
-offlineCookies: "&7Du hast &e%ac%%amount%&7 %cookieName% erhalten während du offline warst!"
-teleportToClicker: "Teleportiere zu Klicker %name%"
+offlineCookies: "&7Du hast &e%ac%%amount%&7 %cookieName% erhalten während du offline
+  warst!"
+teleportToClicker: Teleportiere zu Klicker %name%
 noEvent: "&c%ac%%player%&c hat kein Event!"
 getEvent: "&7%ac%%player%&7's Events: %ac%%events%"
-achievementUnlocked: "<#9932cc>&lErrungenschaft! &r&7Du hast die Errungenschaft <hover:show_text:'<#9932cc>%achievement%\n&7%description%'><#9932cc>%achievement%</hover>&7 freigeschaltet!"
+achievementUnlocked: |-
+  <#9932cc>&lErrungenschaft! &r&7Du hast die Errungenschaft <hover:show_text:'<#9932cc>%achievement%
+  &7%description%'><#9932cc>%achievement%</hover>&7 freigeschaltet!
 achievementNotFound: "&cErrungenschaft nicht gefunden!"
 getAchievement: "&7Errungenschaft %ac%%achievement% &7von %ac%%player%&7: %ac%%progress%&8/%ac%%goal%"
-setAchievement: "&7Erfolgreich %ac%%player%&7's Errungenschaft %ac%%achievement% &7Fortschritt auf %ac%%progress%&7 gesetzt!"
+setAchievement: "&7Erfolgreich %ac%%player%&7's Errungenschaft %ac%%achievement% &7Fortschritt
+  auf %ac%%progress%&7 gesetzt!"
+invalidMenu: "&cUngültiges Menü! Verfügbare Menüs: main, upgrades, achievements, prestige,
+  top"
+positiveAmount: "&cUngültiger Betrag! Es muss eine positive Ganzzahl sein."
+upgradeNotFound: "&cUpgrade „%upgrade%“ nicht gefunden!"
+giveUpgradeSuccess: "&7Erfolgreich %ac%%player% %ac%%amount% &7Level für %ac%%upgrade%
+  &7gegeben! (%ac%+%cpc% &7CPC, %ac%+%offline% &7offline cookies/sec)"
+upgradeReceived: "&7Du hast %ac%%amount% &7Levels für %ac%%upgrade%&7 erhalten! (%ac%+%cpc%
+  &7CPC, %ac%+%offline% &7offline cookies/sec)"
 numCheatSheet:
-  - "&r"
-  - "&8&l> %ac%&lZahlentabelle"
-  - "&r"
-  - " %ac%1K &8= &71,000"
-  - " %ac%1M &8= &71,000,000"
-  - " %ac%1B &8= &71,000,000,000"
-  - " %ac%1T &8= &71,000,000,000,000"
-  - " %ac%1Q &8= &71,000,000,000,000,000"
-  - " %ac%1QQ &8= &71,000,000,000,000,000,000"
-  - " %ac%1S &8= &71,000,000,000,000,000,000,000"
-  - " %ac%1SS &8= &71,000,000,000,000,000,000,000,000"
-  - " %ac%1O &8= &71,000,000,000,000,000,000,000,000,000"
-  - " %ac%1N &8= &71,000,000,000,000,000,000,000,000,000,000"
-  - " %ac%1D &8= &71,000,000,000,000,000,000,000,000,000,000,000"
-  - "&r"
+- "&r"
+- "&8&l> %ac%&lZahlentabelle"
+- "&r"
+- " %ac%1K &8= &71,000"
+- " %ac%1M &8= &71,000,000"
+- " %ac%1B &8= &71,000,000,000"
+- " %ac%1T &8= &71,000,000,000,000"
+- " %ac%1Q &8= &71,000,000,000,000,000"
+- " %ac%1QQ &8= &71,000,000,000,000,000,000"
+- " %ac%1S &8= &71,000,000,000,000,000,000,000"
+- " %ac%1SS &8= &71,000,000,000,000,000,000,000,000"
+- " %ac%1O &8= &71,000,000,000,000,000,000,000,000,000"
+- " %ac%1N &8= &71,000,000,000,000,000,000,000,000,000,000"
+- " %ac%1D &8= &71,000,000,000,000,000,000,000,000,000,000,000"
+- "&r"
 eventMessages:
   instant:
     LUCKY: "&a&lGlückspilz! &r&7Du hast %ac%%amount% &7%cookieName% bekommen!"
     RUIN: "&c&lPech gehabt! &r&7Du hast %ac%%amount% &7%cookieName% verloren!"
   start:
-    COOKIE_FRENZY: "&a&lKeksraserei! &r&7Du erhältst %ac%7x &7mehr %cookieName% für die nächsten %ac%77 Sekunden&7!"
-    LUCKY: ""
-    CLICK_FRENZY: "&a&lKlickraserei! &r&7Du erhältst %ac%777x &7mehr %cookieName% für die nächsten %ac%13 Sekunden&7!"
-    RUIN: ""
-    CURSED_FINGER: "&c&lVerfluchter Finger! &r&7Du verlierst &c-50% &7%cookieName% für die nächsten &c66 Sekunden&7!"
+    COOKIE_FRENZY: "&a&lKeksraserei! &r&7Du erhältst %ac%7x &7mehr %cookieName% für
+      die nächsten %ac%77 Sekunden&7!"
+    CLICK_FRENZY: "&a&lKlickraserei! &r&7Du erhältst %ac%777x &7mehr %cookieName%
+      für die nächsten %ac%13 Sekunden&7!"
+    CURSED_FINGER: "&c&lVerfluchter Finger! &r&7Du verlierst &c-50% &7%cookieName%
+      für die nächsten &c66 Sekunden&7!"
   end:
     COOKIE_FRENZY: "&7Die Keksraserei ist vorbei!"
-    LUCKY: ""
     CLICK_FRENZY: "&7Die Klickraserei ist vorbei!"
-    RUIN: ""
     CURSED_FINGER: "&7Der Verfluchte Finger ist vorbei!"
 clickerHologram:
-  - "%ac%&l🍪 Cookie Clicker 🍪"
-  - "&7Klicke um %cookieName% zu erhalten!"
+- "%ac%&l\U0001F36A Cookie Clicker \U0001F36A"
+- "&7Klicke um %cookieName% zu erhalten!"
 clickerHologramOffset: 2.0
 inventories:
   navigation:
@@ -89,86 +115,86 @@ inventories:
     title: "&8CookieClickerZ"
     shopTitle: "<#fcf171>&lLaden"
     shopDescription:
-      - "&7Kaufe Upgrades um deine %cookieName% Produktion zu erhöhen!"
-      - " "
+    - "&7Kaufe Upgrades um deine %cookieName% Produktion zu erhöhen!"
+    - 
     prestigeTitle: "<#69e372>&lPrestige"
     prestigeDescription:
-      - "&7Prestige um deine %cookieName% Produktion massiv zu erhöhen!"
-      - " "
+    - "&7Prestige um deine %cookieName% Produktion massiv zu erhöhen!"
+    - 
     achievementsTitle: "<#9932cc>&lErrungenschaften"
     achievementsDescription:
-      - "&7Errungenschaften sind Ziele die du erreichen kannst!"
-      - " "
+    - "&7Errungenschaften sind Ziele die du erreichen kannst!"
+    - 
     topTitle: "<#FF5733>&lTop Spieler"
     topDescription:
-      - "&7Die besten Spieler auf diesem Server!"
-      - " "
+    - "&7Die besten Spieler auf diesem Server!"
+    - 
     clickerTitle: "%ac%&lDeine %cookieName%"
     clickerDescription:
-      - " "
-      - "&8>> %ac%%cookies% &7%cookieName%"
-      - " "
-      - "&8>> %ac%+%cpc% &7%cookieName% pro Klick"
-      - "&8>> %ac%+%offlinecookies% &7offline %cookieName%"
-      - " "
-      - "&8>> %ac%%multiplier%x &7Prestige Multiplikator"
-      - " "
+    - 
+    - "&8>> %ac%%cookies% &7%cookieName%"
+    - 
+    - "&8>> %ac%+%cpc% &7%cookieName% pro Klick"
+    - "&8>> %ac%+%offlinecookies% &7offline %cookieName%"
+    - 
+    - "&8>> %ac%%multiplier%x &7Prestige Multiplikator"
+    - 
   upgrades:
     title: "&8Upgrades"
     description:
-      - "&7Kaufe Upgrades um deine %cookieName% Produktion zu erhöhen!"
-      - " "
+    - "&7Kaufe Upgrades um deine %cookieName% Produktion zu erhöhen!"
+    - 
     upgradeDescription:
-      - "&7%cookieName% pro Klick: %ac%%cpc%"
-      - "&7Offline %cookieName%: %ac%%oc%"
-      - "&r "
-      - "&7Preis: %affordablecolor%%price%"
-      - "&r "
-      - "&7Level: %levelcolor%%level%"
-      - "&r "
-      - "&8[<#A8C686>Links-Click &7um %ac%1x &7zu kaufen&8]"
-      - "&8[<#A8C686>Rechts-Click &7um %ac%10x &7zu kaufen&8]"
-      - "&8[<#A8C686>Shift-Click &7um %ac%max &7zu kaufen&8]"
+    - "&7%cookieName% pro Klick: %ac%%cpc%"
+    - "&7Offline %cookieName%: %ac%%oc%"
+    - "&r "
+    - "&7Preis: %affordablecolor%%price%"
+    - "&r "
+    - "&7Level: %levelcolor%%level%"
+    - "&r "
+    - "&8[<#A8C686>Links-Click &7um %ac%1x &7zu kaufen&8]"
+    - "&8[<#A8C686>Rechts-Click &7um %ac%10x &7zu kaufen&8]"
+    - "&8[<#A8C686>Shift-Click &7um %ac%max &7zu kaufen&8]"
   prestige:
     title: "&8Prestige"
     prestige: "<#69e372>&lPrestige"
     description: "&7Prestige um deine %cookieName% Produktion massiv zu erhöhen!"
     upgradeDescription:
       available:
-        - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
-        - "&7Preis: %ac%%price% %cookieName%"
-        - " "
-        - "&8[&7Klick um zu kaufen&8]"
+      - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
+      - "&7Preis: %ac%%price% %cookieName%"
+      - 
+      - "&8[&7Klick um zu kaufen&8]"
       unavailable:
-        - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
-        - "&7Preis: %ac%%price% %cookieName%"
-        - " "
-        - "&cDu musst die vorherige Stufe kaufen um diese kaufen zu können!"
+      - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
+      - "&7Preis: %ac%%price% %cookieName%"
+      - 
+      - "&cDu musst die vorherige Stufe kaufen um diese kaufen zu können!"
       bought:
-        - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
-        - "&7Preis: %ac%%price% %cookieName%"
-        - " "
-        - "&7Du hast diese Stufe bereits gekauft!"
+      - "&7%cookieName% Multiplikator: %ac%%multiplier%x"
+      - "&7Preis: %ac%%price% %cookieName%"
+      - 
+      - "&7Du hast diese Stufe bereits gekauft!"
   top:
     title: "&8Top Spieler"
     player:
       title: "%placeColor%#%place% <!b>&7%player%"
       description:
-        - " "
-        - "&8>> %ac%%cookies% &7%cookieName%"
-        - "&8>> %ac%+%cpc% &7%cookieName% pro Klick"
-        - "&8>> %ac%%multiplier%x &7Prestige Multiplikator"
-        - " "
-        - "&8>> &7Gesamtbewertung: &a&l%score%"
-        - " "
+      - 
+      - "&8>> %ac%%cookies% &7%cookieName%"
+      - "&8>> %ac%+%cpc% &7%cookieName% pro Klick"
+      - "&8>> %ac%%multiplier%x &7Prestige Multiplikator"
+      - 
+      - "&8>> &7Gesamtbewertung: &a&l%score%"
+      - 
   achievements:
     title: "&8Errungenschaften"
     achievementTitle: "<#9932cc>%title% %completed%"
     achievementDescription:
-      - "&7%description%"
-      - " "
-      - "&8> &7%progress%&8/&7%goal%"
-      - " "
+    - "&7%description%"
+    - 
+    - "&8> &7%progress%&8/&7%goal%"
+    - 
     completed: "&8[&a✔&8]"
     notCompleted: "&8[&c✖&8]"
 achievementCategories:
@@ -180,77 +206,78 @@ achievementCategories:
   misc: "<#9932cc>Sonstiges"
 achievements:
   clicks_clicker_rookie:
-    name: "Klick-Frischling"
-    description: "Aller Anfang ist schwer – mache deinen ersten Klick"
+    name: Klick-Frischling
+    description: Aller Anfang ist schwer – mache deinen ersten Klick
   clicks_finger_workout:
-    name: "Fingerakrobat"
-    description: "Übung macht den Meister – mache 1.000 Klicks"
+    name: Fingerakrobat
+    description: Übung macht den Meister – mache 1.000 Klicks
   clicks_click_champion:
-    name: "Klick-König"
-    description: "Hart geklickt – mache 10.000 Klicks"
+    name: Klick-König
+    description: Hart geklickt – mache 10.000 Klicks
   clicks_unstoppable_clicker:
-    name: "Unaufhaltsamer Klicker"
-    description: "Wer nicht klickt, verliert – mache 100.000 Klicks"
+    name: Unaufhaltsamer Klicker
+    description: Wer nicht klickt, verliert – mache 100.000 Klicks
   clicks_cookie_machine:
-    name: "Keks-Fabrik"
-    description: "Klick dich reich – mache 1.000.000 Klicks"
+    name: Keks-Fabrik
+    description: Klick dich reich – mache 1.000.000 Klicks
   cookies_first_batch:
-    name: "Die ersten Krümel"
-    description: "Jeder fängt mal klein an – backe 1.000 %cookieName%"
+    name: Die ersten Krümel
+    description: Jeder fängt mal klein an – backe 1.000 %cookieName%
   cookies_cookie_connoisseur:
-    name: "Keks-Gourmet"
-    description: "Ein feines Krümelchen – backe 1 Mio. %cookieName%"
+    name: Keks-Gourmet
+    description: Ein feines Krümelchen – backe 1 Mio. %cookieName%
   cookies_cookie_collector:
-    name: "Kekskrümeljäger"
-    description: "Immer her mit den Keksen – backe 1 Mrd. %cookieName%"
+    name: Kekskrümeljäger
+    description: Immer her mit den Keksen – backe 1 Mrd. %cookieName%
   cookies_cookie_hoarder:
-    name: "Keks-Hamster"
-    description: "Mehr ist mehr – backe 1 Bio. %cookieName%"
+    name: Keks-Hamster
+    description: Mehr ist mehr – backe 1 Bio. %cookieName%
   cookies_cookie_overlord:
-    name: "Keks-Imperator"
-    description: "Die Macht der Kekse – backe 1 Trill. %cookieName%"
+    name: Keks-Imperator
+    description: Die Macht der Kekse – backe 1 Trill. %cookieName%
   upgrades_smart_shopper:
-    name: "Schlauberger im Shop"
-    description: "Gut investiert – kaufe dein erstes Upgrade"
+    name: Schlauberger im Shop
+    description: Gut investiert – kaufe dein erstes Upgrade
   upgrades_upgrade_master:
-    name: "Meister der Upgrades"
-    description: "Der Weg ist das Ziel – kaufe 100 Upgrades"
+    name: Meister der Upgrades
+    description: Der Weg ist das Ziel – kaufe 100 Upgrades
   upgrades_savvy_spender:
-    name: "Cleverer Konsument"
-    description: "Mit Köpfchen gekauft – kaufe 250 Upgrades"
+    name: Cleverer Konsument
+    description: Mit Köpfchen gekauft – kaufe 250 Upgrades
   upgrades_upgrade_enthusiast:
-    name: "Upgrade-Fanatiker"
-    description: "Nicht kleckern, klotzen – kaufe 1.000 Upgrades"
+    name: Upgrade-Fanatiker
+    description: Nicht kleckern, klotzen – kaufe 1.000 Upgrades
   upgrades_gotta_upgrade_them_all:
-    name: "Upgrade sie alle!"
-    description: "Kein Upgrade bleibt zurück – kaufe 5.000 Upgrades"
+    name: Upgrade sie alle!
+    description: Kein Upgrade bleibt zurück – kaufe 5.000 Upgrades
   prestige_rebaked_and_ready:
-    name: "Frisch gebacken!"
-    description: "Ein neuer Anfang – Prestige zum ersten Mal"
+    name: Frisch gebacken!
+    description: Ein neuer Anfang – Prestige zum ersten Mal
   prestige_twice_as_tasty:
-    name: "Doppelt knusprig"
-    description: "Zweimal gebacken hält besser – Prestige 2 Mal"
+    name: Doppelt knusprig
+    description: Zweimal gebacken hält besser – Prestige 2 Mal
   prestige_third_times_a_charm:
-    name: "Aller guten Dinge sind drei"
-    description: "Prestige 3 Mal"
+    name: Aller guten Dinge sind drei
+    description: Prestige 3 Mal
   prestige_oops_i_did_it_again:
-    name: "Schon wieder..."
-    description: "Man kann einfach nicht aufhören – Prestige 4 Mal"
+    name: Schon wieder...
+    description: Man kann einfach nicht aufhören – Prestige 4 Mal
   prestige_oven_eternal:
-    name: "Der ewige Ofen"
-    description: "Unsterblich im Ofen – Prestige 5 Mal"
+    name: Der ewige Ofen
+    description: Unsterblich im Ofen – Prestige 5 Mal
   event_event_horizon:
-    name: "Ereignishorizont"
-    description: "Immer was los – nimm an 150 Events teil"
+    name: Ereignishorizont
+    description: Immer was los – nimm an 150 Events teil
   event_sugar_rush:
-    name: "Zuckerschock!"
-    description: "Volle Ladung Süß – nimm an 25 Keksrasereien teil"
+    name: Zuckerschock!
+    description: Volle Ladung Süß – nimm an 25 Keksrasereien teil
   event_money_magnet:
-    name: "Krümel-Magnet"
-    description: "Wenn das Glück zuschlägt – erhalte über 1 Mio. %cookieName% in einem Glücks-Event"
+    name: Krümel-Magnet
+    description: Wenn das Glück zuschlägt – erhalte über 1 Mio. %cookieName% in einem
+      Glücks-Event
   event_oof:
-    name: "Autsch!"
-    description: "Das tut weh – verliere über 1 Mio. %cookieName% in einem Pech-Event"
+    name: Autsch!
+    description: Das tut weh – verliere über 1 Mio. %cookieName% in einem Pech-Event
   event_not_my_cookies:
-    name: "Nicht meine Kekse!"
-    description: "Immer Ärger mit den Events – nimm an 75 negativen Events teil"
+    name: Nicht meine Kekse!
+    description: Immer Ärger mit den Events – nimm an 75 negativen Events teil
