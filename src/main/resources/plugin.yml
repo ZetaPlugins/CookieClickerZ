@@ -34,7 +34,7 @@ permissions:
     default: true
     description: Permission to open the upgrade shop
   cookieclickerz.buyupgrade.*:
-    default: false
+    default: op
     description: Permission to buy all upgrades
   cookieclickerz.prestige:
     default: true
