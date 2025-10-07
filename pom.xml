@@ -6,7 +6,7 @@
 
     <groupId>com.zetaplugins</groupId>
     <artifactId>CookieClickerZ</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>CookieClickerZ</name>
@@ -37,7 +37,6 @@
                     <sourcepath>src/main/java</sourcepath>
                     <links>
                         <link>https://jd.papermc.io/paper/1.20.6/</link>
-                        <link>https://repo.fancyinnovations.com/javadoc/releases/de/oliver/FancyHolograms/2.5.0</link>
                     </links>
                 </configuration>
                 <executions>
