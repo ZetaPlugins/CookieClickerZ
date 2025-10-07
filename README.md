@@ -39,6 +39,7 @@ CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the popular Coo
 * **cookieclickerz.admin.manageprestige** - Allows the player to manage other players prestige (default: op)
 * **cookieclickerz.admin.manageevents** - Allows the player to manage events (default: op)
 * **cookieclickerz.admin.manageachievements** - Allows the player to manage other players achievements (default: op)
+* **cookieclickerz.buyupgrade.<upgrade>** - Allows the player to buy a certain upgrade (if `requirePermission` is `true` for that upgrade) (default: op)
 
 ## Placeholders
 
@@ -231,6 +232,8 @@ wooden_pickaxe:
   offlineCookies: "0"
   # Custom mdoel ID to apply a texture to the item (requires a resource pack)
   customModelId: 300
+  # Wether the player needs the cookieclickerz.buyupgrade.<upgrade> permission to buy this upgrade
+  requirePermission: false
 
 ...
 
@@ -253,6 +256,12 @@ levels:
   1:
     # The name of the prestige level
     name: "&8&l> <!b>&6Prestige I"
+    # Additional lore for the prestige level (optional)
+    # You can use the placeholders %price% and %multiplier% in the lore
+    lore:
+      #- "This is some additional lore for Prestige I"
+    # If true, the original lore will be hidden and only the additional lore will be shown
+    hideOriginalLore: false
     # The price of the prestige level
     cost: "1M"
     # The multiplier that will be applied to the player's cookies
@@ -281,6 +290,59 @@ levels:
     name: "&8&l> <!b>&6Prestige V"
     cost: "10B"
     multiplier: 6
+```
+
+</details>
+
+<details>
+<summary>achievements.yml</summary>
+
+```yaml
+# === Clicks Achievements ===
+clicks_clicker_rookie:
+  commands:
+  # - "say %player% has earned the achievement Clicker Rookie!"
+
+clicks_finger_workout:
+  commands:
+  # - "say %player% has earned the achievement Finger Workout!"
+
+clicks_click_champion:
+  commands:
+  # - "say %player% has earned the achievement Click Champion!"
+
+...
+```
+
+</details>
+
+
+<details>
+<summary>achievementCategories.yml</summary>
+
+```yaml
+# This file contains the settings for the achievemnt categories.
+
+clicks:
+  # This is the texture for the head item representing the "clicks" category.
+  # You can find these values in the "Value" field in the "For Developers" section on minecraft-heads.com
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMyYTU4MzhmZDljZDRjOTc3ZjE1MDcxZDY5OTdmZjVjN2Y5NTYwNzRhMmRhNTcxYTE5Y2NlZmIwM2M1NyJ9fX0="
+
+cookies:
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjA1ZWY4ODE5ZmI2YTkyMTQ4MjQ5ZmY0OGMzOTE0ZTkyYzI3M2U3ODc0NTIzZmY3OTMwYjlmNWNjOTNjZWFhZSJ9fX0"
+
+upgrades:
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVmZDY3ZDU2ZmZjNTNmYjM2MGExNzg3OWQ5YjUzMzhkNzMzMmQ4ZjEyOTQ5MWE1ZTE3ZThkNmU4YWVhNmMzYSJ9fX0="
+
+events:
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJiYTllYWQ5N2M4ZmI0NGIxNTZhZGU5Y2IyMTRlYTkxMjQzNGEyY2M0N2M0ZGVjNTBmMjEwMjFjNzVkZDJkNyJ9fX0="
+
+prestige:
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTkwY2JkNzJlNDFhOWJkNDExYmU5MjliNzNmZDI2OTIwNjM2OGIyODEwZDZjNjgxOTkxOGNiOGViNjYyMjRmNCJ9fX0="
+
+misc:
+  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjAzNzEyMDYyZTgyYTA3OTdmZDdiMGMxMDU3NmVkOTI0ODBmZGM5NGJkMmUwMGMyMTk2MWIzNGJlNjBlODU4ZSJ9fX0="
+...
 ```
 
 </details>
