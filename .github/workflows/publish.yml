@@ -18,6 +18,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'maven'
 
       - name: Cache Maven repository
         uses: actions/cache@v3
