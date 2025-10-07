@@ -39,6 +39,7 @@ CookieClickerZ is a Minecraft Cookie Clicker plugin, that brings the popular Coo
 * **cookieclickerz.admin.manageprestige** - Allows the player to manage other players prestige (default: op)
 * **cookieclickerz.admin.manageevents** - Allows the player to manage events (default: op)
 * **cookieclickerz.admin.manageachievements** - Allows the player to manage other players achievements (default: op)
+* **cookieclickerz.admin.giveupgrade** - Allows the player to give upgrades to other players (default: op)
 * **cookieclickerz.buyupgrade.<upgrade>** - Allows the player to buy a certain upgrade (if `requirePermission` is `true` for that upgrade) (default: op)
 
 ## Placeholders

@@ -66,3 +66,6 @@ permissions:
   cookieclickerz.admin.manageachievements:
     default: op
     description: Permission to manage achievements
+  cookieclickerz.admin.giveupgrade:
+    default: op
+    description: Permission to give upgrades
