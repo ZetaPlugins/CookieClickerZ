@@ -8,7 +8,7 @@ noConsoleError: "&cDu musst ein Spieler sein um diesen Befehl ausführen zu kön
 playerDataStorageNull: "&cSpielerdaten nicht gefunden!"
 noPermissionError: "&cDu hast keine Berechtigung dies zu benutzen!"
 noPlayerData: "&cDieser spieler hat noch nicht auf diesem Server gespielt!"
-helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Du kannst einen Klickerblock mit <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click> erstellen.\nMit Linksklick erhälst du %cookieName% und mit Rechtsklick öffnest du das Menü.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Dokumentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
+helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Du kannst einen Klickerblock mit <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click> erstellen.\nMit Linksklick erhälst du %cookieName% und mit Rechtsklick öffnest du das Menü.\n\n%ac%<u><click:open_url:'https://docs.zetaplugins.com/cookieclickerz'>Dokumentation</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Support Discord</click></u>\n"
 reloadMsg: "&7Plugin erfolgreich neu geladen!"
 versionMsg: "&7Du benutzt version %ac%%version%"
 exportData: "&7Spielerdaten erfolgreich in %ac%%file%.csv exportiert!"

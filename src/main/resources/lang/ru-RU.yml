@@ -11,7 +11,7 @@ noConsoleError: "&cВам необходимо быть игроком для в
 playerDataStorageNull: "&cДанные игрока не найдены! Игроку необходимо перезайти!"
 noPermissionError: "&cУ вас недостаточно прав для выполнения этой команды!"
 noPlayerData: "&cДанный игрок никогда не играл на сервере!"
-helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Вы можете создать блок кликера через <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\nПолучайте печеньки, нажимая ЛКМ по блоку или откройте меню, нажав ПКМ.\n\n%ac%<u><click:open_url:'https://cc.strassburger.dev/'>Документация</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Discord поддержки</click></u>\n"
+helpMsg: "\n%ac%<b><grey>></grey> CookieClickerZ</b>\n\n<gray>Вы можете создать блок кликера через <click:SUGGEST_COMMAND:/cc clicker add ><u>/cc clicker add</u></click>.\nПолучайте печеньки, нажимая ЛКМ по блоку или откройте меню, нажав ПКМ.\n\n%ac%<u><click:open_url:'https://docs.zetaplugins.com/cookieclickerz'>Документация</click></u>  %ac%<u><click:open_url:'https://strassburger.org/discord'>Discord поддержки</click></u>\n"
 reloadMsg: "&7Плагин успешно перезагружен!"
 versionMsg: "&7Вы используете версию %ac%%version%"
 exportData: "&7Данные игрока успешно экспортированы в %ac%%file%.csv"
