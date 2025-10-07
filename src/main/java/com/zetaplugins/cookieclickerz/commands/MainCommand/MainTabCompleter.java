@@ -44,6 +44,7 @@ public class MainTabCompleter implements TabCompleter {
         if (sender.hasPermission("cookieclickerz.admin.manageachievements")) options.add("achievements");
         if (sender.hasPermission("cookieclickerz.numcheatsheet")) options.add("numbers");
         if (sender.hasPermission("cookieclickerz.openmenu")) options.add("open");
+        if (sender.hasPermission("cookieclickerz.admin.giveupgrade")) options.add("giveupgrade");
 
         return getDisplayOptions(options, input);
     }
@@ -57,6 +58,7 @@ public class MainTabCompleter implements TabCompleter {
             case "prestige":
             case "events":
             case "achievements":
+            case "giveupgrade":
                 return null;
             case "open":
                 return getDisplayOptions(List.of("main", "upgrades", "achievements", "prestige", "top"), input);
@@ -81,6 +83,12 @@ public class MainTabCompleter implements TabCompleter {
                 return getDisplayOptions(List.of("get", "set"), input);
             case "events":
                 return getDisplayOptions(List.of("start", "get"), input);
+            case "giveupgrade":
+                if (plugin.getConfigManager().getCustomConfig("upgrades") != null) {
+                    List<String> upgradeIds = new ArrayList<>(plugin.getConfigManager().getCustomConfig("upgrades").getKeys(false));
+                    return getDisplayOptions(upgradeIds, input);
+                }
+                return List.of();
             case "dev":
                 if (args[1].equals("addMockData")) return getDisplayOptions(List.of("1", "2", "3", "4", "5"), input);
             default:
@@ -105,6 +113,8 @@ public class MainTabCompleter implements TabCompleter {
                         AchievementType.getAll().stream().map(AchievementType::getSlug).collect(Collectors.toList()),
                         input
                 );
+            case "giveupgrade":
+                return getDisplayOptions(List.of("1", "5", "10", "25", "50", "100"), input);
             default:
                 return List.of();
         }

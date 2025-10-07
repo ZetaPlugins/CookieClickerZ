@@ -32,6 +32,7 @@ public class MainCommandHandler implements CommandExecutor {
         commands.put("achievements", new AchievementsSubCommand(plugin));
         commands.put("numbers", new NumbersSubCommand());
         commands.put("open", new OpenSubCommand());
+        commands.put("giveupgrade", new GiveUpgradeSubCommand(plugin));
     }
 
     @Override
