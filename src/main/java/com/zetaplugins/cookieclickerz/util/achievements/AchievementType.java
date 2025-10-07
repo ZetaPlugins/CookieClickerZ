@@ -1,6 +1,9 @@
 package com.zetaplugins.cookieclickerz.util.achievements;
 
+import com.zetaplugins.cookieclickerz.CookieClickerZ;
 import com.zetaplugins.cookieclickerz.util.NumFormatter;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -168,6 +171,19 @@ public enum AchievementType {
             return (Integer) goal;
         }
         throw new UnsupportedOperationException("Goal is BigInteger, use getBigIntegerGoal() instead.");
+    }
+
+    /**
+     * Execute the commands associated with this achievement
+     * @param plugin the main plugin instance
+     * @param playerName the name of the player to replace in the commands
+     */
+    public void executeCommands(CookieClickerZ plugin, String playerName) {
+        Server server = plugin.getServer();
+        plugin.getConfigManager().getAchievementConfig()
+                .getStringList(slug + ".commands").stream()
+                .map(command -> command.replace("%player%", playerName))
+                .forEach(command -> server.dispatchCommand(server.getConsoleSender(), command));
     }
 
     /**

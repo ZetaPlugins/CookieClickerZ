@@ -27,7 +27,11 @@ public class ConfigManager {
         return getCustomConfig("prestige");
     }
 
-    public FileConfiguration getAchievementsConfig() {
+    public FileConfiguration getAchievementCategoryConfig() {
+        return getCustomConfig("achievementCategories");
+    }
+
+    public FileConfiguration getAchievementConfig() {
         return getCustomConfig("achievements");
     }
 
@@ -61,7 +65,8 @@ public class ConfigManager {
         configs.put("clicker.yml", getClickerConfig().saveToString());
         configs.put("upgrades.yml", getUpgradesConfig().saveToString());
         configs.put("prestige.yml", getPrestigeConfig().saveToString());
-        configs.put("achievements.yml", getAchievementsConfig().saveToString());
+        configs.put("achievementCategories.yml", getAchievementCategoryConfig().saveToString());
+        configs.put("achievements.yml", getAchievementConfig().saveToString());
         return configs;
     }
 

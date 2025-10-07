@@ -1,21 +1,108 @@
-# This file contains the settings for the achievemnt categories.
+# === Clicks Achievements ===
+clicks_clicker_rookie:
+  commands:
+  # - "say %player% has earned the achievement Clicker Rookie!"
 
-clicks:
-  # This is the texture for the head item representing the "clicks" category.
-  # You can find these values in the "Value" field in the "For Developers" section on minecraft-heads.com
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMyYTU4MzhmZDljZDRjOTc3ZjE1MDcxZDY5OTdmZjVjN2Y5NTYwNzRhMmRhNTcxYTE5Y2NlZmIwM2M1NyJ9fX0="
+clicks_finger_workout:
+  commands:
+  # - "say %player% has earned the achievement Finger Workout!"
 
-cookies:
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjA1ZWY4ODE5ZmI2YTkyMTQ4MjQ5ZmY0OGMzOTE0ZTkyYzI3M2U3ODc0NTIzZmY3OTMwYjlmNWNjOTNjZWFhZSJ9fX0"
+clicks_click_champion:
+  commands:
+  # - "say %player% has earned the achievement Click Champion!"
 
-upgrades:
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVmZDY3ZDU2ZmZjNTNmYjM2MGExNzg3OWQ5YjUzMzhkNzMzMmQ4ZjEyOTQ5MWE1ZTE3ZThkNmU4YWVhNmMzYSJ9fX0="
+clicks_unstoppable_clicker:
+  commands:
+  # - "say %player% has earned the achievement Unstoppable Clicker!"
 
-events:
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJiYTllYWQ5N2M4ZmI0NGIxNTZhZGU5Y2IyMTRlYTkxMjQzNGEyY2M0N2M0ZGVjNTBmMjEwMjFjNzVkZDJkNyJ9fX0="
+clicks_cookie_machine:
+  commands:
+  # - "say %player% has earned the achievement Cookie Machine!"
 
-prestige:
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTkwY2JkNzJlNDFhOWJkNDExYmU5MjliNzNmZDI2OTIwNjM2OGIyODEwZDZjNjgxOTkxOGNiOGViNjYyMjRmNCJ9fX0="
 
-misc:
-  head: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjAzNzEyMDYyZTgyYTA3OTdmZDdiMGMxMDU3NmVkOTI0ODBmZGM5NGJkMmUwMGMyMTk2MWIzNGJlNjBlODU4ZSJ9fX0="
+# === Cookies Achievements ===
+cookies_first_batch:
+  commands:
+  # - "say %player% has earned the achievement First Batch!"
+
+cookies_cookie_connoisseur:
+  commands:
+  # - "say %player% has earned the achievement Cookie Connoisseur!"
+
+cookies_cookie_collector:
+  commands:
+  # - "say %player% has earned the achievement Cookie Collector!"
+
+cookies_cookie_hoarder:
+  commands:
+  # - "say %player% has earned the achievement Cookie Hoarder!"
+
+cookies_cookie_overlord:
+  commands:
+  # - "say %player% has earned the achievement Cookie Overlord!"
+
+
+# === Upgrades Achievements ===
+upgrades_smart_shopper:
+  commands:
+  # - "say %player% has earned the achievement Smart Shopper!"
+
+upgrades_upgrade_master:
+  commands:
+  # - "say %player% has earned the achievement Upgrade Master!"
+
+upgrades_savvy_spender:
+  commands:
+  # - "say %player% has earned the achievement Savvy Spender!"
+
+upgrades_upgrade_enthusiast:
+  commands:
+  # - "say %player% has earned the achievement Upgrade Enthusiast!"
+
+upgrades_gotta_upgrade_them_all:
+  commands:
+  # - "say %player% has earned the achievement Gotta Upgrade Them All!"
+
+
+# === Prestige Achievements ===
+prestige_rebaked_and_ready:
+  commands:
+  # - "say %player% has earned the achievement Rebaked and Ready!"
+
+prestige_twice_as_tasty:
+  commands:
+  # - "say %player% has earned the achievement Twice as Tasty!"
+
+prestige_third_times_a_charm:
+  commands:
+  # - "say %player% has earned the achievement Third Time’s a Charm!"
+
+prestige_oops_i_did_it_again:
+  commands:
+  # - "say %player% has earned the achievement Oops, I Did It Again!"
+
+prestige_oven_eternal:
+  commands:
+  # - "say %player% has earned the achievement Oven Eternal!"
+
+
+# === Event Achievements ===
+event_event_horizon:
+  commands:
+  # - "say %player% has earned the achievement Event Horizon!"
+
+event_not_my_cookies:
+  commands:
+  # - "say %player% has earned the achievement Not My Cookies!"
+
+event_sugar_rush:
+  commands:
+  # - "say %player% has earned the achievement Sugar Rush!"
+
+event_money_magnet:
+  commands:
+  # - "say %player% has earned the achievement Money Magnet!"
+
+event_oof:
+  commands:
+  # - "say %player% has earned the achievement Oof!"

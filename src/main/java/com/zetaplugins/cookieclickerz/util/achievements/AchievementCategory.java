@@ -23,7 +23,7 @@ public enum AchievementCategory {
     }
 
     public String getHeadBase64(CookieClickerZ plugin) {
-        FileConfiguration achievementsConfig = plugin.getConfigManager().getAchievementsConfig();
+        FileConfiguration achievementsConfig = plugin.getConfigManager().getAchievementCategoryConfig();
         return achievementsConfig.getString(slug + ".head", "none");
     }
 

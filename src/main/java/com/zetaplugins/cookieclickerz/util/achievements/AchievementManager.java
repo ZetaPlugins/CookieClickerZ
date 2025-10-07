@@ -28,6 +28,7 @@ public class AchievementManager {
 
         if (achievement.isCompleted()) {
             sendAchievementMessage(player, achievement.getType());
+            achievement.getType().executeCommands(plugin, player.getName());
             return true;
         }
 
@@ -48,6 +49,7 @@ public class AchievementManager {
 
         if (achievement.isCompleted()) {
             sendAchievementMessage(player, achievement.getType());
+            achievement.getType().executeCommands(plugin, player.getName());
             return true;
         }
 
@@ -67,6 +69,7 @@ public class AchievementManager {
         if (totalCookies.compareTo(achievement.getType().getBigIntegerGoal()) >= 0) {
             achievement.setProgress(1);
             sendAchievementMessage(player, achievement.getType());
+            achievement.getType().executeCommands(plugin, player.getName());
             return true;
         }
 
