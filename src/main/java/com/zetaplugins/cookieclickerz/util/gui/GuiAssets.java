@@ -1,6 +1,7 @@
 package com.zetaplugins.cookieclickerz.util.gui;
 
 import com.zetaplugins.cookieclickerz.util.*;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -14,7 +15,10 @@ import com.zetaplugins.cookieclickerz.util.*;
 import com.zetaplugins.cookieclickerz.util.items.CustomItem;
 import com.zetaplugins.cookieclickerz.storage.PlayerData;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GuiAssets {
     private GuiAssets() {}
@@ -100,35 +104,56 @@ public class GuiAssets {
 
     public static ItemStack getPretsigeGlassItem(int prestigeLevel , PlayerData playerData) {
         PrestigeData prestigeData = new PrestigeData(CookieClickerZ.getInstance(), prestigeLevel);
-        String prestigeName = prestigeData.getName() != null ? prestigeData.getName() : "&8&l> <!b><#69e372>Prestige " + RomanNumber.toRoman(prestigeLevel);
+        String prestigeName = prestigeData.getName() != null
+                ? prestigeData.getName()
+                : "&8&l> <!b><#69e372>Prestige " + RomanNumber.toRoman(prestigeLevel);
 
         if (playerData.getPrestige() + 1 == prestigeLevel) {
             return new CustomItem(Material.YELLOW_STAINED_GLASS_PANE)
                     .setName(prestigeName)
-                    .setLore(MessageUtils.getAndFormatMsgList(
-                            "inventories.prestige.upgradeDescription.available",
-                            new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
-                            new MessageUtils.Replaceable<>("%price%", NumFormatter.formatBigInt(prestigeData.getCost()))
-                    ))
+                    .setLore(getPrestigeGlassLore("available", prestigeData))
                     .getItemStack();
         } else if (playerData.getPrestige() >= prestigeLevel) {
             return new CustomItem(Material.LIME_STAINED_GLASS_PANE)
                     .setName(prestigeName)
-                    .setLore(MessageUtils.getAndFormatMsgList(
-                            "inventories.prestige.upgradeDescription.bought",
-                            new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
-                            new MessageUtils.Replaceable<>("%price%", NumFormatter.formatBigInt(prestigeData.getCost()))
-                    ))
+                    .setLore(getPrestigeGlassLore("bought", prestigeData))
                     .getItemStack();
         } else {
             return new CustomItem(Material.RED_STAINED_GLASS_PANE)
                     .setName(prestigeName)
-                    .setLore(MessageUtils.getAndFormatMsgList(
-                            "inventories.prestige.upgradeDescription.unavailable",
+                    .setLore(getPrestigeGlassLore("unavailable", prestigeData))
+                    .getItemStack();
+        }
+    }
+
+    private static List<Component> getPrestigeGlassLore(String availability, PrestigeData prestigeData) {
+        List<Component> lore = new ArrayList<>();
+
+        if (!prestigeData.shouldHideOriginalLore()) {
+            lore = MessageUtils.getAndFormatMsgList(
+                    "inventories.prestige.upgradeDescription." + availability,
+                    new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
+                    new MessageUtils.Replaceable<>("%price%", NumFormatter.formatBigInt(prestigeData.getCost()))
+            );
+        }
+
+        if (!prestigeData.getAdditionalLore().isEmpty()) {
+            List<Component> formattedAdditionalLore = prestigeData.getAdditionalLore().stream()
+                    .map(msg -> MessageUtils.formatMsg(
+                            msg,
                             new MessageUtils.Replaceable<>("%multiplier%", prestigeData.getMultiplier()),
                             new MessageUtils.Replaceable<>("%price%", NumFormatter.formatBigInt(prestigeData.getCost()))
                     ))
-                    .getItemStack();
+                    .collect(Collectors.toList());
+
+            if (!lore.isEmpty()) {// Insert before last line if original lore exists
+                int insertIndex = lore.size() - 1;
+                lore.addAll(insertIndex, formattedAdditionalLore);
+            } else {
+                lore.addAll(formattedAdditionalLore);
+            }
         }
+
+        return lore;
     }
 }

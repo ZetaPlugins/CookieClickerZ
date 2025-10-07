@@ -8,6 +8,12 @@ levels:
   1:
     # The name of the prestige level
     name: "&8&l> <!b><#69e372>Prestige I"
+    # Additional lore for the prestige level (optional)
+    # You can use the placeholders %price% and %multiplier% in the lore
+    lore:
+      #- "This is some additional lore for Prestige I"
+    # If true, the original lore will be hidden and only the additional lore will be shown
+    hideOriginalLore: false
     # The price of the prestige level
     cost: "1M"
     # The multiplier that will be applied to the player's cookies
