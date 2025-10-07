@@ -16,6 +16,8 @@ wooden_pickaxe:
   offlineCookies: "0"
   # Custom mdoel ID to apply a texture to the item (requires a resource pack)
   customModelId: 300
+  # Wether the player needs the cookieclickerz.buyupgrade.<upgrade> permission to buy this upgrade
+  requirePermission: false
 
 stone_pickaxe:
   name: "&6Stone Pickaxe"
@@ -25,6 +27,7 @@ stone_pickaxe:
   cpc: "2"
   offlineCookies: "1"
   customModelId: 301
+  requirePermission: false
 
 iron_pickaxe:
   name: "&6Iron Pickaxe"
@@ -34,6 +37,7 @@ iron_pickaxe:
   cpc: "4"
   offlineCookies: "2"
   customModelId: 302
+  requirePermission: false
 
 # Advanced Resources
 diamond_pickaxe:
@@ -44,6 +48,7 @@ diamond_pickaxe:
   cpc: "8"
   offlineCookies: "5"
   customModelId: 303
+  requirePermission: false
 
 netherite_pickaxe:
   name: "&6Netherite Pickaxe"
@@ -53,6 +58,7 @@ netherite_pickaxe:
   cpc: "16"
   offlineCookies: "10"
   customModelId: 304
+  requirePermission: false
 
 # Rare Items
 enchanted_apple:
@@ -63,6 +69,7 @@ enchanted_apple:
   cpc: "32"
   offlineCookies: "20"
   customModelId: 305
+  requirePermission: false
 
 elytra:
   name: "&6Elytra"
@@ -72,6 +79,7 @@ elytra:
   cpc: "64"
   offlineCookies: "40"
   customModelId: 306
+  requirePermission: false
 
 dragon_egg:
   name: "&6Dragon Egg"
@@ -81,6 +89,7 @@ dragon_egg:
   cpc: "128"
   offlineCookies: "80"
   customModelId: 307
+  requirePermission: false
 
 # Special Items
 beacon:
@@ -91,6 +100,7 @@ beacon:
   cpc: "256"
   offlineCookies: "160"
   customModelId: 308
+  requirePermission: false
 
 nether_star:
   name: "&6Nether Star"
@@ -100,6 +110,7 @@ nether_star:
   cpc: "512"
   offlineCookies: "320"
   customModelId: 309
+  requirePermission: false
 
 heart_of_the_sea:
   name: "&6Heart of the Sea"
@@ -109,6 +120,7 @@ heart_of_the_sea:
   cpc: "1024"
   offlineCookies: "640"
   customModelId: 310
+  requirePermission: false
 
 # Exotic Items
 totem_of_undying:
@@ -119,6 +131,7 @@ totem_of_undying:
   cpc: "2048"
   offlineCookies: "1280"
   customModelId: 311
+  requirePermission: false
 
 end_crystal:
   name: "&6End Crystal"
@@ -128,6 +141,7 @@ end_crystal:
   cpc: "4096"
   offlineCookies: "2560"
   customModelId: 312
+  requirePermission: false
 
 shulker_shell:
   name: "&6Shulker Shell"
@@ -137,6 +151,7 @@ shulker_shell:
   cpc: "8192"
   offlineCookies: "5120"
   customModelId: 313
+  requirePermission: false
 
 # Ultimate Items
 enchanted_netherite:
@@ -147,6 +162,7 @@ enchanted_netherite:
   cpc: "16384"
   offlineCookies: "10240"
   customModelId: 314
+  requirePermission: false
 
 ancient_debris:
   name: "&6Ancient Debris"
@@ -156,6 +172,7 @@ ancient_debris:
   cpc: "32768"
   offlineCookies: "20480"
   customModelId: 315
+  requirePermission: false
 
 block_of_netherite:
   name: "&6Block of Netherite"
@@ -165,6 +182,7 @@ block_of_netherite:
   cpc: "65536"
   offlineCookies: "40960"
   customModelId: 316
+  requirePermission: false
 
 # Ultimate Special Items
 god_apple:
@@ -175,5 +193,6 @@ god_apple:
   cpc: "131072"
   offlineCookies: "81920"
   customModelId: 317
+  requirePermission: false
 
 # Add more items as needed following this structure

@@ -79,6 +79,16 @@ public class UpgradeGuiClickListener implements Listener {
 
         UpgradeGUI.Upgrade upgrade = new UpgradeGUI.Upgrade(id);
 
+        if (upgrade.isRequirePermission() && !player.hasPermission("cookieclickerz.buyupgrade." + upgrade.getId())) {
+            player.sendMessage(MessageUtils.getAndFormatMsg(
+                    false,
+                    "noUpgradePerms",
+                    "&cYou do not have permission to buy this upgrade!"
+            ));
+            player.playSound(player.getLocation(), safeSound("errorSound", "ENTITY_VILLAGER_NO"), 1, 1);
+            return;
+        }
+
         Storage storage = plugin.getStorage();
         PlayerData playerData = storage.load(player.getUniqueId());
 

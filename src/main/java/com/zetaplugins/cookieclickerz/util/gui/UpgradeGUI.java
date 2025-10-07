@@ -32,10 +32,11 @@ public class UpgradeGUI {
         private boolean affordable;
         private int level;
         private int customModelId;
+        private boolean requirePermission;
 
         // Getters and setters
 
-        public Upgrade(String id, String name, BigInteger baseprice, double priceMultiplier, String item, BigInteger cpc, BigInteger offlineCookies) {
+        public Upgrade(String id, String name, BigInteger baseprice, double priceMultiplier, String item, BigInteger cpc, BigInteger offlineCookies, Boolean requirePermission) {
             this.id = id;
             this.name = name;
             this.baseprice = baseprice;
@@ -43,6 +44,7 @@ public class UpgradeGUI {
             this.item = item;
             this.cpc = cpc;
             this.offlineCookies = offlineCookies;
+            this.requirePermission = requirePermission;
         }
 
         public Upgrade(String id) {
@@ -54,6 +56,7 @@ public class UpgradeGUI {
             this.cpc = new BigInteger(config.getString(id + ".cpc", "0"));
             this.offlineCookies = new BigInteger(config.getString(id + ".offlineCookies", "0"));
             this.customModelId = config.getInt(id + ".customModelId", 0);
+            this.requirePermission = config.getBoolean(id + ".requirePermission", false);
         }
 
         public int getCustomModelId() {
@@ -134,6 +137,10 @@ public class UpgradeGUI {
 
         public void setOfflineCookies(BigInteger offlineCookies) {
             this.offlineCookies = offlineCookies;
+        }
+
+        public boolean isRequirePermission() {
+            return requirePermission;
         }
     }
 
