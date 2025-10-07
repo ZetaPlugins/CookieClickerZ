@@ -43,6 +43,7 @@ public class MainTabCompleter implements TabCompleter {
         if (sender.hasPermission("cookieclickerz.admin.manageevents")) options.add("events");
         if (sender.hasPermission("cookieclickerz.admin.manageachievements")) options.add("achievements");
         if (sender.hasPermission("cookieclickerz.numcheatsheet")) options.add("numbers");
+        if (sender.hasPermission("cookieclickerz.openmenu")) options.add("open");
 
         return getDisplayOptions(options, input);
     }
@@ -50,9 +51,6 @@ public class MainTabCompleter implements TabCompleter {
     private List<String> getSecondArgOptions(CommandSender sender, String[] args) {
         String input = args[1].toLowerCase();
         switch (args[0]) {
-            case "help":
-            case "version":
-                return List.of();
             case "clicker":
                 return getDisplayOptions(List.of("add", "remove", "list"), input);
             case "cookies":
@@ -60,6 +58,8 @@ public class MainTabCompleter implements TabCompleter {
             case "events":
             case "achievements":
                 return null;
+            case "open":
+                return getDisplayOptions(List.of("main", "upgrades", "achievements", "prestige", "top"), input);
             case "dev":
                 return getDisplayOptions(List.of("test", "addMockData", "savecached"), input);
             default:
