@@ -60,6 +60,15 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+
+                    <relocations>
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
+                            <shadedPattern>com.zetaplugins.cookieclickerz.libs.hikari</shadedPattern>
+                        </relocation>
+                    </relocations>
+
                     <filters>
                         <filter>
                             <artifact>com.zaxxer:HikariCP</artifact> <!-- Include only HikariCP -->
