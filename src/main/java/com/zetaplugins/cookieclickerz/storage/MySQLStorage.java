@@ -84,10 +84,33 @@ public class MySQLStorage extends SQLStorage {
             }
 
             try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cookie_order ON players (LENGTH(totalCookies) DESC, totalCookies DESC);");
-                statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_players_cpc_order ON players (LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC);");
+
+                ResultSet rs = connection.getMetaData()
+                        .getIndexInfo(null, null, "players", false, false);
+
+                boolean cookieIndexExists = false;
+                boolean cpcIndexExists = false;
+
+                while (rs.next()) {
+                    String indexName = rs.getString("INDEX_NAME");
+                    if ("idx_players_cookie_order".equalsIgnoreCase(indexName)) {
+                        cookieIndexExists = true;
+                    }
+                    if ("idx_players_cpc_order".equalsIgnoreCase(indexName)) {
+                        cpcIndexExists = true;
+                    }
+                }
+
+                if (!cookieIndexExists) {
+                    statement.executeUpdate("CREATE INDEX idx_players_cookie_order ON players (totalCookies)");
+                }
+
+                if (!cpcIndexExists) {
+                    statement.executeUpdate("CREATE INDEX idx_players_cpc_order ON players (cookiesPerClick)");
+                }
+
             } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to enable foreign key support in SQLite database: " + e.getMessage());
+                getPlugin().getLogger().severe("Failed to create indexes in MySQL database: " + e.getMessage());
             }
 
         } catch (SQLException e) {
@@ -211,7 +234,7 @@ public class MySQLStorage extends SQLStorage {
 
             return playerData;
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to load player data from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to load player data from MySQL database: " + e.getMessage());
             return null;
         }
     }
@@ -270,35 +293,36 @@ public class MySQLStorage extends SQLStorage {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
             String query =
-                    "SELECT " +
-                            "  ROW_NUMBER() OVER (ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC) AS rank, " +
-                            "  uuid, " +
-                            "  name, " +
-                            "  totalCookies, " +
-                            "  cookiesPerClick " +
+                    "SELECT uuid, name, totalCookies, cookiesPerClick " +
                             "FROM players " +
                             "ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC " +
                             "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setInt(1, limit);
+
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
+
                         BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+
                         BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+
                         topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
                     }
                 }
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from MySQL: " + e.getMessage());
             }
 
             return topPlayers;
+
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from MySQL: " + e.getMessage());
+            getPlugin().getLogger().severe(
+                    "Failed to retrieve top players by total cookies from MySQL: " + e.getMessage()
+            );
             return List.of();
         }
     }
@@ -309,35 +333,37 @@ public class MySQLStorage extends SQLStorage {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
             String query =
-                    "SELECT " +
-                            "  ROW_NUMBER() OVER (ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC) AS rank, " +
-                            "  uuid, " +
-                            "  name, " +
-                            "  totalCookies, " +
-                            "  cookiesPerClick " +
+                    "SELECT uuid, name, totalCookies, cookiesPerClick " +
                             "FROM players " +
                             "ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
                             "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setInt(1, limit);
+
                 try (ResultSet rs = ps.executeQuery()) {
+
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
+
                         BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+
                         BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+
                         topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
                     }
                 }
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to retrieve top players by CPC from MySQL: " + e.getMessage());
             }
 
             return topPlayers;
+
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to retrieve top players by CPC from MySQL: " + e.getMessage());
+            getPlugin().getLogger().severe(
+                    "Failed to retrieve top players by CPC from MySQL: " + e.getMessage()
+            );
             return List.of();
         }
     }
