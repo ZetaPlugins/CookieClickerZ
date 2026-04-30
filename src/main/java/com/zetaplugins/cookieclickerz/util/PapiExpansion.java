@@ -40,9 +40,7 @@ public class PapiExpansion extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (identifier.contains("_top_")) {
             String[] parts = identifier.split("_");
-            if (parts.length != 4) {
-                return "InvalidPlaceholder";
-            }
+            if (parts.length != 4) return "InvalidPlaceholder";
 
             String category = parts[0];
             int index = Integer.parseInt(parts[2]);
@@ -57,14 +55,16 @@ public class PapiExpansion extends PlaceholderExpansion {
                 default -> null;
             };
 
+            if (top == null) return "InvalidCategory";
+
             if (index <= 0 || index > top.size()) return "N/A";
             LeaderBoardEntry entry = top.get(index - 1);
-            switch (field) {
-                case "name": return entry.name();
-                case "amount": return entry.amount().toString();
-                case "formattedamount": return NumFormatter.formatBigInt(entry.amount());
-                default: return "InvalidField";
-            }
+            return switch (field) {
+                case "name" -> entry.name();
+                case "amount" -> entry.amount().toString();
+                case "formattedamount" -> NumFormatter.formatBigInt(entry.amount());
+                default -> "InvalidField";
+            };
         }
 
         if (player == null || player.getPlayer() == null) return "PlayerNotFound";
