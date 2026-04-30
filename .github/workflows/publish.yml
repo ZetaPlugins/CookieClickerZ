@@ -18,15 +18,22 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
 
       - name: Cache Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-fresh
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-v2
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Purge corrupted Maven artifacts
+        run: |
+          if [ -d ~/.m2/repository ]; then
+            find ~/.m2/repository -name "*.jar" -print0 | \
+              xargs -0 -I {} sh -c 'unzip -t "{}" >/dev/null 2>&1 || rm -v "{}"'
+          fi
+        continue-on-error: true
 
       - name: Get release version
         id: get_version
@@ -36,7 +43,7 @@ jobs:
         run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
 
       - name: Build with Maven
-        run: mvn -B clean package
+        run: mvn -B -U clean package
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
