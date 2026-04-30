@@ -2,7 +2,6 @@ package com.zetaplugins.cookieclickerz.storage;
 
 import com.zetaplugins.cookieclickerz.CookieClickerZ;
 import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardEntry;
-import com.zetaplugins.cookieclickerz.util.leaderboard.LeaderBoardService;
 import com.zetaplugins.cookieclickerz.util.NumFormatter;
 import com.zetaplugins.cookieclickerz.util.achievements.Achievement;
 
@@ -241,73 +240,144 @@ public final class SQLiteStorage extends SQLStorage {
     }
 
     @Override
-    public List<LeaderBoardEntry> getTopCookiesPlayers(int limit) {
+    public List<LeaderBoardEntry> getTopTotalCookies(int limit) {
         try (Connection connection = createConnection()) {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
-            String query = "SELECT" +
-                    " ROW_NUMBER() OVER (ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC) AS rank," +
-                    " uuid," +
-                    " name," +
-                    " totalCookies," +
-                    " cookiesPerClick" +
-                    " FROM players" +
-                    " ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC" +
-                    " LIMIT ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, limit);
-                try (ResultSet rs = statement.executeQuery()) {
+            String query = "SELECT name, totalCookies FROM players " +
+                    "ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC " +
+                    "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
-                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
-                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
-                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
                     }
                 }
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from SQLite database: " + e.getMessage());
             }
+
             return topPlayers;
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to retrieve top players by total cookies from SQLite: " + e.getMessage());
             return List.of();
         }
     }
 
     @Override
-    public List<LeaderBoardEntry> getTopCpcPlayers(int limit) {
+    public List<LeaderBoardEntry> getTopCookiesPerClick(int limit) {
         try (Connection connection = createConnection()) {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
-            String query = "SELECT" +
-                    " ROW_NUMBER() OVER (ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC) AS rank," +
-                    " uuid," +
-                    " name," +
-                    " totalCookies," +
-                    " cookiesPerClick" +
-                    " FROM players" +
-                    " ORDER BY LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC" +
-                    " LIMIT ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, limit);
-                try (ResultSet rs = statement.executeQuery()) {
+            String query = "SELECT name, cookiesPerClick FROM players " +
+                    "ORDER BY LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
+                    "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
-                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
-                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
-                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
                     }
                 }
-            } catch (SQLException e) {
-                getPlugin().getLogger().severe("Failed to retrieve top players by cpc from SQLite database: " + e.getMessage());
             }
+
             return topPlayers;
         } catch (SQLException e) {
-            getPlugin().getLogger().severe("Failed to retrieve top players by cpc from SQLite database: " + e.getMessage());
+            getPlugin().getLogger().severe("Failed to retrieve top players by CPC from SQLite: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopOfflineCookies(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query = "SELECT name, offlineCookies FROM players " +
+                    "ORDER BY LENGTH(offlineCookies) DESC, offlineCookies DESC " +
+                    "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("offlineCookies"));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by offline cookies from SQLite: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopPrestige(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+            String query ="SELECT name, prestige FROM players " +
+                    "ORDER BY LENGTH(prestige) DESC, prestige DESC " +
+                    "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+                        BigInteger amount = BigInteger.valueOf(rs.getInt("prestige"));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by prestige from SQLite: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopTotalClicks(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
+            final String query = "SELECT name, totalClicks FROM players " +
+                    "ORDER BY LENGTH(totalClicks) DESC, totalClicks DESC " +
+                    "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+                        BigInteger amount = BigInteger.valueOf(rs.getInt("totalClicks"));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe("Failed to retrieve top players by total clicks from SQLite: " + e.getMessage());
             return List.of();
         }
     }

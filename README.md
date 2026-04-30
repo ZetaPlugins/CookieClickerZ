@@ -59,9 +59,14 @@ The leaderboard placeholders follow this format:
 %cookieclickerz_<category>_top_<index>_<field>%
 ```
 
-- `<category>` is what leaderboard to show. This can be `cookies` for total cookies or `cpc` for cookies per click.
+- `<category>` is what leaderboard to show.  This can be:
+  - `totalcookies` or `cookies`: Total cookies
+  - `cookiesperclick` or `cpc`: Cookies per click
+  - `offlinecookies`: The amount of cookies the user gets while offline
+  - `prestige`: Prestige level
+  - `totalclicks`: Total clicks
 - `<index>` is the position in the leaderboard (e.g. `1` for the first place or `3` for the third place). The limit for this can be set in the `config.yml` (default limit: 10).
-- `field` is what about this player to show. This can be:
+- `<field>` is what about this player to show. This can be:
   - `name`: The name of the player
   - `amount`: The amount depending on what cateory you chose
   - `formattedamount`: The same as `amount`, but formatted (e.g. 1000000 -> 1M)

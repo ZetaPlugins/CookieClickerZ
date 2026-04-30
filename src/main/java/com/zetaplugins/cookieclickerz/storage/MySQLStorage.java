@@ -288,14 +288,14 @@ public class MySQLStorage extends SQLStorage {
     }
 
     @Override
-    public List<LeaderBoardEntry> getTopCookiesPlayers(int limit) {
+    public List<LeaderBoardEntry> getTopTotalCookies(int limit) {
         try (Connection connection = createConnection()) {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
 
             String query =
-                    "SELECT uuid, name, totalCookies, cookiesPerClick " +
+                    "SELECT name, totalCookies " +
                             "FROM players " +
                             "ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC " +
                             "LIMIT ?";
@@ -305,14 +305,11 @@ public class MySQLStorage extends SQLStorage {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
 
-                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
 
-                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
-
-                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
                     }
                 }
             }
@@ -328,14 +325,14 @@ public class MySQLStorage extends SQLStorage {
     }
 
     @Override
-    public List<LeaderBoardEntry> getTopCpcPlayers(int limit) {
+    public List<LeaderBoardEntry> getTopCookiesPerClick(int limit) {
         try (Connection connection = createConnection()) {
             if (connection == null) return List.of();
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
 
             String query =
-                    "SELECT uuid, name, totalCookies, cookiesPerClick " +
+                    "SELECT name, cookiesPerClick " +
                             "FROM players " +
                             "ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
                             "LIMIT ?";
@@ -346,14 +343,11 @@ public class MySQLStorage extends SQLStorage {
                 try (ResultSet rs = ps.executeQuery()) {
 
                     while (rs.next()) {
-                        UUID uuid = UUID.fromString(rs.getString("uuid"));
                         String name = rs.getString("name");
 
-                        BigInteger totalCookies = NumFormatter.stringToBigInteger(rs.getString("totalCookies"));
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
 
-                        BigInteger cpc = NumFormatter.stringToBigInteger(rs.getString("cookiesPerClick"));
-
-                        topPlayers.add(new LeaderBoardEntry(uuid, name, totalCookies, cpc));
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
                     }
                 }
             }
@@ -363,6 +357,117 @@ public class MySQLStorage extends SQLStorage {
         } catch (SQLException e) {
             getPlugin().getLogger().severe(
                     "Failed to retrieve top players by CPC from MySQL: " + e.getMessage()
+            );
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopOfflineCookies(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
+            String query =
+                    "SELECT name, offlineCookies " +
+                            "FROM players " +
+                            "ORDER BY CHAR_LENGTH(offlineCookies) DESC, offlineCookies DESC " +
+                            "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
+
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+
+                        BigInteger amount = NumFormatter.stringToBigInteger(rs.getString("offlineCookies"));
+
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe(
+                    "Failed to retrieve top players by offline cookies from MySQL: " + e.getMessage()
+            );
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopPrestige(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
+            String query =
+                    "SELECT name, prestige " +
+                            "FROM players " +
+                            "ORDER BY CHAR_LENGTH(prestige) DESC, prestige DESC " +
+                            "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
+
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+
+                        BigInteger amount = BigInteger.valueOf(rs.getInt("prestige"));
+
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe(
+                    "Failed to retrieve top players by prestige from MySQL: " + e.getMessage()
+            );
+            return List.of();
+        }
+    }
+
+    public List<LeaderBoardEntry> getTopTotalClicks(int limit) {
+        try (Connection connection = createConnection()) {
+            if (connection == null) return List.of();
+
+            List<LeaderBoardEntry> topPlayers = new ArrayList<>();
+
+            String query =
+                    "SELECT name, totalClicks " +
+                            "FROM players " +
+                            "ORDER BY CHAR_LENGTH(totalClicks) DESC, totalClicks DESC " +
+                            "LIMIT ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, limit);
+
+                try (ResultSet rs = ps.executeQuery()) {
+
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+
+                        BigInteger amount = BigInteger.valueOf(rs.getInt("totalClicks"));
+
+                        topPlayers.add(new LeaderBoardEntry(name, amount));
+                    }
+                }
+            }
+
+            return topPlayers;
+
+        } catch (SQLException e) {
+            getPlugin().getLogger().severe(
+                    "Failed to retrieve top players by total clicks from MySQL: " + e.getMessage()
             );
             return List.of();
         }
