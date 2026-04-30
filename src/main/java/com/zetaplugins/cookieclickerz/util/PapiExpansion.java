@@ -70,52 +70,33 @@ public class PapiExpansion extends PlaceholderExpansion {
             }
         }
 
-        if (identifier.startsWith("cookies_top_")) {
+        if (identifier.contains("_top_")) {
             String[] parts = identifier.split("_");
-            if (parts.length >= 4) {
-                try {
-                    int index = Integer.parseInt(parts[2]);
-                    String field = parts[3].toLowerCase();
-
-                    List<LeaderBoardEntry> top = plugin.getLeaderBoardService().getTopTotalCookies();
-                    if (index <= 0 || index > top.size()) return "N/A";
-
-                    LeaderBoardEntry e = top.get(index - 1);
-                    switch (field) {
-                        case "name": return e.name();
-                        case "amount": return e.amount().toString();
-                        case "formattedamount": return NumFormatter.formatBigInt(e.amount());
-                        default: return "InvalidField";
-                    }
-                } catch (NumberFormatException ignored) {
-                    return "InvalidIndex";
-                }
+            if (parts.length != 4) {
+                return "InvalidPlaceholder";
             }
-            return "InvalidPlaceholder";
-        }
 
-        if (identifier.startsWith("cpc_top_")) {
-            String[] parts = identifier.split("_");
-            if (parts.length >= 4) {
-                try {
-                    int index = Integer.parseInt(parts[2]);
-                    String field = parts[3].toLowerCase();
+            String category = parts[0];
+            int index = Integer.parseInt(parts[2]);
+            String field = parts[3];
 
-                    List<LeaderBoardEntry> top = plugin.getLeaderBoardService().getTopCookiesPerClick();
-                    if (index <= 0 || index > top.size()) return "N/A";
+            List<LeaderBoardEntry> top = switch (category) {
+                case "cookies", "totalcookies" -> plugin.getLeaderBoardService().getTopTotalCookies();
+                case "cpc", "cookiesperclick" -> plugin.getLeaderBoardService().getTopCookiesPerClick();
+                case "offlinecookies" -> plugin.getLeaderBoardService().getTopOfflineCookies();
+                case "prestige" -> plugin.getLeaderBoardService().getTopPrestige();
+                case "totalclicks" -> plugin.getLeaderBoardService().getTopTotalClicks();
+                default -> null;
+            };
 
-                    LeaderBoardEntry e = top.get(index - 1);
-                    switch (field) {
-                        case "name": return e.name();
-                        case "amount": return e.amount().toString();
-                        case "formattedamount": return NumFormatter.formatBigInt(e.amount());
-                        default: return "InvalidField";
-                    }
-                } catch (NumberFormatException ignored) {
-                    return "InvalidIndex";
-                }
+            if (index <= 0 || index > top.size()) return "N/A";
+            LeaderBoardEntry entry = top.get(index - 1);
+            switch (field) {
+                case "name": return entry.name();
+                case "amount": return entry.amount().toString();
+                case "formattedamount": return NumFormatter.formatBigInt(entry.amount());
+                default: return "InvalidField";
             }
-            return "InvalidPlaceholder";
         }
 
         return "InvalidPlaceholder";
