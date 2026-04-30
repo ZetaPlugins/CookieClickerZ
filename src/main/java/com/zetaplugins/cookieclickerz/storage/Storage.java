@@ -99,21 +99,21 @@ public abstract class Storage {
      * @param limit The maximum number of players to return.
      * @return A List of the top players. PlayerData does not contain achievements and upgrades.
      */
-    abstract public List<LeaderBoardEntry> getTopOfflineCookies(int place);
+    abstract public List<LeaderBoardEntry> getTopOfflineCookies(int limit);
 
     /**
      * Get a List of the top players by prestige level.
      * @param limit The maximum number of players to return.
      * @return A List of the top players. PlayerData does not contain achievements and upgrades.
      */
-    abstract public List<LeaderBoardEntry> getTopPrestige(int place);
+    abstract public List<LeaderBoardEntry> getTopPrestige(int limit);
 
     /**
      * Get a List of the top players by total clicks.
      * @param limit The maximum number of players to return.
      * @return A List of the top players. PlayerData does not contain achievements and upgrades.
      */
-    abstract public List<LeaderBoardEntry> getTopTotalClicks(int place);
+    abstract public List<LeaderBoardEntry> getTopTotalClicks(int limit);
 
     /**
      * Save all cached data to the storage system.
