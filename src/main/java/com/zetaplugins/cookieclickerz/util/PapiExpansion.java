@@ -82,9 +82,9 @@ public class PapiExpansion extends PlaceholderExpansion {
 
                     LeaderBoardEntry e = top.get(index - 1);
                     switch (field) {
-                        case "name": return e.name;
-                        case "amount": return e.totalCookies.toString();
-                        case "formattedamount": return NumFormatter.formatBigInt(e.totalCookies);
+                        case "name": return e.name();
+                        case "amount": return e.amount().toString();
+                        case "formattedamount": return NumFormatter.formatBigInt(e.amount());
                         default: return "InvalidField";
                     }
                 } catch (NumberFormatException ignored) {
@@ -101,14 +101,14 @@ public class PapiExpansion extends PlaceholderExpansion {
                     int index = Integer.parseInt(parts[2]);
                     String field = parts[3].toLowerCase();
 
-                    List<LeaderBoardEntry> top = plugin.getLeaderBoardService().getTopCpc();
+                    List<LeaderBoardEntry> top = plugin.getLeaderBoardService().getTopCookiesPerClick();
                     if (index <= 0 || index > top.size()) return "N/A";
 
                     LeaderBoardEntry e = top.get(index - 1);
                     switch (field) {
-                        case "name": return e.name;
-                        case "amount": return e.cookiesPerClick.toString();
-                        case "formattedamount": return NumFormatter.formatBigInt(e.cookiesPerClick);
+                        case "name": return e.name();
+                        case "amount": return e.amount().toString();
+                        case "formattedamount": return NumFormatter.formatBigInt(e.amount());
                         default: return "InvalidField";
                     }
                 } catch (NumberFormatException ignored) {
