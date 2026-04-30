@@ -38,38 +38,6 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
-        if (player == null || player.getPlayer() == null) return "PlayerNotFound";
-
-        switch (identifier) {
-            case "name": {
-                return player.getName();
-            }
-            case "totalcookies": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return playerData.getTotalCookies().toString();
-            }
-            case "totalcookies_formatted": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return NumFormatter.formatBigInt(playerData.getTotalCookies());
-            }
-            case "cookiesperclick": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return NumFormatter.formatBigInt(playerData.getCookiesPerClick());
-            }
-            case "offlinecookies": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return NumFormatter.formatBigInt(playerData.getOfflineCookies());
-            }
-            case "prestige": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return String.valueOf(playerData.getPrestige());
-            }
-            case "totalclicks": {
-                PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
-                return String.valueOf(playerData.getTotalClicks());
-            }
-        }
-
         if (identifier.contains("_top_")) {
             String[] parts = identifier.split("_");
             if (parts.length != 4) {
@@ -99,6 +67,18 @@ public class PapiExpansion extends PlaceholderExpansion {
             }
         }
 
-        return "InvalidPlaceholder";
+        if (player == null || player.getPlayer() == null) return "PlayerNotFound";
+
+        PlayerData playerData = plugin.getStorage().load(player.getUniqueId());
+        return switch (identifier) {
+            case "name" -> player.getName();
+            case "totalcookies" -> playerData.getTotalCookies().toString();
+            case "totalcookies_formatted" -> NumFormatter.formatBigInt(playerData.getTotalCookies());
+            case "cookiesperclick" -> NumFormatter.formatBigInt(playerData.getCookiesPerClick());
+            case "offlinecookies" -> NumFormatter.formatBigInt(playerData.getOfflineCookies());
+            case "prestige" -> String.valueOf(playerData.getPrestige());
+            case "totalclicks" -> String.valueOf(playerData.getTotalClicks());
+            default -> "InvalidPlaceholder";
+        };
     }
 }
