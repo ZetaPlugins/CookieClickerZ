@@ -246,7 +246,7 @@ public final class SQLiteStorage extends SQLStorage {
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
             String query = "SELECT name, totalCookies FROM players " +
-                    "ORDER BY CHAR_LENGTH(totalCookies) DESC, totalCookies DESC " +
+                    "ORDER BY LENGTH(totalCookies) DESC, totalCookies DESC " +
                     "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -275,7 +275,7 @@ public final class SQLiteStorage extends SQLStorage {
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
             String query = "SELECT name, cookiesPerClick FROM players " +
-                    "ORDER BY CHAR_LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
+                    "ORDER BY LENGTH(cookiesPerClick) DESC, cookiesPerClick DESC " +
                     "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -303,7 +303,7 @@ public final class SQLiteStorage extends SQLStorage {
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
             String query = "SELECT name, offlineCookies FROM players " +
-                    "ORDER BY CHAR_LENGTH(offlineCookies) DESC, offlineCookies DESC " +
+                    "ORDER BY LENGTH(offlineCookies) DESC, offlineCookies DESC " +
                     "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -331,7 +331,7 @@ public final class SQLiteStorage extends SQLStorage {
 
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
             String query ="SELECT name, prestige FROM players " +
-                    "ORDER BY CHAR_LENGTH(prestige) DESC, prestige DESC " +
+                    "ORDER BY LENGTH(prestige) DESC, prestige DESC " +
                     "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -360,7 +360,7 @@ public final class SQLiteStorage extends SQLStorage {
             List<LeaderBoardEntry> topPlayers = new ArrayList<>();
 
             final String query = "SELECT name, totalClicks FROM players " +
-                    "ORDER BY CHAR_LENGTH(totalClicks) DESC, totalClicks DESC " +
+                    "ORDER BY LENGTH(totalClicks) DESC, totalClicks DESC " +
                     "LIMIT ?";
 
             try (PreparedStatement ps = connection.prepareStatement(query)) {
